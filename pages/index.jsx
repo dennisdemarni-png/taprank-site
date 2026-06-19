@@ -48,13 +48,15 @@ const benefits = [
 ];
 
 function BrandLogo({ placement = "header" }) {
+  const useDarkBackgroundLogo = placement === "stand" || placement === "footer";
+
   return (
     <img
       className={`brandLogo brandLogo--${placement}`}
-      src="/taprank-logo.png"
+      src={useDarkBackgroundLogo ? "/taprank-logo-dark.png" : "/taprank-logo.png"}
       alt="TapRank"
-      width="1820"
-      height="864"
+      width={useDarkBackgroundLogo ? 1774 : 1820}
+      height={useDarkBackgroundLogo ? 887 : 864}
     />
   );
 }

@@ -67,7 +67,7 @@ button, input { font: inherit; }
 .stand::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: -14px; height: 30px; z-index: -1; background: #010205; border-radius: 0 0 20px 20px; transform: perspective(80px) rotateX(-18deg); }
 .standShine { position: absolute; width: 220px; height: 600px; left: -170px; top: -80px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.055), transparent); transform: rotate(18deg); }
 .standLogo { position: relative; display: flex; justify-content: center; padding-bottom: 13px; border-bottom: 1px solid rgba(255,255,255,.1); }
-.brandLogo--stand { width: 108px; height: 43px; padding: 2px 8px; border-radius: 9px; background: rgba(255,255,255,.97); box-shadow: 0 7px 18px rgba(0,0,0,.24); }
+.brandLogo--stand { width: 118px; height: 50px; filter: drop-shadow(0 7px 14px rgba(0,0,0,.28)); }
 .googleBadge { width: 48px; height: 48px; margin: 19px auto 12px; display: grid; place-items: center; border-radius: 50%; background: white; box-shadow: 0 8px 22px rgba(0,0,0,.3); }
 .googleBadge span { font-size: 27px; font-family: Arial, sans-serif; font-weight: 700; color: #4285f4; }
 .reviewLabel { margin: 0 0 2px; color: #9ba4af; font-size: 8px; font-weight: 800; letter-spacing: 2px; }
@@ -190,7 +190,7 @@ button, input { font: inherit; }
 .emailHint { display: block; margin-top: 15px; position: relative; color: #8fafcf; font-size: 10px; }
 
 .siteFooter { padding: 64px 0 26px; color: #a8b5c6; background: #050f22; }
-.brandLogo--footer { width: 155px; height: 64px; padding: 3px 11px; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: #fff; box-shadow: 0 12px 30px rgba(0,0,0,.18); }
+.brandLogo--footer { width: 176px; height: 78px; filter: drop-shadow(0 12px 26px rgba(0,0,0,.2)); }
 .footerTop { padding-bottom: 45px; display: flex; justify-content: space-between; gap: 80px; }
 .footerBrand { max-width: 390px; }
 .footerBrand p { margin: 20px 0 0; font-size: 13px; line-height: 1.7; }

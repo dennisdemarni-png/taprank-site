@@ -1,38 +1,38 @@
 import Head from "next/head";
 
-const mockupMailto = "mailto:hello@taprank.co.uk?subject=TapRank%20Free%20Mockup%20Request";
+const setupMailto = "mailto:hello@taprank.co.uk?subject=TapRank%20Setup%20Request";
 
 const products = [
   {
     icon: "star",
     eyebrow: "Reviews first",
     title: "TapRank Review Pages",
-    copy: "Google reviews stay front and centre, with optional links for bookings, socials, menus and more.",
+    copy: "Put Google reviews front and centre, with bookings, menus, socials and contact links one tap away.",
   },
   {
     icon: "phone",
     eyebrow: "The physical touchpoint",
     title: "NFC + QR Touchpoints",
-    copy: "Counter stands, table stands, cards and stickers that send customers to your live TapRank page.",
+    copy: "Counter stands, table stands, cards and stickers, all linked and tested before they arrive.",
   },
   {
     icon: "links",
     eyebrow: "More ways to act",
     title: "Menu & Multi-Link Pages",
-    copy: "Perfect for restaurants, cafes, salons, barbers and shops that want customers to scan once and choose what they need.",
+    copy: "Give customers one simple place to view menus, book, follow your socials or contact you.",
   },
   {
     icon: "social",
     eyebrow: "The live service",
     title: "Managed TapRank Care",
-    copy: "Keep your links, destinations and page content updated without needing to reprint QR codes or reprogram tags.",
+    copy: "Keep your links and page content up to date without replacing your stand, QR code or NFC tag.",
   },
 ];
 
 const steps = [
   ["01", "Choose your setup", "Pick a review stand, link page or a combination that suits your counter."],
-  ["02", "Share your details", "Send your business name, brand colours and the actions customers should see."],
-  ["03", "We build it", "We design, programme and test your TapRank touchpoint and hosted destination."],
+  ["02", "Share your details", "Tell us your business name, brand colours and the links customers should see."],
+  ["03", "We set it up", "We design, link and test your TapRank product before it arrives."],
   ["04", "Customers tap", "Put it in place and turn happy visits into reviews, bookings, follows and more."],
 ];
 
@@ -60,8 +60,8 @@ const customerActions = [
 const benefits = [
   "Reduces the steps between a happy customer and a useful action",
   "Prompts customers while their experience is still fresh",
-  "NFC + QR gives almost every smartphone an easy route in",
-  "Update destinations later without replacing the stand",
+  "Tap or scan from almost any modern smartphone",
+  "Update your links later without replacing the stand",
   "Hosted pages grow as your business adds new links and offers",
   "A polished physical touchpoint that feels part of your business",
 ];
@@ -70,6 +70,12 @@ const demos = [
   { label: "Barber", href: "/r/barber-demo", theme: "navy", eyebrow: "Premium barber page", actions: "Reviews · bookings · prices" },
   { label: "Restaurant", href: "/r/restaurant-demo", theme: "amber", eyebrow: "Warm hospitality page", actions: "Menu · tables · reviews" },
   { label: "Salon", href: "/r/salon-demo", theme: "blush", eyebrow: "Elegant beauty page", actions: "Bookings · treatments · socials" },
+];
+
+const reviewStats = [
+  ["97%", "of consumers read reviews for local businesses"],
+  ["71%", "use Google to read local business reviews"],
+  ["54%", "visit a business website after reading positive reviews"],
 ];
 
 function BrandLogo({ placement = "header" }) {
@@ -105,7 +111,7 @@ function ReviewStandVisual() {
       <div className="orbit orbitOne" />
       <div className="orbit orbitTwo" />
       <div className="standImageCard">
-        <span className="standImagePill"><i /> NFC + QR ready</span>
+        <span className="standImagePill"><i /> Ready for your counter</span>
         <img
           className="heroStandImage"
           src="/taprank-google-review-stand.png"
@@ -114,8 +120,8 @@ function ReviewStandVisual() {
           height="1492"
         />
       </div>
-      <div className="floatingBadge floatingTop"><span>★</span><strong>Make feedback effortless</strong></div>
-      <div className="floatingBadge floatingBottom"><span className="pulseDot" /><strong>Made for your brand</strong></div>
+      <div className="floatingBadge floatingTop"><span>★</span><strong>Linked before it arrives</strong></div>
+      <div className="floatingBadge floatingBottom"><span className="pulseDot" /><strong>No setup required</strong></div>
     </div>
   );
 }
@@ -147,12 +153,12 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>TapRank | NFC + QR Customer Actions for Local Businesses</title>
-        <meta name="description" content="Turn customer visits into reviews, bookings, follows and more with TapRank NFC + QR stands and hosted link pages." />
+        <title>TapRank | Connect Customers to What Matters</title>
+        <meta name="description" content="TapRank creates NFC + QR stands, cards and stickers that help customers review, book, view menus, follow and contact local businesses." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffffff" />
-        <meta property="og:title" content="TapRank | Turn customer visits into action" />
-        <meta property="og:description" content="NFC + QR stands and hosted pages for reviews, menus, bookings, socials and more." />
+        <meta property="og:title" content="TapRank | Connect customers to what matters" />
+        <meta property="og:description" content="One tap to your reviews, menus, bookings and socials." />
       </Head>
 
       <header className="siteHeader">
@@ -165,7 +171,7 @@ export default function Home() {
             <a href="#pricing">Pricing</a>
             <a href="#use-cases">Use cases</a>
           </nav>
-          <a className="button buttonSmall navCta" href={mockupMailto}>Free Mockup <span>→</span></a>
+          <a className="button buttonSmall navCta" href={setupMailto}>Start Setup <span>→</span></a>
           <details className="mobileMenu">
             <summary aria-label="Open navigation"><span /><span /><span /></summary>
             <nav>
@@ -174,7 +180,7 @@ export default function Home() {
               <a href="#link-pages">Link pages</a>
               <a href="#pricing">Pricing</a>
               <a href="#use-cases">Use cases</a>
-              <a className="button" href={mockupMailto}>Request a Free Mockup</a>
+              <a className="button" href={setupMailto}>Start Setup</a>
             </nav>
           </details>
         </div>
@@ -186,13 +192,13 @@ export default function Home() {
           <div className="container heroGrid">
             <div className="heroCopy">
               <div className="eyebrow"><span className="eyebrowStars">✦</span> Connect customers to what matters.</div>
-              <h1>Get more Google reviews <span className="gradientText">with one tap</span></h1>
-              <p className="heroLead">TapRank creates NFC + QR products linked to live TapRank pages, helping local businesses turn customer visits into reviews, menu views, bookings, follows and more.</p>
+              <h1>One tap to your <span className="gradientText">reviews, menus, bookings and socials.</span></h1>
+              <p className="heroLead">TapRank creates NFC + QR stands, cards and stickers that open a live page for your business — helping customers review, book, follow, view menus and take action without searching.</p>
               <div className="heroActions">
-                <a className="button" href={mockupMailto}>Request a Free Mockup <span>→</span></a>
-                <a className="button buttonSecondary" href="#live-demos"><span className="playIcon">↘</span> View Live Demos</a>
+                <a className="button" href={setupMailto}>Start Your TapRank Setup <span>→</span></a>
+                <a className="button buttonSecondary" href="#live-demos"><span className="playIcon">↘</span> View Live Examples</a>
               </div>
-              <p className="heroRange"><span>★</span> Google reviews first. Menus, socials, bookings and custom pages when you’re ready.</p>
+              <p className="heroRange"><span>★</span> Google reviews stay front and centre. Everything else your customers need sits one tap away.</p>
               <div className="heroProof">
                 <div className="proofFaces"><span>B</span><span>S</span><span>C</span></div>
                 <p><strong>Simple to set up</strong><br />Made for busy business owners</p>
@@ -219,9 +225,27 @@ export default function Home() {
             </div>
             <div className="problemCopy">
               <p>Most customers are happy to review, book or follow a good business—but few search for the right page after they leave.</p>
-              <p>TapRank puts the next action directly in front of them while the experience is still fresh: one tap, one scan, no searching or typing.</p>
+              <p>No searching. No typing. Just tap, scan and choose what they need.</p>
               <div className="microResult"><span>↘</span><p><strong>Less friction.</strong> More customers reaching the right page at the right moment.</p></div>
             </div>
+          </div>
+        </section>
+
+        <section className="reviewStatsSection" aria-labelledby="review-stats-title">
+          <div className="container">
+            <div className="reviewStatsIntro">
+              <div>
+                <span className="sectionTag">LOCAL TRUST</span>
+                <h2 id="review-stats-title">Reviews still shape local decisions.</h2>
+              </div>
+              <p>TapRank makes it easier for customers to act while they are still in your business — instead of hoping they remember later.</p>
+            </div>
+            <div className="reviewStatsGrid">
+              {reviewStats.map(([number, label]) => (
+                <article className="reviewStatCard" key={number}><strong>{number}</strong><p>{label}</p></article>
+              ))}
+            </div>
+            <small className="reviewStatsSource">Source: BrightLocal local review research</small>
           </div>
         </section>
 
@@ -230,7 +254,7 @@ export default function Home() {
             <div className="sectionIntro centered">
               <span className="sectionTag">WHAT WE MAKE</span>
               <h2>One tap. <span className="gradientText">More ways to grow.</span></h2>
-              <p>Physical touchpoints and flexible digital destinations, designed to make every customer journey feel effortless.</p>
+              <p>Every TapRank product arrives set up and linked to your business.</p>
             </div>
             <div className="productGrid">
               {products.map((product, index) => (
@@ -243,6 +267,7 @@ export default function Home() {
                 </article>
               ))}
             </div>
+            <p className="productSetupNote"><span>✓</span><strong>Arrives linked, tested and ready to place. No setup required.</strong></p>
           </div>
         </section>
 
@@ -251,7 +276,7 @@ export default function Home() {
             <div className="actionSystemCopy">
               <span className="sectionTag">THE TAPRANK PAGE</span>
               <h2>One tap. <span className="gradientText">Every customer action.</span></h2>
-              <p>Instead of sending customers to one fixed destination forever, TapRank opens a live page that can grow with your business. Start with Google reviews, then add menus, booking links, WhatsApp, socials, offers and more.</p>
+              <p>Give customers one simple page to review, book, view your menu, follow your socials or contact you. Your links can change later without replacing the stand.</p>
               <div className="tapFlow" aria-label="How a TapRank page works">
                 <div><span>1</span><strong>Customer taps or scans</strong></div>
                 <i>→</i>
@@ -262,7 +287,7 @@ export default function Home() {
               <div className="actionList">
                 {customerActions.map(([symbol, label]) => <div className="actionItem" key={label}><span>{symbol}</span><strong>{label}</strong></div>)}
               </div>
-              <p className="managedNote"><span>✓</span><strong>Managed updates available with TapRank Care.</strong> Change links and destinations without replacing the physical product.</p>
+              <p className="managedNote"><span>✓</span><strong>Managed updates available with TapRank Care.</strong> Change links without replacing the physical product.</p>
             </div>
             <HostedPagePreview />
           </div>
@@ -323,8 +348,8 @@ export default function Home() {
           <div className="container">
             <div className="mockupCard">
               <div className="mockupStar">★</div>
-              <div className="mockupCopy"><span className="sectionTag">FREE CUSTOM MOCKUP</span><h2>Want to see what yours could look like?</h2><p>Send us your business name, colours, Google review link and any menu, booking or social links you want customers to see. We’ll create a quick TapRank mockup before you order.</p></div>
-              <div className="mockupAction"><a className="button" href={mockupMailto}>Request a Free Mockup <span>→</span></a><small>Perfect if you want to see your brand on a TapRank stand before committing.</small></div>
+              <div className="mockupCopy"><span className="sectionTag">WHAT YOUR SETUP CAN LOOK LIKE</span><h2>See what your TapRank setup could look like.</h2><p>Your TapRank setup can be ready-made or customised to your business. Once you choose a setup, we link your stand, QR code and NFC tag to your live TapRank page before it arrives.</p></div>
+              <div className="mockupAction"><a className="button" href={setupMailto}>Start Your TapRank Setup <span>→</span></a><small>Custom examples will be added soon using real product photos.</small></div>
             </div>
           </div>
         </section>
@@ -333,33 +358,37 @@ export default function Home() {
           <div className="container">
             <div className="sectionIntro centered">
               <span className="sectionTag">FLEXIBLE PRICING</span>
-              <h2>Start simple. <span className="gradientText">Grow when you’re ready.</span></h2>
-              <p>Every TapRank product connects to a live TapRank page. Start with a touchpoint, then keep the useful digital part active and easy to update.</p>
+              <h2>Choose your setup. <span className="gradientText">We’ll handle the rest.</span></h2>
+              <p>Every TapRank product arrives set up and linked to your business.</p>
             </div>
             <div className="pricingGrid">
               <article className="priceCard">
-                <span className="pricePill">Simple start</span><h3>TapRank Mini Stand</h3>
-                <p className="price"><span className="priceLabel">Launch offer from{" "}</span><strong className="priceAmount">£24.99</strong></p>
-                <p className="priceSummary">A simple NFC + QR touchpoint for your counter, table or reception area.</p>
-                <ul><li>NFC + QR touchpoint</li><li>Live TapRank review page</li><li>Google review front and centre</li><li>Counter, table or reception ready</li></ul>
-                <a className="button buttonSecondary fullButton" href="mailto:hello@taprank.co.uk?subject=TapRank%20Mini%20Stand">Get Your TapRank Stand</a>
+                <span className="pricePill">Simple start</span><h3>Ready-Made TapRank Stand</h3>
+                <p className="price"><strong className="priceAmount priceAmountProduct">From £24.99 <span>+ £9.99/month</span></strong></p>
+                <p className="priceSummary">A clean ready-made NFC + QR stand linked to your live TapRank page. Best for businesses that want a simple, fast way to collect reviews and share key links.</p>
+                <ul><li>Ready-made stand design</li><li>NFC + QR included</li><li>Live TapRank page</li><li>Google review button front and centre</li><li>Arrives linked and ready to place</li><li>No setup required</li></ul>
+                <a className="button buttonSecondary fullButton" href="mailto:hello@taprank.co.uk?subject=TapRank%20Ready-Made%20Stand">Get Your Stand</a>
               </article>
               <article className="priceCard featuredPrice">
-                <div className="popularLabel">MOST FLEXIBLE</div><span className="pricePill bluePill">Built around you</span><h3>TapRank Setup</h3>
-                <p className="price"><span className="priceLabel">Custom setup from{" "}</span><strong className="priceAmount">£49</strong></p>
-                <p className="priceSummary">Custom stand design, NFC/QR setup, hosted TapRank page setup and basic launch support.</p>
-                <ul><li>Custom touchpoint design</li><li>NFC + QR setup</li><li>Hosted TapRank page setup</li><li>Basic launch support</li></ul>
-                <a className="button fullButton" href={mockupMailto}>Start Your TapRank Setup <span>→</span></a>
+                <div className="popularLabel">MOST FLEXIBLE</div><span className="pricePill bluePill">Built around you</span><h3>Custom TapRank Setup</h3>
+                <p className="price"><strong className="priceAmount priceAmountProduct">From £49 <span>+ £9.99/month</span></strong></p>
+                <p className="priceSummary">A custom setup matched to your business, brand colours and customer actions. Best for businesses that want a more tailored stand and TapRank page.</p>
+                <ul><li>Custom stand/page styling</li><li>Business links added for you</li><li>Review, booking, menu and social buttons</li><li>NFC + QR setup</li><li>Arrives linked, tested and ready to use</li><li>Better for branded counters, salons, restaurants and shops</li></ul>
+                <a className="button fullButton" href={setupMailto}>Start Custom Setup <span>→</span></a>
               </article>
               <article className="priceCard">
-                <span className="pricePill">The useful live part</span><h3>TapRank Page + Care</h3>
-                <p className="price"><span className="priceLabel">Live page and support{" "}</span><strong className="priceAmount">£9.99<span>/month</span></strong></p>
-                <p className="priceSummary">Your live TapRank page, link updates, destination changes and practical support.</p>
-                <ul><li>Hosted TapRank page</li><li>Link and destination updates</li><li>Review, menu and social support</li><li>Page content changes</li><li>Discounted replacement products</li></ul>
-                <a className="button buttonSecondary fullButton" href="mailto:hello@taprank.co.uk?subject=TapRank%20Care">Ask about TapRank Care</a>
+                <span className="pricePill">More places</span><h3>Multi-Location / Bulk</h3>
+                <p className="price"><strong className="priceAmount priceAmountQuote">Custom quote</strong></p>
+                <p className="priceSummary">For businesses that need multiple stands, table displays, stickers or cards across one or more locations.</p>
+                <ul><li>Multiple touchpoints</li><li>Shared or separate TapRank pages</li><li>Bulk product options</li><li>Ongoing link management</li><li>Custom layout support</li></ul>
+                <a className="button buttonSecondary fullButton" href="mailto:hello@taprank.co.uk?subject=TapRank%20Multi-Location%20or%20Bulk%20Setup">Talk Through a Setup</a>
               </article>
             </div>
-            <p className="pricingNote">Physical products may require a setup fee or annual plan. Custom and bulk orders are available.</p>
+            <div className="subscriptionExplainer">
+              <span className="subscriptionIcon">↻</span>
+              <div><h3>Why the monthly TapRank page?</h3><p>Your physical stand points to a live TapRank page. That page keeps your links flexible, so you can update reviews, menus, bookings, socials or WhatsApp without replacing your QR code or NFC tag.</p><strong>TapRank Page is £9.99/month and keeps your page active, editable and supported.</strong></div>
+            </div>
+            <p className="pricingNote">Arrives linked, tested and ready to place. No setup required.</p>
           </div>
         </section>
 
@@ -369,7 +398,7 @@ export default function Home() {
               <span className="sectionTag">WHY IT WORKS</span>
               <h2>A small touchpoint with a <span className="gradientText">big job to do.</span></h2>
               <p>TapRank connects the physical moment in your business with the digital action that helps it grow.</p>
-              <a className="textLink" href={mockupMailto}>Talk through your setup <span>→</span></a>
+              <a className="textLink" href={setupMailto}>Talk through your setup <span>→</span></a>
             </div>
             <div className="benefitList">
               {benefits.map((benefit) => <div className="benefitItem" key={benefit}><span>✓</span><p>{benefit}</p></div>)}
@@ -381,10 +410,10 @@ export default function Home() {
           <div className="container">
             <div className="finalCard">
               <div className="finalGlow" /><div className="finalStars">★★★★★</div>
-              <h2>Ready to turn more visits into action?</h2>
-              <p>Send us your business name, Google review link and any menu, booking or social links you want customers to see. We’ll help you choose the right TapRank setup.</p>
-              <a className="button buttonWhite" href={mockupMailto}>Request a Free Mockup <span>→</span></a>
-              <span className="emailHint">hello@taprank.co.uk</span>
+              <h2>Ready to connect customers to what matters?</h2>
+              <p>Choose a ready-made stand or a custom TapRank setup. We’ll link it to your business before it arrives, so customers can tap or scan straight away.</p>
+              <a className="button buttonWhite" href={setupMailto}>Start Your TapRank Setup <span>→</span></a>
+              <span className="emailHint">Online checkout coming later. For now, TapRank setups are handled directly.</span>
             </div>
           </div>
         </section>
@@ -392,10 +421,10 @@ export default function Home() {
 
       <footer className="siteFooter">
         <div className="container footerTop">
-          <div className="footerBrand"><BrandLogo placement="footer" /><strong className="footerSlogan">Connect customers to what matters.</strong><p>TapRank connects local businesses to the customer actions that matter — reviews, menus, bookings, socials and more.</p></div>
-          <div className="footerLinks"><div><h3>Explore</h3><a href="#products">Products</a><a href="#link-pages">Link pages</a><a href="#pricing">Pricing</a></div><div><h3>Live demos</h3><a href="/r/barber-demo">Barber</a><a href="/r/restaurant-demo">Restaurant</a><a href="/r/salon-demo">Salon</a></div><div><h3>Get in touch</h3><a href={mockupMailto}>Free mockup</a><a href="mailto:hello@taprank.co.uk">hello@taprank.co.uk</a></div></div>
+          <div className="footerBrand"><BrandLogo placement="footer" /><strong className="footerSlogan">Connect customers to what matters.</strong><p>TapRank gives local businesses NFC + QR touchpoints linked to live pages for reviews, menus, bookings, socials and more.</p></div>
+          <div className="footerLinks"><div><h3>Explore</h3><a href="#products">Products</a><a href="#link-pages">Link pages</a><a href="#pricing">Pricing</a></div><div><h3>Live demos</h3><a href="/r/barber-demo">Barber</a><a href="/r/restaurant-demo">Restaurant</a><a href="/r/salon-demo">Salon</a></div><div><h3>Get in touch</h3><a href={setupMailto}>Start setup</a><a href="mailto:hello@taprank.co.uk">hello@taprank.co.uk</a></div></div>
         </div>
-        <div className="container footerBottom"><p>© {new Date().getFullYear()} TapRank. NFC + QR customer journeys for local businesses.</p><p>taprank.co.uk</p></div>
+        <div className="container footerBottom"><p>© {new Date().getFullYear()} TapRank. Connect customers to what matters.</p><p>taprank.co.uk</p></div>
       </footer>
     </>
   );

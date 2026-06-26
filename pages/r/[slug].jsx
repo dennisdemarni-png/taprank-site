@@ -2,16 +2,7 @@ import HostedTapRankPage from "../../components/HostedTapRankPage";
 import { getTapRankPage, taprankPageSlugs } from "../../lib/taprankPages";
 
 export default function TapRankHostedPage({ page }) {
-  return (
-    <HostedTapRankPage
-      theme={page.theme}
-      businessName={page.businessName}
-      monogram={page.monogram}
-      eyebrow={page.category}
-      copy={page.introText}
-      actions={page.links}
-    />
-  );
+  return <HostedTapRankPage page={page} />;
 }
 
 export function getStaticPaths() {

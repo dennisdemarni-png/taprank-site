@@ -193,12 +193,12 @@ export default function Home() {
             <div className="heroCopy">
               <div className="eyebrow"><span className="eyebrowStars">✦</span> Connect customers to what matters.</div>
               <h1>One tap to your <span className="gradientText">reviews, menus, bookings and socials.</span></h1>
-              <p className="heroLead">TapRank creates NFC + QR stands, cards and stickers that open a live page for your business — helping customers review, book, follow, view menus and take action without searching.</p>
+              <p className="heroLead">Google reviews stay front and centre. Everything else your customers need sits one tap away.</p>
               <div className="heroActions">
                 <a className="button" href={setupMailto}>Start Your TapRank Setup <span>→</span></a>
                 <a className="button buttonSecondary" href="#live-demos"><span className="playIcon">↘</span> View Live Examples</a>
               </div>
-              <p className="heroRange"><span>★</span> Google reviews stay front and centre. Everything else your customers need sits one tap away.</p>
+              <p className="heroRange"><span>✓</span> Arrives linked, tested and ready to place. No setup required.</p>
               <div className="heroProof">
                 <div className="proofFaces"><span>B</span><span>S</span><span>C</span></div>
                 <p><strong>Simple to set up</strong><br />Made for busy business owners</p>

@@ -933,6 +933,233 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 .hostedPage--restaurant .hostedMonogram span { color: #fff5df; background: linear-gradient(145deg, #a76226, #70401a); }
 .hostedPage--salon .hostedMonogram span { color: #ffffff; background: linear-gradient(145deg, #d79ca9, #aa6e7d); }
 
+/* TapRank brand-alignment polish */
+.productCard {
+  min-height: 305px;
+  display: flex;
+  flex-direction: column;
+}
+.productCard p {
+  max-width: 29rem;
+}
+.productCard1 .productIcon svg path {
+  fill: none;
+  stroke: currentColor;
+}
+.productMiniVisual {
+  margin-top: auto;
+  padding-top: 24px;
+}
+.actionItem span,
+.useIcon {
+  font-size: 10px;
+  letter-spacing: .8px;
+}
+.actionItem span {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+}
+.useIcon {
+  color: #0a4fb5;
+  background: #eef7ff;
+  box-shadow: inset 0 0 0 1px rgba(20,124,255,.12);
+}
+.caseArrow {
+  color: #8aa0b8;
+}
+.mockupAction small,
+.emailHint {
+  letter-spacing: 0;
+}
+.liveDemoCard {
+  color: #061832;
+  border: 1px solid #dce8f2;
+  background: radial-gradient(circle at 90% 0%, rgba(20,124,255,.12), transparent 30%), #ffffff;
+}
+.liveDemoCard--navy,
+.liveDemoCard--amber,
+.liveDemoCard--blush {
+  color: #061832;
+  border-color: #dce8f2;
+  background: radial-gradient(circle at 86% 0%, var(--demo-accent, rgba(20,124,255,.13)), transparent 32%), linear-gradient(180deg, #ffffff, #f7fbff);
+}
+.liveDemoCard--navy { --demo-accent: rgba(20,124,255,.16); }
+.liveDemoCard--amber { --demo-accent: rgba(245,179,1,.18); }
+.liveDemoCard--blush { --demo-accent: rgba(214,138,160,.16); }
+.liveDemoCard--navy .liveDemoEyebrow,
+.liveDemoCard--amber .liveDemoEyebrow,
+.liveDemoCard--blush .liveDemoEyebrow {
+  color: #0a63d8;
+}
+.liveDemoCard--navy > strong,
+.liveDemoCard--amber > strong,
+.liveDemoCard--blush > strong {
+  color: #075bd8;
+}
+.liveDemoPhonePreview {
+  background: linear-gradient(180deg, #ffffff, #f4f8fd);
+  border-color: #e0eaf4;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 18px 38px rgba(10,34,65,.07);
+}
+.liveDemoHeroLine,
+.liveDemoCard--navy .liveDemoHeroLine,
+.liveDemoCard--amber .liveDemoHeroLine,
+.liveDemoCard--blush .liveDemoHeroLine {
+  color: #147cff;
+  background:
+    radial-gradient(circle at 72% 18%, rgba(245,179,1,.42), transparent 20%),
+    linear-gradient(135deg, #0b2444, #147cff);
+}
+.liveDemoMark,
+.liveDemoCard--navy .liveDemoMark,
+.liveDemoCard--amber .liveDemoMark,
+.liveDemoCard--blush .liveDemoMark {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  border-color: #ffffff;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #071b3b, #147cff);
+  box-shadow: 0 12px 26px rgba(20,124,255,.18);
+}
+.liveDemoPills span,
+.liveDemoCard--amber .liveDemoPills span,
+.liveDemoCard--blush .liveDemoPills span {
+  color: #183452;
+  background: #ffffff;
+  box-shadow: 0 7px 18px rgba(10,34,65,.055);
+}
+.priceAmountProduct > span {
+  color: #0a63d8;
+  font-size: 13px;
+}
+.subscriptionExplainer p {
+  font-size: 14px;
+}
+
+.hostedPage {
+  --hosted-accent: #147cff;
+  --hosted-warm: #f5b301;
+  --hosted-warm-strong: rgba(245,179,1,.58);
+  --hosted-warm-soft: rgba(245,179,1,.26);
+  --hosted-hero-a: #071832;
+  --hosted-hero-b: #147cff;
+  --hosted-hero-wash-a: rgba(7,24,50,.92);
+  --hosted-hero-wash-b: rgba(20,124,255,.7);
+  background: #f4f8ff;
+}
+.hostedPage--barber,
+.hostedPage--restaurant,
+.hostedPage--salon {
+  background: #f4f8ff;
+}
+.hostedPage--barber {
+  --hosted-accent: #147cff;
+  --hosted-warm: #f5b301;
+  --hosted-warm-strong: rgba(245,179,1,.58);
+  --hosted-warm-soft: rgba(245,179,1,.26);
+  --hosted-hero-a: #071832;
+  --hosted-hero-b: #1b6bd8;
+  --hosted-hero-wash-a: rgba(7,24,50,.92);
+  --hosted-hero-wash-b: rgba(27,107,216,.68);
+}
+.hostedPage--restaurant {
+  --hosted-accent: #147cff;
+  --hosted-warm: #d99a2f;
+  --hosted-warm-strong: rgba(217,154,47,.5);
+  --hosted-warm-soft: rgba(217,154,47,.22);
+  --hosted-hero-a: #11243c;
+  --hosted-hero-b: #d39135;
+  --hosted-hero-wash-a: rgba(17,36,60,.9);
+  --hosted-hero-wash-b: rgba(211,145,53,.5);
+}
+.hostedPage--salon {
+  --hosted-accent: #147cff;
+  --hosted-warm: #d88ba0;
+  --hosted-warm-strong: rgba(216,139,160,.48);
+  --hosted-warm-soft: rgba(216,139,160,.24);
+  --hosted-hero-a: #14243d;
+  --hosted-hero-b: #d88ba0;
+  --hosted-hero-wash-a: rgba(20,36,61,.88);
+  --hosted-hero-wash-b: rgba(216,139,160,.48);
+}
+.hostedPage .hostedBackdrop,
+.hostedPage--barber .hostedBackdrop {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(20,124,255,.12), transparent 28%),
+    radial-gradient(circle at 88% 80%, rgba(20,124,255,.16), transparent 32%),
+    linear-gradient(135deg, #fbfdff, #eaf4ff);
+}
+.hostedHeroBanner,
+.hostedPage--barber .hostedHeroBanner,
+.hostedPage--restaurant .hostedHeroBanner,
+.hostedPage--salon .hostedHeroBanner {
+  background:
+    radial-gradient(circle at 78% 20%, var(--hosted-warm-strong), transparent 17%),
+    radial-gradient(circle at 28% 58%, var(--hosted-warm-soft), transparent 32%),
+    linear-gradient(125deg, var(--hosted-hero-wash-a), var(--hosted-hero-wash-b)),
+    linear-gradient(135deg, var(--hosted-hero-a), var(--hosted-hero-b));
+}
+.hostedHeroBanner img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hostedHeroBrand {
+  gap: 11px;
+}
+.hostedHeroLabel {
+  padding: 7px 10px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  background: rgba(255,255,255,.11);
+  backdrop-filter: blur(10px);
+}
+.hostedPage--barber .hostedMonogram span,
+.hostedPage--restaurant .hostedMonogram span,
+.hostedPage--salon .hostedMonogram span {
+  color: #ffffff;
+  background: linear-gradient(145deg, #071b3b, #147cff);
+}
+.hostedMonogram {
+  box-shadow: 0 18px 36px rgba(7,24,50,.18), inset 0 0 0 1px rgba(255,255,255,.36) !important;
+}
+.hostedActionIcon svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+}
+.hostedActionIcon--review {
+  font-size: 19px;
+  letter-spacing: -.8px;
+}
+.hostedFooter {
+  grid-template-columns: 1fr auto 1fr;
+}
+.hostedFooter div {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+}
+.hostedFooter strong {
+  justify-content: center;
+}
+.hostedFooter em {
+  color: #9aa6b4;
+  font-size: 10px;
+  font-style: normal;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
 @media (max-width: 780px) {
   .heroProductVisual { height: 650px; }
   .heroPhoneMockup { left: 50%; top: 24px; transform: translateX(-58%) rotate(-4deg); }

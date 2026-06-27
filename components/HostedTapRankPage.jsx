@@ -1,18 +1,19 @@
 import Head from "next/head";
 
 const actionSymbols = {
-  review: "★",
-  booking: "✓",
+  review: "G",
+  booking: "▣",
   menu: "≡",
   instagram: "◎",
   whatsapp: "↗",
   directions: "⌖",
   prices: "£",
+  services: "✂",
   allergens: "i",
   treatments: "✦",
   tiktok: "♪",
   call: "☎",
-  website: "→",
+  website: "◎",
 };
 
 const themeColours = {
@@ -22,7 +23,7 @@ const themeColours = {
 };
 
 function ActionIcon({ icon }) {
-  return <span className="hostedActionIcon">{actionSymbols[icon] || "→"}</span>;
+  return <span className={`hostedActionIcon hostedActionIcon--${icon}`}>{actionSymbols[icon] || "→"}</span>;
 }
 
 export default function HostedTapRankPage({ page }) {
@@ -37,8 +38,6 @@ export default function HostedTapRankPage({ page }) {
     welcomeText,
     primaryAction,
     links,
-    infoItems,
-    footerText,
   } = page;
 
   return (
@@ -55,62 +54,56 @@ export default function HostedTapRankPage({ page }) {
         <div className="hostedBackdrop" aria-hidden="true"><span /><span /><span /></div>
         <section className="hostedCard">
           <div className="hostedHeroBanner" aria-hidden="true">
-            <span>{bannerLabel}</span>
+            <div className="hostedHeroBrand">
+              <span className="hostedHeroMark">TR</span>
+              <strong>TAPRANK</strong>
+            </div>
+            <span className="hostedHeroLabel">{bannerLabel}</span>
             <i />
+            <b />
           </div>
 
-          <header className="hostedHeader">
-            <div className="hostedIdentity">
-              <div className="hostedMonogram">{initials}</div>
-            </div>
-            <span className="hostedEyebrow">{categoryLabel}</span>
-            <h1>{businessName}</h1>
-            <div className="hostedRating" aria-label={`${rating.score} stars from ${rating.count} reviews`}>
-              <strong>{rating.score}</strong>
-              <span>★★★★★</span>
-              <small>({rating.count})</small>
-            </div>
-            <p>{welcomeText}</p>
-          </header>
+          <div className="hostedContentPanel">
+            <header className="hostedHeader">
+              <div className="hostedIdentity">
+                <div className="hostedMonogram"><span>{initials}</span></div>
+              </div>
+              <h1>{businessName}</h1>
+              <span className="hostedEyebrow">{categoryLabel}</span>
+              <div className="hostedRating" aria-label={`${rating.score} stars from ${rating.count} reviews`}>
+                <strong>{rating.score}</strong>
+                <span>★★★★★</span>
+                <small>({rating.count})</small>
+              </div>
+              <p>{welcomeText}</p>
+            </header>
 
-          <nav className="hostedActions" aria-label={`${businessName} links`}>
-            <a className="hostedAction hostedAction--primary" href={primaryAction.href}>
-              <ActionIcon icon={primaryAction.icon} />
-              <strong>{primaryAction.label}</strong>
-              <span className="hostedActionArrow">→</span>
-            </a>
-            {links.map((action, index) => (
-              <a
-                className={`hostedAction ${action.featured ? "hostedAction--featured" : ""} hostedAction--${index + 1}`}
-                href={action.href}
-                key={action.label}
-              >
-                <ActionIcon icon={action.icon} />
-                <strong>{action.label}</strong>
-                <span className="hostedActionArrow">→</span>
+            <nav className="hostedActions" aria-label={`${businessName} links`}>
+              <a className="hostedAction hostedAction--primary" href={primaryAction.href}>
+                <ActionIcon icon={primaryAction.icon} />
+                <strong>{primaryAction.label}</strong>
+                <span className="hostedActionArrow">›</span>
               </a>
-            ))}
-          </nav>
-
-          <section className="hostedInfoCard" aria-label={`${businessName} business information`}>
-            <span className="hostedInfoLabel">Good to know</span>
-            <div className="hostedInfoItems">
-              {infoItems.map((item) => (
-                <div className="hostedInfoItem" key={item}>
-                  <span>✓</span>
-                  <strong>{item}</strong>
-                </div>
+              {links.map((action, index) => (
+                <a
+                  className={`hostedAction ${action.featured ? "hostedAction--featured" : ""} hostedAction--${index + 1}`}
+                  href={action.href}
+                  key={action.label}
+                >
+                  <ActionIcon icon={action.icon} />
+                  <strong>{action.label}</strong>
+                  <span className="hostedActionArrow">›</span>
+                </a>
               ))}
-            </div>
-          </section>
+            </nav>
 
-          <footer className="hostedFooter">
-            <div>
-              <span>Powered by</span>
-              <small>{footerText}</small>
-            </div>
-            <img src={theme === "barber" ? "/taprank-logo-dark.png" : "/taprank-logo.png"} alt="TapRank" width="1820" height="864" />
-          </footer>
+            <footer className="hostedFooter">
+              <span aria-hidden="true" />
+              <small>Powered by</small>
+              <strong><i>TR</i> TapRank</strong>
+              <span aria-hidden="true" />
+            </footer>
+          </div>
         </section>
       </main>
     </>

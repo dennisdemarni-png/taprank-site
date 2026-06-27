@@ -67,15 +67,21 @@ const benefits = [
 ];
 
 const demos = [
-  { label: "Barber", href: "/r/barber-demo", theme: "navy", eyebrow: "Premium barber page", actions: "Reviews · bookings · prices" },
-  { label: "Restaurant", href: "/r/restaurant-demo", theme: "amber", eyebrow: "Warm hospitality page", actions: "Menu · tables · reviews" },
-  { label: "Salon", href: "/r/salon-demo", theme: "blush", eyebrow: "Elegant beauty page", actions: "Bookings · treatments · socials" },
+  { label: "Barber Demo", href: "/r/barber-demo", theme: "navy", eyebrow: "Premium barber page", business: "Example Barber Co.", mark: "EB", actions: ["Review", "Book", "Services"] },
+  { label: "Restaurant Demo", href: "/r/restaurant-demo", theme: "amber", eyebrow: "Warm hospitality page", business: "Example Restaurant", mark: "ER", actions: ["Menu", "Tables", "Reviews"] },
+  { label: "Salon Demo", href: "/r/salon-demo", theme: "blush", eyebrow: "Elegant beauty page", business: "Example Beauty Salon", mark: "ES", actions: ["Book", "Treatments", "Socials"] },
 ];
 
 const reviewStats = [
-  ["97%", "of consumers read reviews for local businesses"],
-  ["71%", "use Google to read local business reviews"],
-  ["54%", "visit a business website after reading positive reviews"],
+  ["★", "97%", "read local reviews"],
+  ["G", "71%", "use Google reviews"],
+  ["↗", "54%", "visit a business website after positive reviews"],
+];
+
+const heroChips = [
+  "Linked before it arrives",
+  "No setup required",
+  "Ready for your counter",
 ];
 
 function BrandLogo({ placement = "header" }) {
@@ -106,22 +112,46 @@ function Icon({ name }) {
 }
 
 function ReviewStandVisual() {
+  const phoneActions = ["Review us on Google", "Book appointment", "View menu", "Instagram"];
+
   return (
-    <div className="visualWrap">
+    <div className="visualWrap heroProductVisual">
       <div className="orbit orbitOne" />
       <div className="orbit orbitTwo" />
-      <div className="standImageCard">
-        <span className="standImagePill"><i /> Ready for your counter</span>
-        <img
-          className="heroStandImage"
-          src="/taprank-google-review-stand.png"
-          alt="TapRank review stand with NFC and QR code"
-          width="1054"
-          height="1492"
-        />
+      <div className="heroVisualGlow" />
+      <div className="heroPhoneMockup" aria-label="TapRank page phone mockup">
+        <div className="heroPhoneTop"><span /><i /></div>
+        <div className="heroPhoneScreen">
+          <div className="heroPhoneBanner" />
+          <div className="heroPhoneAvatar">TR</div>
+          <span className="heroPhoneCategory">Local business</span>
+          <h3>Example TapRank Page</h3>
+          <div className="heroPhoneRating"><strong>4.9</strong><span>★★★★★</span><small>(248)</small></div>
+          <div className="heroPhoneActions">
+            {phoneActions.map((action, index) => <span className={index === 0 ? "heroPhoneAction primary" : "heroPhoneAction"} key={action}>{action}<b>→</b></span>)}
+          </div>
+          <div className="heroPhonePowered">Powered by <strong>TapRank</strong></div>
+        </div>
       </div>
-      <div className="floatingBadge floatingTop"><span>★</span><strong>Linked before it arrives</strong></div>
-      <div className="floatingBadge floatingBottom"><span className="pulseDot" /><strong>No setup required</strong></div>
+      <div className="heroProductStack">
+        <div className="standImageCard">
+          <span className="standImagePill"><i /> Ready for your counter</span>
+          <img
+            className="heroStandImage"
+            src="/taprank-google-review-stand.png"
+            alt="TapRank review stand with NFC and QR code"
+            width="1054"
+            height="1492"
+          />
+        </div>
+        <div className="touchpointStrip" aria-label="TapRank physical touchpoints">
+          <span>Counter stand</span>
+          <span>QR card</span>
+          <span>NFC sticker</span>
+        </div>
+      </div>
+      <div className="floatingBadge floatingTop"><span>★</span><strong>Google reviews</strong></div>
+      <div className="floatingBadge floatingBottom"><span className="pulseDot" /><strong>Live TapRank page</strong></div>
     </div>
   );
 }
@@ -195,10 +225,12 @@ export default function Home() {
               <h1>One tap to your <span className="gradientText">reviews, menus, bookings and socials.</span></h1>
               <p className="heroLead">TapRank creates NFC + QR stands, cards and stickers that open a live page for your business — helping customers review, book, follow, view menus and take action without searching.</p>
               <div className="heroActions">
-                <a className="button" href={setupMailto}>Start Your TapRank Setup <span>→</span></a>
+                <a className="button" href={setupMailto}>Start Your Setup <span>→</span></a>
                 <a className="button buttonSecondary" href="#live-demos"><span className="playIcon">↘</span> View Live Examples</a>
               </div>
-              <p className="heroRange"><span>★</span> Google reviews stay front and centre. Everything else your customers need sits one tap away.</p>
+              <div className="heroChips" aria-label="TapRank setup highlights">
+                {heroChips.map((chip) => <span key={chip}>✓ {chip}</span>)}
+              </div>
               <div className="heroProof">
                 <div className="proofFaces"><span>B</span><span>S</span><span>C</span></div>
                 <p><strong>Simple to set up</strong><br />Made for busy business owners</p>
@@ -241,8 +273,8 @@ export default function Home() {
               <p>TapRank makes it easier for customers to act while they are still in your business — instead of hoping they remember later.</p>
             </div>
             <div className="reviewStatsGrid">
-              {reviewStats.map(([number, label]) => (
-                <article className="reviewStatCard" key={number}><strong>{number}</strong><p>{label}</p></article>
+              {reviewStats.map(([icon, number, label]) => (
+                <article className="reviewStatCard" key={number}><span>{icon}</span><strong>{number}</strong><p>{label}</p></article>
               ))}
             </div>
             <small className="reviewStatsSource">Source: BrightLocal local review research</small>
@@ -259,10 +291,14 @@ export default function Home() {
             <div className="productGrid">
               {products.map((product, index) => (
                 <article className={`productCard productCard${index + 1}`} key={product.title}>
-                  <div className="productIcon"><Icon name={product.icon} /></div>
+                  <div className="productCardTop">
+                    <div className="productIcon"><Icon name={product.icon} /></div>
+                    <span className="productNumber">0{index + 1}</span>
+                  </div>
                   <span className="cardEyebrow">{product.eyebrow}</span>
                   <h3>{product.title}</h3>
                   <p>{product.copy}</p>
+                  <div className="productMiniVisual" aria-hidden="true"><span /><span /><span /></div>
                   <a href="#contact">Explore this setup <span>→</span></a>
                 </article>
               ))}
@@ -304,10 +340,14 @@ export default function Home() {
               {demos.map((demo) => (
                 <a className={`liveDemoCard liveDemoCard--${demo.theme}`} href={demo.href} key={demo.href}>
                   <span className="liveDemoEyebrow">{demo.eyebrow}</span>
-                  <div className="liveDemoMark">{demo.label.slice(0, 1)}</div>
-                  <h3>Example {demo.label}</h3>
-                  <p>{demo.actions}</p>
-                  <strong>View {demo.label} Demo <span>↗</span></strong>
+                  <div className="liveDemoPhonePreview">
+                    <div className="liveDemoHeroLine" />
+                    <div className="liveDemoMark">{demo.mark}</div>
+                    <h3>{demo.business}</h3>
+                    <div className="liveDemoStars">★★★★★</div>
+                    <div className="liveDemoPills">{demo.actions.map((action) => <span key={action}>{action}</span>)}</div>
+                  </div>
+                  <strong>View {demo.label} <span>↗</span></strong>
                 </a>
               ))}
             </div>

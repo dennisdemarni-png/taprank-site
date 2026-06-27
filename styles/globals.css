@@ -630,34 +630,308 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 .subscriptionExplainer { border-radius: 26px; background: linear-gradient(135deg, #ffffff, #f4faff); }
 .finalCard { border-radius: 34px; background: radial-gradient(circle at 82% 0%, rgba(14,165,255,.5), transparent 32%), linear-gradient(135deg, #061b3a, #075cc2); box-shadow: 0 34px 80px rgba(3,45,99,.24); }
 
-.hostedPage { padding: 22px 14px; place-items: center; }
-.hostedCard { width: min(100%, 430px); padding: 12px 12px 20px; border-radius: 42px; background: rgba(255,255,255,.94); box-shadow: 0 34px 80px rgba(10,24,43,.18); }
-.hostedHeroBanner { height: 160px; position: relative; overflow: hidden; border-radius: 32px; display: flex; align-items: end; padding: 18px; }
-.hostedHeroBanner span { position: relative; z-index: 2; color: rgba(255,255,255,.9); font-size: 10px; font-weight: 900; letter-spacing: 1.2px; text-transform: uppercase; }
-.hostedHeroBanner i { position: absolute; width: 210px; height: 210px; right: -75px; top: -90px; border-radius: 50%; background: rgba(255,255,255,.18); box-shadow: 0 0 0 44px rgba(255,255,255,.06); }
-.hostedHeader { margin-top: -42px; padding: 0 14px; text-align: center; }
-.hostedIdentity { justify-content: center; }
-.hostedMonogram { width: 82px; height: 82px; border: 5px solid #fff !important; box-shadow: 0 16px 30px rgba(10,24,43,.12) !important; }
-.hostedEyebrow { margin-top: 10px; }
-.hostedRating { margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; color: #728298; font-size: 11px; }
-.hostedRating strong { color: #102541; }
-.hostedRating span { color: var(--gold); letter-spacing: 1px; }
-.hostedHeader p { max-width: 320px; margin: 13px auto 0; }
-.hostedActions { grid-template-columns: 1fr; margin-top: 18px; padding: 0 6px; }
-.hostedAction, .hostedAction--primary { min-height: 58px; padding: 10px 13px; border-radius: 19px; box-shadow: 0 10px 24px rgba(10,34,65,.045); }
-.hostedAction--primary { color: #fff !important; border: 0 !important; background: linear-gradient(135deg, #0ea5ff, #0057d9) !important; }
-.hostedAction--primary .hostedActionIcon { color: #fff !important; background: rgba(255,255,255,.18) !important; }
-.hostedInfoCard { margin: 14px 6px 0; }
-.hostedFooter { margin-left: 6px; margin-right: 6px; }
-.hostedPage--barber .hostedHeroBanner { background: radial-gradient(circle at 72% 20%, rgba(245,179,1,.45), transparent 24%), linear-gradient(135deg, #0b1728, #193657); }
-.hostedPage--barber .hostedCard { color: #122136; background: #ffffff; }
-.hostedPage--barber .hostedEyebrow { color: #9f7a22; }
-.hostedPage--barber .hostedHeader h1 { color: #122136; }
-.hostedPage--barber .hostedHeader p { color: #66778b; }
-.hostedPage--barber .hostedAction:not(.hostedAction--primary) { color: #213852; border-color: #e1e8f0; background: #f9fbfd; }
-.hostedPage--barber .hostedInfoCard { color: #334b66; border-color: #e1e8f0; background: #f8fbfe; }
-.hostedPage--restaurant .hostedHeroBanner { background: radial-gradient(circle at 78% 15%, rgba(255,219,139,.75), transparent 25%), linear-gradient(135deg, #895120, #d9953f); }
-.hostedPage--salon .hostedHeroBanner { background: radial-gradient(circle at 72% 18%, rgba(255,255,255,.45), transparent 24%), linear-gradient(135deg, #bd7b8b, #f0c9d0); }
+/* Premium phone-style TapRank hosted pages */
+.hostedPage {
+  min-height: 100svh;
+  padding: 34px 14px;
+  place-items: center;
+  color: #071832;
+  background: #f4f8ff;
+}
+.hostedBackdrop {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(20,124,255,.12), transparent 28%),
+    radial-gradient(circle at 88% 80%, rgba(20,124,255,.16), transparent 32%),
+    linear-gradient(135deg, #fbfdff, #eaf4ff);
+}
+.hostedBackdrop span:first-child { width: 360px; height: 360px; left: -180px; top: 5%; background: rgba(20,124,255,.06); }
+.hostedBackdrop span:nth-child(2) { width: 430px; height: 430px; right: -220px; bottom: -140px; background: rgba(20,124,255,.08); }
+.hostedBackdrop span:nth-child(3) { width: 190px; height: 190px; right: 12%; top: 9%; border: 1px solid rgba(20,124,255,.11); }
+.hostedPage .hostedCard {
+  width: min(100%, 430px);
+  padding: 0;
+  overflow: hidden;
+  border: 8px solid rgba(6,16,32,.92);
+  border-radius: 46px;
+  color: #071832;
+  background: #ffffff;
+  box-shadow: 0 34px 90px rgba(8,33,68,.26);
+}
+.hostedPage .hostedCard::before { content: none; }
+.hostedHeroBanner {
+  height: 218px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 36px 36px 0 0;
+}
+.hostedHeroBanner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(2,11,25,.34), rgba(2,11,25,.1) 44%, rgba(2,11,25,.42));
+}
+.hostedHeroBrand {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #ffffff;
+  text-shadow: 0 2px 16px rgba(0,0,0,.28);
+}
+.hostedHeroBrand strong {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 5px;
+}
+.hostedHeroMark {
+  color: #168bff;
+  font-size: 21px;
+  font-weight: 950;
+  letter-spacing: -4px;
+}
+.hostedHeroLabel {
+  position: absolute;
+  left: 26px;
+  bottom: 26px;
+  z-index: 3;
+  color: rgba(255,255,255,.92);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+.hostedHeroBanner i,
+.hostedHeroBanner b {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 999px;
+}
+.hostedHeroBanner i {
+  width: 230px;
+  height: 230px;
+  right: -82px;
+  top: -94px;
+  z-index: 0;
+  background: rgba(255,255,255,.13);
+  box-shadow: 0 0 0 52px rgba(255,255,255,.045);
+}
+.hostedHeroBanner b {
+  width: 160px;
+  height: 160px;
+  left: -72px;
+  bottom: -84px;
+  z-index: 0;
+  background: rgba(255,255,255,.09);
+}
+.hostedContentPanel {
+  position: relative;
+  z-index: 4;
+  margin-top: -34px;
+  padding: 0 26px 30px;
+  border-radius: 34px 34px 0 0;
+  background: linear-gradient(180deg, #ffffff, #fbfbfa);
+}
+.hostedHeader {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.hostedIdentity {
+  justify-content: center;
+  transform: translateY(-48px);
+  margin-bottom: -37px;
+}
+.hostedMonogram {
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  border: 5px solid #ffffff !important;
+  border-radius: 50% !important;
+  box-shadow: 0 18px 36px rgba(7,24,50,.2), inset 0 0 0 1px rgba(255,255,255,.36) !important;
+}
+.hostedMonogram span {
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 800;
+}
+.hostedHeader h1 {
+  margin: 14px 0 8px;
+  color: #071832;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(33px, 8vw, 43px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -1.8px;
+}
+.hostedEyebrow {
+  display: block;
+  margin: 0;
+  color: #737d8a;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.hostedRating {
+  margin-top: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #707b89;
+  font-size: 17px;
+}
+.hostedRating strong { color: #071832; font-size: 18px; }
+.hostedRating span { color: #f5b301; font-size: 18px; letter-spacing: 3px; }
+.hostedRating small { color: #707b89; font-size: 15px; }
+.hostedHeader p {
+  max-width: 310px;
+  margin: 12px auto 0;
+  color: #7a8492;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.hostedActions {
+  margin-top: 22px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr !important;
+  gap: 12px;
+}
+.hostedPage .hostedAction,
+.hostedPage .hostedAction--primary,
+.hostedPage .hostedAction:not(.hostedAction--primary) {
+  min-height: 64px;
+  padding: 0 16px 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 0 !important;
+  border-radius: 16px;
+  color: #06142e !important;
+  background: #ffffff !important;
+  box-shadow: 0 10px 26px rgba(8,26,55,.1), inset 0 1px 0 rgba(255,255,255,.75);
+}
+.hostedAction:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(8,26,55,.13), inset 0 1px 0 rgba(255,255,255,.78); }
+.hostedActionIcon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 12px;
+  color: #0d63d8;
+  background: #eef6ff !important;
+  font-size: 18px;
+  font-weight: 900;
+}
+.hostedActionIcon--review {
+  color: #4285f4;
+  background: #ffffff !important;
+  box-shadow: inset 0 0 0 1px #edf1f5;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.hostedActionIcon--booking,
+.hostedActionIcon--directions,
+.hostedActionIcon--website { color: #075bd8; background: #eef6ff !important; }
+.hostedActionIcon--services,
+.hostedActionIcon--call { color: #075bd8; background: #edf7ff !important; }
+.hostedActionIcon--menu,
+.hostedActionIcon--allergens { color: #9a5c18; background: #fff3dc !important; }
+.hostedActionIcon--instagram { color: #e1306c; background: #fff0f7 !important; }
+.hostedActionIcon--treatments,
+.hostedActionIcon--tiktok,
+.hostedActionIcon--whatsapp { color: #a65c73; background: #fff0f4 !important; }
+.hostedAction strong {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.hostedActionArrow {
+  margin-left: auto;
+  color: #071832;
+  font-size: 30px;
+  line-height: 1;
+  opacity: 1;
+}
+.hostedFooter {
+  margin: 29px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr auto auto 1fr;
+  align-items: center;
+  gap: 10px;
+  color: #858c97 !important;
+  text-align: center;
+  border: 0 !important;
+}
+.hostedFooter > span {
+  height: 1px;
+  background: #dde2e8;
+}
+.hostedFooter small {
+  color: #858c97;
+  font-size: 13px;
+}
+.hostedFooter strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #147cff;
+  font-size: 15px;
+  font-weight: 850;
+}
+.hostedFooter i {
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: -2px;
+}
+.hostedPage--barber { background: #eef6ff; }
+.hostedPage--barber .hostedBackdrop {
+  background:
+    radial-gradient(circle at 15% 12%, rgba(20,124,255,.11), transparent 30%),
+    radial-gradient(circle at 82% 84%, rgba(38,132,255,.16), transparent 34%),
+    linear-gradient(135deg, #fbfdff, #e9f3ff);
+}
+.hostedPage--barber .hostedHeroBanner {
+  background:
+    radial-gradient(circle at 76% 22%, rgba(245,179,1,.56), transparent 16%),
+    radial-gradient(circle at 34% 55%, rgba(255,184,74,.34), transparent 30%),
+    linear-gradient(125deg, rgba(5,13,26,.94), rgba(13,32,55,.76)),
+    linear-gradient(135deg, #08101f, #12345a 48%, #d08b2e);
+}
+.hostedPage--restaurant .hostedHeroBanner {
+  background:
+    radial-gradient(circle at 76% 18%, rgba(255,226,153,.72), transparent 18%),
+    radial-gradient(circle at 24% 55%, rgba(255,184,83,.36), transparent 32%),
+    linear-gradient(125deg, rgba(65,35,15,.72), rgba(120,71,28,.42)),
+    linear-gradient(135deg, #5b3417, #c98134 52%, #f4d28a);
+}
+.hostedPage--salon .hostedHeroBanner {
+  background:
+    radial-gradient(circle at 76% 18%, rgba(255,255,255,.62), transparent 18%),
+    radial-gradient(circle at 28% 54%, rgba(242,197,207,.55), transparent 32%),
+    linear-gradient(125deg, rgba(112,60,73,.52), rgba(197,132,148,.2)),
+    linear-gradient(135deg, #a96578, #f0c8d1 55%, #f8e8d5);
+}
+.hostedPage--barber .hostedMonogram span { color: #f5c44e; background: linear-gradient(145deg, #071426, #112d4b); }
+.hostedPage--restaurant .hostedMonogram span { color: #fff5df; background: linear-gradient(145deg, #a76226, #70401a); }
+.hostedPage--salon .hostedMonogram span { color: #ffffff; background: linear-gradient(145deg, #d79ca9, #aa6e7d); }
 
 @media (max-width: 780px) {
   .heroProductVisual { height: 650px; }
@@ -678,10 +952,18 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   .touchpointStrip { grid-template-columns: 1fr; }
   .floatingTop { top: 42px; right: 0; }
   .floatingBottom { bottom: 24px; left: 0; }
-  .hostedCard { border-radius: 32px; }
-  .hostedHeroBanner { height: 132px; border-radius: 24px; }
-  .hostedHeader { margin-top: -38px; }
-  .hostedMonogram { width: 74px; height: 74px; }
+  .hostedPage { padding: 0; background: #fff; }
+  .hostedPage .hostedCard { width: 100%; min-height: 100svh; border: 0; border-radius: 0; box-shadow: none; }
+  .hostedHeroBanner { height: 205px; border-radius: 0; }
+  .hostedContentPanel { min-height: calc(100svh - 171px); padding: 0 22px 26px; }
+  .hostedHeader { margin-top: 0; }
+  .hostedMonogram { width: 92px; height: 92px; }
+  .hostedMonogram span { width: 76px; height: 76px; }
+  .hostedHeader h1 { font-size: 36px; }
+  .hostedEyebrow { font-size: 17px; }
+  .hostedPage .hostedAction,
+  .hostedPage .hostedAction--primary,
+  .hostedPage .hostedAction:not(.hostedAction--primary) { min-height: 62px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -11,6 +11,8 @@ const actionSymbols = {
   allergens: "i",
   treatments: "✦",
   tiktok: "♪",
+  call: "☎",
+  website: "→",
 };
 
 const themeColours = {
@@ -30,6 +32,8 @@ export default function HostedTapRankPage({ page }) {
     businessName,
     initials,
     categoryLabel,
+    bannerLabel,
+    rating,
     welcomeText,
     primaryAction,
     links,
@@ -50,27 +54,31 @@ export default function HostedTapRankPage({ page }) {
       <main className={`hostedPage hostedPage--${theme}`} data-slug={slug}>
         <div className="hostedBackdrop" aria-hidden="true"><span /><span /><span /></div>
         <section className="hostedCard">
+          <div className="hostedHeroBanner" aria-hidden="true">
+            <span>{bannerLabel}</span>
+            <i />
+          </div>
+
           <header className="hostedHeader">
             <div className="hostedIdentity">
               <div className="hostedMonogram">{initials}</div>
-              <div>
-                <span className="hostedEyebrow">{categoryLabel}</span>
-                <h1>{businessName}</h1>
-              </div>
+            </div>
+            <span className="hostedEyebrow">{categoryLabel}</span>
+            <h1>{businessName}</h1>
+            <div className="hostedRating" aria-label={`${rating.score} stars from ${rating.count} reviews`}>
+              <strong>{rating.score}</strong>
+              <span>★★★★★</span>
+              <small>({rating.count})</small>
             </div>
             <p>{welcomeText}</p>
           </header>
 
-          <a className="hostedPrimaryAction" href={primaryAction.href}>
-            <ActionIcon icon={primaryAction.icon} />
-            <span>
-              <small>Main action</small>
-              <strong>{primaryAction.label}</strong>
-            </span>
-            <b>→</b>
-          </a>
-
           <nav className="hostedActions" aria-label={`${businessName} links`}>
+            <a className="hostedAction hostedAction--primary" href={primaryAction.href}>
+              <ActionIcon icon={primaryAction.icon} />
+              <strong>{primaryAction.label}</strong>
+              <span className="hostedActionArrow">→</span>
+            </a>
             {links.map((action, index) => (
               <a
                 className={`hostedAction ${action.featured ? "hostedAction--featured" : ""} hostedAction--${index + 1}`}

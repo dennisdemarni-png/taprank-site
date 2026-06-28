@@ -4,57 +4,57 @@ const setupMailto = "mailto:hello@taprank.co.uk?subject=TapRank%20Setup%20Reques
 
 const products = [
   {
-    icon: "star",
-    eyebrow: "Reviews first",
-    title: "TapRank Review Pages",
-    copy: "Put Google reviews front and centre, with bookings, menus, socials and contact links one tap away.",
+    icon: "stand",
+    eyebrow: "Ready-made",
+    title: "Ready-Made TapRank Stands",
+    copy: "Clean NFC + QR stands linked to your live TapRank page. Ideal for counters, desks and reception areas.",
   },
   {
-    icon: "phone",
-    eyebrow: "The physical touchpoint",
-    title: "NFC + QR Touchpoints",
-    copy: "Counter stands, table stands, cards and stickers, all linked and tested before they arrive.",
+    icon: "custom",
+    eyebrow: "Branded setup",
+    title: "Custom TapRank Setups",
+    copy: "Branded stands, cards or stickers designed around your business links, colours and main customer actions.",
   },
   {
-    icon: "links",
-    eyebrow: "More ways to act",
-    title: "Menu & Multi-Link Pages",
-    copy: "Give customers one simple place to view menus, book, follow your socials or contact you.",
+    icon: "page",
+    eyebrow: "Live page",
+    title: "Live TapRank Pages",
+    copy: "One page for reviews, bookings, menus, socials, WhatsApp, directions and more.",
   },
   {
-    icon: "social",
-    eyebrow: "The live service",
-    title: "Managed TapRank Care",
-    copy: "Keep your links and page content up to date without replacing your stand, QR code or NFC tag.",
+    icon: "care",
+    eyebrow: "Managed updates",
+    title: "TapRank Care",
+    copy: "Keep your page, links and destinations updated without replacing your QR code or NFC tag.",
   },
 ];
 
 const steps = [
-  ["01", "Choose your setup", "Pick a review stand, link page or a combination that suits your counter."],
-  ["02", "Share your details", "Tell us your business name, brand colours and the links customers should see."],
-  ["03", "We set it up", "We design, link and test your TapRank product before it arrives."],
-  ["04", "Customers tap", "Put it in place and turn happy visits into reviews, bookings, follows and more."],
+  ["01", "Choose your setup", "Pick a ready-made stand, custom setup or multi-location option."],
+  ["02", "Send your details", "Share your business name, links and main customer actions."],
+  ["03", "We link and test everything", "Your stand, QR code and NFC tag are connected before delivery."],
+  ["04", "Place it in your business", "Customers tap or scan and land on your TapRank page."],
 ];
 
 const useCases = [
-  ["Barbers", "Reviews, booking and price list", "✂"],
-  ["Salons", "Reviews, treatments and Instagram", "✦"],
-  ["Restaurants", "Menu, bookings and reviews", "⌁"],
-  ["Cafes", "Menu, loyalty and socials", "☕"],
-  ["Car washes", "Reviews, WhatsApp and location", "◇"],
-  ["Gyms & PTs", "Trial booking, Instagram and reviews", "↗"],
-  ["Takeaways", "Order link, menu and Google reviews", "▣"],
-  ["Local shops", "Reviews, socials and website", "◫"],
+  ["Barbers", "Reviews, bookings and services", "BR"],
+  ["Salons", "Bookings, treatments and socials", "SA"],
+  ["Restaurants", "Menus, bookings and directions", "RS"],
+  ["Cafes", "Menus, loyalty and local reviews", "CF"],
+  ["Takeaways", "Menus, orders and Google reviews", "TA"],
+  ["Local shops", "Reviews, offers and website links", "LS"],
+  ["Gyms & PTs", "Trials, WhatsApp and Instagram", "GY"],
+  ["Car washes", "Reviews, location and WhatsApp", "CW"],
 ];
 
 const customerActions = [
-  ["★", "Leave a Google review"],
-  ["≡", "View menu"],
-  ["✓", "Book appointment"],
-  ["◎", "Follow Instagram"],
-  ["↗", "Message on WhatsApp"],
-  ["⌖", "Open location"],
-  ["→", "Visit website"],
+  ["G", "Review"],
+  ["MENU", "Menu"],
+  ["BOOK", "Booking"],
+  ["IG", "Instagram"],
+  ["WA", "WhatsApp"],
+  ["PIN", "Directions"],
+  ["WEB", "Website"],
 ];
 
 const benefits = [
@@ -67,9 +67,9 @@ const benefits = [
 ];
 
 const demos = [
-  { label: "Barber Demo", href: "/r/barber-demo", theme: "navy", eyebrow: "Premium barber page", business: "Example Barber Co.", mark: "EB", actions: ["Review", "Book", "Services"] },
-  { label: "Restaurant Demo", href: "/r/restaurant-demo", theme: "amber", eyebrow: "Warm hospitality page", business: "Example Restaurant", mark: "ER", actions: ["Menu", "Tables", "Reviews"] },
-  { label: "Salon Demo", href: "/r/salon-demo", theme: "blush", eyebrow: "Elegant beauty page", business: "Example Beauty Salon", mark: "ES", actions: ["Book", "Treatments", "Socials"] },
+  { label: "Barber Demo", href: "/r/barber-demo", theme: "navy", eyebrow: "Barbershop TapRank page", business: "Sunset Barber Co.", mark: "SB", actions: ["Google review", "Book", "Services"] },
+  { label: "Restaurant Demo", href: "/r/restaurant-demo", theme: "amber", eyebrow: "Restaurant TapRank page", business: "Olive & Oak", mark: "OO", actions: ["Menu", "Book", "Directions"] },
+  { label: "Salon Demo", href: "/r/salon-demo", theme: "blush", eyebrow: "Salon TapRank page", business: "Luxe Beauty Salon", mark: "LS", actions: ["Book", "Treatments", "WhatsApp"] },
 ];
 
 const reviewStats = [
@@ -99,6 +99,18 @@ function BrandLogo({ placement = "header" }) {
 }
 
 function Icon({ name }) {
+  if (name === "stand") {
+    return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10a2 2 0 0 1 2 2v10H5V6a2 2 0 0 1 2-2Z" /><path d="M8 20h8M10 16l-1 4M14 16l1 4M8.5 8.5h7M8.5 11.5h4.5" /></svg>;
+  }
+  if (name === "custom") {
+    return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7.5 12 4l7 3.5v9L12 20l-7-3.5v-9Z" /><path d="M8.5 10.5h7M8.5 13.5h4.5M16 5.2v13.6" /></svg>;
+  }
+  if (name === "page") {
+    return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3" /><path d="M8.5 8h7M8.5 12h7M8.5 16h4" /></svg>;
+  }
+  if (name === "care") {
+    return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-3.4 7-10V5.5L12 3 5 5.5V11c0 6.6 7 10 7 10Z" /><path d="M9 12.2 11 14l4-4.2" /></svg>;
+  }
   if (name === "star") {
     return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.5 1.1 6.3-5.6-3-5.6 3 1.1-6.3-4.6-4.5 6.3-.9L12 2.8Z" /></svg>;
   }
@@ -125,7 +137,7 @@ function ReviewStandVisual() {
           <div className="heroPhoneBanner" />
           <div className="heroPhoneAvatar">TR</div>
           <span className="heroPhoneCategory">Local business</span>
-          <h3>Example TapRank Page</h3>
+          <h3>Sunset Barber Co.</h3>
           <div className="heroPhoneRating"><strong>4.9</strong><span>★★★★★</span><small>(248)</small></div>
           <div className="heroPhoneActions">
             {phoneActions.map((action, index) => <span className={index === 0 ? "heroPhoneAction primary" : "heroPhoneAction"} key={action}>{action}<b>→</b></span>)}
@@ -157,17 +169,17 @@ function ReviewStandVisual() {
 }
 
 function HostedPagePreview() {
-  const previewLinks = ["Leave a Google Review", "Book Appointment", "Instagram", "Price List", "WhatsApp", "Location"];
+  const previewLinks = ["Review us on Google", "Book an Appointment", "View Our Services", "Follow on Instagram", "Call Us", "Visit Our Website"];
 
   return (
-    <div className="phoneStage" aria-label="Example TapRank hosted link page">
+    <div className="phoneStage" aria-label="TapRank hosted link page product preview">
       <div className="phoneShell">
         <div className="phoneTop"><span /><i /></div>
         <div className="phonePage">
-          <div className="barberMark">EB</div>
+          <div className="barberMark">SB</div>
           <span className="phoneEyebrow">WELCOME TO</span>
-          <h3>Example Barber Co.</h3>
-          <p>Thanks for visiting. Choose what you need below.</p>
+          <h3>Sunset Barber Co.</h3>
+          <p>No searching. No typing. Just tap what you need.</p>
           <div className="phoneLinks">
             {previewLinks.map((link, index) => <span className={index < 2 ? "phoneLink primaryPhoneLink" : "phoneLink"} key={link}>{link}<b>→</b></span>)}
           </div>
@@ -299,7 +311,6 @@ export default function Home() {
                   <h3>{product.title}</h3>
                   <p>{product.copy}</p>
                   <div className="productMiniVisual" aria-hidden="true"><span /><span /><span /></div>
-                  <a href="#contact">Explore this setup <span>→</span></a>
                 </article>
               ))}
             </div>
@@ -311,14 +322,14 @@ export default function Home() {
           <div className="container actionSystemGrid">
             <div className="actionSystemCopy">
               <span className="sectionTag">THE TAPRANK PAGE</span>
-              <h2>One tap. <span className="gradientText">Every customer action.</span></h2>
-              <p>Give customers one simple page to review, book, view your menu, follow your socials or contact you. Your links can change later without replacing the stand.</p>
+              <h2>One page for <span className="gradientText">every customer action.</span></h2>
+              <p>Give customers one simple place to review, book, view your menu, follow your socials or contact you. Your TapRank page can change later without replacing the stand.</p>
               <div className="tapFlow" aria-label="How a TapRank page works">
                 <div><span>1</span><strong>Customer taps or scans</strong></div>
                 <i>→</i>
-                <div><span>2</span><strong>TapRank page opens</strong></div>
+                <div><span>2</span><strong>Your TapRank page opens</strong></div>
                 <i>→</i>
-                <div><span>3</span><strong>Customer chooses an action</strong></div>
+                <div><span>3</span><strong>They choose what they need</strong></div>
               </div>
               <div className="actionList">
                 {customerActions.map(([symbol, label]) => <div className="actionItem" key={label}><span>{symbol}</span><strong>{label}</strong></div>)}
@@ -334,7 +345,7 @@ export default function Home() {
             <div className="sectionIntro centered">
               <span className="sectionTag">LIVE TAPRANK DEMOS</span>
               <h2>See what a TapRank page <span className="gradientText">can look like.</span></h2>
-              <p>Every stand, sticker or card can open a page tailored to the business. Start with reviews, then add the links customers ask for most.</p>
+              <p>Every stand, card or sticker can open a clean page tailored to the business. Start with reviews, then add the links customers ask for most.</p>
             </div>
             <div className="liveDemoGrid">
               {demos.map((demo) => (
@@ -351,7 +362,7 @@ export default function Home() {
                 </a>
               ))}
             </div>
-            <p className="demoNote">These are demo pages. Real TapRank pages can use your business name, colours, links and main call-to-action.</p>
+            <p className="demoNote">Demo pages show the TapRank page system. Your setup can use your business name, links, colours and main customer actions.</p>
           </div>
         </section>
 
@@ -389,7 +400,7 @@ export default function Home() {
             <div className="mockupCard">
               <div className="mockupStar">★</div>
               <div className="mockupCopy"><span className="sectionTag">WHAT YOUR SETUP CAN LOOK LIKE</span><h2>See what your TapRank setup could look like.</h2><p>Your TapRank setup can be ready-made or customised to your business. Once you choose a setup, we link your stand, QR code and NFC tag to your live TapRank page before it arrives.</p></div>
-              <div className="mockupAction"><a className="button" href={setupMailto}>Start Your TapRank Setup <span>→</span></a><small>Custom examples will be added soon using real product photos.</small></div>
+              <div className="mockupAction"><a className="button" href={setupMailto}>Start Your Setup <span>→</span></a><small>Custom examples available during setup.</small></div>
             </div>
           </div>
         </section>
@@ -426,7 +437,7 @@ export default function Home() {
             </div>
             <div className="subscriptionExplainer">
               <span className="subscriptionIcon">↻</span>
-              <div><h3>Why the monthly TapRank page?</h3><p>Your physical stand points to a live TapRank page. That page keeps your links flexible, so you can update reviews, menus, bookings, socials or WhatsApp without replacing your QR code or NFC tag.</p><strong>TapRank Page is £9.99/month and keeps your page active, editable and supported.</strong></div>
+              <div><h3>Why the monthly TapRank page?</h3><p>Every TapRank product connects to a live TapRank page. The monthly page keeps your links active, editable and supported.</p><strong>Update reviews, menus, bookings, socials or WhatsApp without replacing your QR code or NFC tag.</strong></div>
             </div>
             <p className="pricingNote">Arrives linked, tested and ready to place. No setup required.</p>
           </div>
@@ -452,8 +463,8 @@ export default function Home() {
               <div className="finalGlow" /><div className="finalStars">★★★★★</div>
               <h2>Ready to connect customers to what matters?</h2>
               <p>Choose a ready-made stand or a custom TapRank setup. We’ll link it to your business before it arrives, so customers can tap or scan straight away.</p>
-              <a className="button buttonWhite" href={setupMailto}>Start Your TapRank Setup <span>→</span></a>
-              <span className="emailHint">Online checkout coming later. For now, TapRank setups are handled directly.</span>
+              <a className="button buttonWhite" href={setupMailto}>Start Your Setup <span>→</span></a>
+              <span className="emailHint">Arrives linked, tested and ready to place.</span>
             </div>
           </div>
         </section>

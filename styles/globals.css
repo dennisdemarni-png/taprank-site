@@ -23,7 +23,7 @@ button, input { font: inherit; }
 .navInner { height: 100%; display: flex; align-items: center; gap: 36px; }
 .logoLink { height: 58px; display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
 .brandLogo { display: block; width: auto; object-fit: contain; }
-.brandLogo--header { width: 148px; height: 58px; }
+.brandLogo--header { width: 152px; height: 40px; }
 .desktopNav { margin-left: auto; display: flex; align-items: center; gap: 30px; }
 .desktopNav a { text-decoration: none; color: #344258; font-size: 14px; font-weight: 600; transition: color .2s; }
 .desktopNav a:hover { color: var(--blue); }
@@ -187,8 +187,8 @@ button, input { font: inherit; }
 .phoneLink { min-height: 40px; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; color: #dce8f4; font-size: 9px; font-weight: 700; text-align: left; border: 1px solid #2a405b; border-radius: 10px; background: rgba(255,255,255,.045); }
 .primaryPhoneLink { color: #0e2036; border-color: #d9ad40; background: linear-gradient(135deg, #f5d779, #dcae38); }
 .phoneLink b { font-size: 11px; }
-.phonePowered { margin-top: 15px; color: #6d8097; font-size: 7px; }
-.phonePowered strong { color: #39a9ff; }
+.phonePowered { margin-top: 15px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; color: #6d8097; font-size: 7px; }
+.phonePowered img { width: 42px; height: 11px; display: block; object-fit: contain; }
 .phoneStageNote { position: absolute; z-index: 3; left: 22px; bottom: 28px; padding: 11px 13px; border: 1px solid #dce7f1; border-radius: 11px; background: rgba(255,255,255,.94); box-shadow: 0 14px 28px rgba(12,42,78,.11); }
 .phoneStageNote span, .phoneStageNote strong { display: block; }
 .phoneStageNote span { margin-bottom: 3px; color: var(--blue); font-size: 7px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; }
@@ -304,7 +304,7 @@ button, input { font: inherit; }
 .emailHint { display: block; margin-top: 15px; position: relative; color: #8fafcf; font-size: 10px; }
 
 .siteFooter { padding: 64px 0 26px; color: #a8b5c6; background: #050f22; }
-.brandLogo--footer { width: 176px; height: 78px; filter: drop-shadow(0 12px 26px rgba(0,0,0,.2)); }
+.brandLogo--footer { width: 176px; height: 46px; filter: drop-shadow(0 12px 26px rgba(0,0,0,.2)); }
 .footerTop { padding-bottom: 45px; display: flex; justify-content: space-between; gap: 80px; }
 .footerBrand { max-width: 390px; }
 .footerSlogan { display: block; margin-top: 18px; color: #fff; font-size: 15px; }
@@ -574,7 +574,8 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 .heroPhoneActions { margin-top: 16px; display: grid; gap: 8px; }
 .heroPhoneAction { min-height: 40px; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; color: #25405f; font-size: 9px; font-weight: 800; border: 1px solid #dde8f3; border-radius: 14px; background: #fff; box-shadow: 0 8px 18px rgba(12,45,84,.05); }
 .heroPhoneAction.primary { color: #fff; border-color: #0b71ef; background: linear-gradient(135deg, #0ea5ff, #0057d9); }
-.heroPhonePowered { margin-top: 15px; color: #8b9aac; font-size: 8px; }
+.heroPhonePowered { margin-top: 15px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; color: #8b9aac; font-size: 8px; }
+.heroPhonePowered img { width: 46px; height: 12px; display: block; object-fit: contain; }
 .heroProductStack { width: 360px; position: absolute; right: 8px; top: 122px; z-index: 3; }
 .heroProductStack .standImageCard { width: 100%; transform: perspective(1000px) rotateY(-7deg) rotateX(2deg); }
 .touchpointStrip { margin: -7px auto 0; width: 92%; padding: 10px; position: relative; z-index: 5; display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; border: 1px solid #dde8f3; border-radius: 17px; background: rgba(255,255,255,.88); backdrop-filter: blur(12px); box-shadow: 0 18px 38px rgba(10,41,79,.12); }
@@ -1112,6 +1113,13 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 .hostedHeroBrand {
   gap: 11px;
 }
+.hostedHeroBrand img {
+  width: 112px;
+  height: 29px;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,.22));
+}
 .hostedHeroLabel {
   padding: 7px 10px;
   border: 1px solid rgba(255,255,255,.18);
@@ -1149,8 +1157,11 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   justify-items: center;
   gap: 3px;
 }
-.hostedFooter strong {
-  justify-content: center;
+.hostedFooter .hostedFooterLogo {
+  width: 78px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
 }
 .hostedFooter em {
   color: #9aa6b4;

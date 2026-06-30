@@ -117,8 +117,7 @@ export default function HostedTapRankPage({ page }) {
           <div className="hostedHeroBanner" role="img" aria-label={heroAlt || `${businessName} TapRank page banner`}>
             {heroImage ? <img src={heroImage} alt="" /> : null}
             <div className="hostedHeroBrand">
-              <span className="hostedHeroMark">TR</span>
-              <strong>TAPRANK</strong>
+              <img src="/taprank-logo-dark.png" alt="TapRank" width="1280" height="331" />
             </div>
             <span className="hostedHeroLabel">{bannerLabel}</span>
             <i />
@@ -163,7 +162,7 @@ export default function HostedTapRankPage({ page }) {
               <span aria-hidden="true" />
               <div>
                 <small>Powered by</small>
-                <strong><i>TR</i> TapRank</strong>
+                <img className="hostedFooterLogo" src="/taprank-logo-transparent.png" alt="TapRank" width="1280" height="331" />
                 <em>Connect customers to what matters.</em>
               </div>
               <span aria-hidden="true" />

@@ -90,10 +90,10 @@ function BrandLogo({ placement = "header" }) {
   return (
     <img
       className={`brandLogo brandLogo--${placement}`}
-      src={useDarkBackgroundLogo ? "/taprank-logo-dark.png" : "/taprank-logo.png"}
+      src={useDarkBackgroundLogo ? "/taprank-logo-dark.png" : "/taprank-logo-light.png"}
       alt="TapRank"
-      width={useDarkBackgroundLogo ? 1774 : 1820}
-      height={useDarkBackgroundLogo ? 887 : 864}
+      width="1280"
+      height="331"
     />
   );
 }
@@ -142,7 +142,10 @@ function ReviewStandVisual() {
           <div className="heroPhoneActions">
             {phoneActions.map((action, index) => <span className={index === 0 ? "heroPhoneAction primary" : "heroPhoneAction"} key={action}>{action}<b>→</b></span>)}
           </div>
-          <div className="heroPhonePowered">Powered by <strong>TapRank</strong></div>
+          <div className="heroPhonePowered">
+            <span>Powered by</span>
+            <img src="/taprank-logo-transparent.png" alt="TapRank" width="1280" height="331" />
+          </div>
         </div>
       </div>
       <div className="heroProductStack">
@@ -183,7 +186,10 @@ function HostedPagePreview() {
           <div className="phoneLinks">
             {previewLinks.map((link, index) => <span className={index < 2 ? "phoneLink primaryPhoneLink" : "phoneLink"} key={link}>{link}<b>→</b></span>)}
           </div>
-          <div className="phonePowered">Powered by <strong>TapRank</strong></div>
+          <div className="phonePowered">
+            <span>Powered by</span>
+            <img src="/taprank-logo-transparent.png" alt="TapRank" width="1280" height="331" />
+          </div>
         </div>
       </div>
       <div className="phoneStageNote"><span>Live hosted page</span><strong>Links can change later</strong></div>

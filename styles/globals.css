@@ -3733,6 +3733,56 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   font-size: 7.5px;
 }
 
+.productTrustRow {
+  max-width: 1060px;
+  margin: 28px auto 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.productTrustItem {
+  min-height: 86px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #dfe9f4;
+  border-radius: 20px;
+  background: rgba(255,255,255,.84);
+  box-shadow: 0 16px 34px rgba(10,34,65,.07);
+}
+
+.productTrustItem > span {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0ea5ff, #0057d9);
+}
+
+.productTrustItem strong,
+.productTrustItem small {
+  display: block;
+}
+
+.productTrustItem strong {
+  color: #06142e;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.productTrustItem small {
+  margin-top: 3px;
+  color: #63758b;
+  font-size: 11px;
+}
+
 @keyframes standFloat {
   0%, 100% { transform: translateY(0) rotate(-.35deg); }
   50% { transform: translateY(-10px) rotate(.35deg); }
@@ -3988,6 +4038,8 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   display: grid;
   place-items: center;
   background: #fff;
+  will-change: clip-path;
+  transition: clip-path .22s cubic-bezier(.16, 1, .3, 1);
 }
 
 .proofImageLayer img {
@@ -4076,6 +4128,81 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
     linear-gradient(180deg, #ffffff, #f7fbff);
 }
 
+.bundleBulkGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.bundleBulkCard {
+  min-height: 610px;
+  padding: 28px;
+  display: grid;
+  grid-template-rows: minmax(330px, auto) 1fr;
+  overflow: hidden;
+  border: 1px solid #dfe9f4;
+  border-radius: 38px;
+  background:
+    radial-gradient(circle at 26% 12%, rgba(20,124,255,.14), transparent 32%),
+    #fff;
+  box-shadow: 0 30px 82px rgba(10,34,65,.1);
+}
+
+.bundleBulkCard--bulk {
+  background:
+    radial-gradient(circle at 28% 12%, rgba(0,133,63,.13), transparent 32%),
+    radial-gradient(circle at 10% 84%, rgba(245,179,1,.13), transparent 24%),
+    #fff;
+}
+
+.bundleBulkCard .bulkStandCluster {
+  min-height: 330px;
+}
+
+.bundleBulkCard .bulkStand {
+  width: 184px;
+}
+
+.bundleBulkCard .bulkStand--one {
+  left: 7%;
+  top: 58px;
+  transform: rotate(-8deg);
+}
+
+.bundleBulkCard .bulkStand--two {
+  left: 35%;
+  top: 18px;
+  z-index: 4;
+  transform: rotate(3deg) scale(1.06);
+}
+
+.bundleBulkCard .bulkStand--three {
+  left: 62%;
+  top: 70px;
+  transform: rotate(10deg) scale(.95);
+  opacity: .94;
+}
+
+.bulkStandCluster--custom .bulkStand {
+  width: 188px;
+}
+
+.bulkStandCluster--custom .bulkStand--one {
+  transform: rotate(-6deg);
+}
+
+.bulkStandCluster--custom .bulkStand--two {
+  transform: rotate(5deg) scale(1.06);
+}
+
+.bulkStandCluster--custom .bulkStand--three {
+  transform: rotate(12deg) scale(.93);
+}
+
+.bundleBulkCard .bulkOrderCopy {
+  align-self: end;
+}
+
 .bulkOrderCard {
   min-height: 520px;
   padding: 38px;
@@ -4142,11 +4269,60 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   width: fit-content;
 }
 
+.directOrderPanel {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+  border: 1px solid #dfe9f4;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(20,124,255,.1), transparent 30%),
+    rgba(255,255,255,.9);
+  box-shadow: 0 26px 70px rgba(10,34,65,.09);
+}
+
+.directOrderOption {
+  padding: 20px;
+  display: grid;
+  gap: 6px;
+  text-decoration: none;
+  border: 1px solid #e2ebf4;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(10,34,65,.055);
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+.directOrderOption:hover {
+  transform: translateY(-3px);
+  border-color: rgba(20,124,255,.24);
+  box-shadow: 0 18px 38px rgba(10,34,65,.1);
+}
+
+.directOrderOption span {
+  color: #06142e;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.directOrderOption p {
+  margin: 0;
+  color: #63758b;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.directOrderOption strong {
+  color: #0a63d8;
+  font-size: 13px;
+}
+
 @media (max-width: 1100px) {
   .launchHeroGrid,
   .productSwitchGrid,
   .customStandGrid,
-  .bulkOrderCard {
+  .bulkOrderCard,
+  .bundleBulkGrid {
     grid-template-columns: 1fr;
   }
 
@@ -4180,6 +4356,44 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 }
 
 @media (max-width: 760px) {
+  .launchHero {
+    min-height: auto;
+    padding: 58px 0 58px;
+    overflow: hidden;
+  }
+
+  .launchHeroGrid {
+    gap: 26px;
+    text-align: center;
+  }
+
+  .launchHeroCopy {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .launchHero h1 {
+    max-width: 10ch;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: clamp(42px, 11vw, 58px);
+    line-height: 1.01;
+    letter-spacing: -2.6px;
+    text-wrap: balance;
+  }
+
+  .launchHeroCopy p {
+    max-width: 34rem;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 16px;
+  }
+
+  .launchHero .heroEyebrow {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .launchHeroVisual,
   .galleryMainFrame {
     min-height: 560px;
@@ -4210,10 +4424,24 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   .galleryThumbs {
     grid-template-columns: repeat(6, minmax(72px, 1fr));
     overflow-x: auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x proximity;
+  }
+
+  .galleryThumbs button {
+    scroll-snap-align: start;
   }
 
   .productTabs {
     grid-template-columns: 1fr;
+  }
+
+  .productTrustRow {
+    grid-template-columns: 1fr;
+  }
+
+  .productTrustItem {
+    min-height: 74px;
   }
 
   .productSwitchGrid,
@@ -4293,9 +4521,30 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
     left: 238px;
     top: 52px;
   }
+
+  .bundleBulkCard {
+    min-height: auto;
+    padding: 22px;
+    grid-template-rows: minmax(310px, auto) 1fr;
+    border-radius: 30px;
+  }
+
+  .bundleBulkCard .bulkStand {
+    width: 170px;
+  }
 }
 
 @media (max-width: 520px) {
+  .container {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .launchHero h1 {
+    max-width: 9.5ch;
+    font-size: clamp(38px, 12vw, 50px);
+    letter-spacing: -2.1px;
+  }
+
   .launchHeroVisual,
   .galleryMainFrame {
     min-height: 510px;
@@ -4308,6 +4557,10 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 
   .galleryBadge {
     bottom: 26px;
+  }
+
+  .galleryThumbs {
+    margin-top: -12px;
   }
 
   .productSwitchCopy h3,
@@ -4369,6 +4622,25 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   .bulkStand--three {
     left: 170px;
     top: 54px;
+  }
+
+  .bundleBulkCard .bulkStand {
+    width: 142px;
+  }
+
+  .bundleBulkCard .bulkStand--one {
+    left: 0;
+    top: 60px;
+  }
+
+  .bundleBulkCard .bulkStand--two {
+    left: 30%;
+    top: 30px;
+  }
+
+  .bundleBulkCard .bulkStand--three {
+    left: 58%;
+    top: 72px;
   }
 }
 

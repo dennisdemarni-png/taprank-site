@@ -6,47 +6,70 @@ function makeMailto(subject, body) {
 }
 
 const setupMailto = makeMailto(
-  "TapRank Stand Enquiry",
+  "Standard TapRank Stand Enquiry",
   `Hi TapRank,
 
-I’d like to order a ready-made TapRank Stand for my business.
+I'd like to enquire about a Standard TapRank Stand.
 
 Business name:
 Business type:
-What I would like the stand to link to:
-Quantity required:
+Website:
+How many stands:
+Links I'd like included:
+Additional information:
 
-Thanks.`
+Thank you.`
 );
 
 const customMailto = makeMailto(
   "Custom TapRank Stand Enquiry",
   `Hi TapRank,
 
-I’d like to enquire about a custom TapRank stand for my business.
+I'd like to enquire about a Custom TapRank Stand.
 
 Business name:
 Business type:
-What I would like the stand to link to:
-Any branding/design requirements:
-Quantity required:
+Website:
+How many stands:
+Brand colours:
+Links I'd like included:
+Additional information:
 
-Thanks.`
+Thank you.`
+);
+
+const launchBundleMailto = makeMailto(
+  "Launch Bundle Enquiry",
+  `Hi TapRank,
+
+I'd like to enquire about the Buy 2 Get 1 Free launch bundle.
+
+Business name:
+Business type:
+Website:
+Standard or custom stands:
+Links I'd like included:
+Additional information:
+
+Thank you.`
 );
 
 const bundleMailto = makeMailto(
-  "TapRank Bulk Stand Enquiry",
+  "Bulk Orders TapRank Stand Enquiry",
   `Hi TapRank,
 
-I’d like to ask about bulk / multi-stand pricing for TapRank.
+I'd like to enquire about a bulk TapRank stand order.
 
 Business name:
 Business type:
-Number of stands needed:
-Number of locations or counters:
+Website:
+How many stands:
 Standard or custom stands:
+Number of locations/counters:
+Links I'd like included:
+Additional information:
 
-Thanks.`
+Thank you.`
 );
 
 const productImages = {
@@ -97,6 +120,7 @@ const heroGallery = [
 const trustItems = [
   { icon: "✓", title: "No subscription", copy: "One-off payment" },
   { icon: "⚙", title: "Setup included", copy: "Linked before delivery" },
+  { icon: "↗", title: "Shipped within 48 hours", copy: "Fast dispatch" },
   { icon: "⌁", title: "NFC + QR included", copy: "Tap or scan" },
   { icon: "★", title: "1-year warranty", copy: "Covered for faults" },
 ];
@@ -106,13 +130,12 @@ const productTabs = [
     id: "standard",
     tab: "Standard Stand",
     title: "Ready-made TapRank Stand",
-    price: "£39.99 one-off",
     image: productImages.standardTransparent,
     alt: "Ready-made TapRank acrylic NFC and QR review stand",
     intro: "A clean counter-ready stand for businesses that want reviews and key links live quickly.",
     bestFor: "Best for reviews, menus, bookings, socials and website links.",
-    href: setupMailto,
-    cta: "Get Your TapRank Stand",
+    href: "#pricing",
+    cta: "View Standard Stand Pricing",
     features: [
       "NFC tap point and QR code",
       "Live TapRank page",
@@ -126,13 +149,12 @@ const productTabs = [
     id: "custom",
     tab: "Custom Stand",
     title: "Custom TapRank Setup",
-    price: "£69.99 one-off",
     image: productImages.customTransparent,
     alt: "Custom branded TapRank acrylic stand example for Subway",
     intro: "A branded stand designed around your business colours, logo and customer actions.",
     bestFor: "Best for restaurants, takeaways, cafes, barbers, salons and local brands.",
-    href: customMailto,
-    cta: "Start Your Custom Setup",
+    href: "#pricing",
+    cta: "View Custom Stand Pricing",
     features: [
       "Custom stand design",
       "Business colours and logo",
@@ -246,8 +268,8 @@ const faqs = [
     "Yes. Your TapRank page can link customers to Google reviews, menus, booking pages, socials, WhatsApp, your website and other useful actions.",
   ],
   [
-    "Do you offer bulk pricing?",
-    "Yes. The current launch bundle is buy 2, get 1 free, which is useful for multiple counters, tables, receptions or locations.",
+    "Do you offer bulk orders?",
+    "Yes. The launch bundle is buy 2, get 1 free, and larger multi-stand orders can be quoted around your quantity, locations and design needs.",
   ],
   [
     "How do I order a custom stand?",
@@ -271,7 +293,7 @@ function BrandLogo({ placement = "header" }) {
   );
 }
 
-function Reveal({ as: Tag = "div", children, className = "", delay = 0 }) {
+function Reveal({ as: Tag = "div", children, className = "", delay = 0, style, ...props }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -302,7 +324,8 @@ function Reveal({ as: Tag = "div", children, className = "", delay = 0 }) {
     <Tag
       ref={ref}
       className={`reveal ${visible ? "isVisible" : ""} ${className}`.trim()}
-      style={{ "--delay": `${delay}ms` }}
+      style={{ "--delay": `${delay}ms`, ...style }}
+      {...props}
     >
       {children}
     </Tag>
@@ -322,26 +345,54 @@ function SectionIntro({ eyebrow, title, copy, centered = true }) {
 function HeroGallery() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [resetKey, setResetKey] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const swipeStartX = useRef(null);
   const activeImage = heroGallery[activeIndex];
 
   useEffect(() => {
     if (typeof window === "undefined") return undefined;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    if (paused) return undefined;
 
     const timer = window.setTimeout(() => {
       setActiveIndex((current) => (current + 1) % heroGallery.length);
     }, 4000);
 
     return () => window.clearTimeout(timer);
-  }, [activeIndex, resetKey]);
+  }, [activeIndex, paused, resetKey]);
 
   function chooseImage(index) {
     setActiveIndex(index);
     setResetKey((current) => current + 1);
   }
 
+  function moveGallery(direction) {
+    setActiveIndex((current) => (current + direction + heroGallery.length) % heroGallery.length);
+    setResetKey((current) => current + 1);
+  }
+
+  function startSwipe(event) {
+    swipeStartX.current = event.clientX;
+  }
+
+  function endSwipe(event) {
+    if (swipeStartX.current == null) return;
+    const distance = event.clientX - swipeStartX.current;
+    swipeStartX.current = null;
+    if (Math.abs(distance) < 42) return;
+    moveGallery(distance > 0 ? -1 : 1);
+  }
+
   return (
-    <Reveal className="launchHeroVisual" delay={120}>
+    <Reveal
+      className="launchHeroVisual"
+      delay={120}
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
+      onPointerCancel={() => { swipeStartX.current = null; setPaused(false); }}
+      onPointerDown={startSwipe}
+      onPointerUp={endSwipe}
+    >
       <div className="galleryGlow" aria-hidden="true" />
       <div className="galleryMainFrame">
         <img
@@ -354,10 +405,6 @@ function HeroGallery() {
           fetchPriority={activeIndex === 0 ? "high" : "auto"}
           loading={activeIndex === 0 ? "eager" : "lazy"}
         />
-        <div className="galleryBadge">
-          <span>From £39.99</span>
-          <strong>No subscription</strong>
-        </div>
       </div>
       <div className="galleryThumbs" aria-label="TapRank product gallery">
         {heroGallery.map((image, index) => (
@@ -366,6 +413,7 @@ function HeroGallery() {
             className={index === activeIndex ? "active" : ""}
             aria-pressed={index === activeIndex}
             onClick={() => chooseImage(index)}
+            onPointerDown={(event) => event.stopPropagation()}
             key={image.src}
           >
             <img src={image.src} alt="" width="1122" height="1402" loading={index < 2 ? "eager" : "lazy"} />
@@ -394,7 +442,6 @@ function ProductSwitcher() {
             key={product.id}
           >
             <span>{product.tab}</span>
-            <strong>{product.price}</strong>
           </button>
         ))}
       </div>
@@ -415,7 +462,6 @@ function ProductSwitcher() {
           <span className="launchSectionTag">{activeProduct.tab}</span>
           <h3>{activeProduct.title}</h3>
           <p>{activeProduct.intro}</p>
-          <strong className="productSwitchPrice">{activeProduct.price}</strong>
           <p className="productSwitchBestFor">{activeProduct.bestFor}</p>
           <div className="productFeatureGrid">
             {activeProduct.features.map((feature) => (
@@ -431,16 +477,17 @@ function ProductSwitcher() {
 
 function BeforeAfterSlider() {
   const sliderRef = useRef(null);
-  const [position, setPosition] = useState(52);
+  const [position, setPosition] = useState(0);
 
   function updatePosition(clientX) {
     const bounds = sliderRef.current?.getBoundingClientRect();
     if (!bounds) return;
     const next = ((clientX - bounds.left) / bounds.width) * 100;
-    setPosition(Math.min(88, Math.max(12, next)));
+    setPosition(Math.min(100, Math.max(0, next)));
   }
 
   function startDrag(event) {
+    event.preventDefault();
     updatePosition(event.clientX);
 
     const onMove = (moveEvent) => updatePosition(moveEvent.clientX);
@@ -456,11 +503,11 @@ function BeforeAfterSlider() {
   function adjustWithKeyboard(event) {
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      setPosition((value) => Math.max(12, value - 5));
+      setPosition((value) => Math.max(0, value - 5));
     }
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      setPosition((value) => Math.min(88, value + 5));
+      setPosition((value) => Math.min(100, value + 5));
     }
   }
 
@@ -497,10 +544,10 @@ function BeforeAfterSlider() {
         <button
           type="button"
           className="comparisonHandle"
-          style={{ left: `${position}%` }}
+          style={{ left: `clamp(24px, ${position}%, calc(100% - 24px))` }}
           aria-label="Drag to compare before and after TapRank"
-          aria-valuemin="12"
-          aria-valuemax="88"
+          aria-valuemin="0"
+          aria-valuemax="100"
           aria-valuenow={Math.round(position)}
           role="slider"
           onPointerDown={startDrag}
@@ -557,7 +604,7 @@ function CustomStandShowcase() {
           <span>Salons</span>
           <span>Local services</span>
         </div>
-        <a className="button" href={customMailto}>Start Your Custom Setup <span>→</span></a>
+        <a className="button" href="#pricing">See Custom Stand Pricing <span>→</span></a>
       </Reveal>
       <Reveal className="customStandVisual" delay={120}>
         <div className="customStandHalo" aria-hidden="true" />
@@ -575,64 +622,74 @@ function CustomStandShowcase() {
 
 function BulkOrderSection() {
   return (
-    <Reveal className="bulkOrderCard">
-      <div className="bulkStandCluster" aria-hidden="true">
-        <img className="bulkStand bulkStand--one" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
-        <img className="bulkStand bulkStand--two" src={productImages.customTransparent} alt="" width="1130" height="1392" loading="lazy" />
-        <img className="bulkStand bulkStand--three" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
-      </div>
-      <div className="bulkOrderCopy">
-        <span className="launchSectionTag">LAUNCH BUNDLE</span>
-        <h2>Multiple stands for every counter, table or location.</h2>
-        <p>
-          Put TapRank where customers already pause — reception desks, tills, treatment rooms, tables,
-          collection points and second locations.
-        </p>
-        <strong>Buy 2, get 1 free.</strong>
-        <a className="button buttonSecondary" href={bundleMailto}>Ask About Bulk Orders <span>→</span></a>
-      </div>
+    <Reveal className="bundleBulkGrid">
+      <article className="bundleBulkCard bundleBulkCard--launch">
+        <div className="bulkStandCluster bulkStandCluster--standard" aria-hidden="true">
+          <img className="bulkStand bulkStand--one" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
+          <img className="bulkStand bulkStand--two" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
+          <img className="bulkStand bulkStand--three" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
+        </div>
+        <div className="bulkOrderCopy">
+          <span className="launchSectionTag">LAUNCH BUNDLE</span>
+          <h2>Buy 2, get 1 free.</h2>
+          <p>
+            A simple launch offer for businesses that want TapRank at the till, reception and another busy customer point.
+          </p>
+          <a className="button buttonSecondary" href={launchBundleMailto}>Ask About Launch Bundle <span>→</span></a>
+        </div>
+      </article>
+
+      <article className="bundleBulkCard bundleBulkCard--bulk">
+        <div className="bulkStandCluster bulkStandCluster--custom" aria-hidden="true">
+          <img className="bulkStand bulkStand--one" src={productImages.customTransparent} alt="" width="1130" height="1392" loading="lazy" />
+          <img className="bulkStand bulkStand--two" src={productImages.customTransparent} alt="" width="1130" height="1392" loading="lazy" />
+          <img className="bulkStand bulkStand--three" src={productImages.customTransparent} alt="" width="1130" height="1392" loading="lazy" />
+        </div>
+        <div className="bulkOrderCopy">
+          <span className="launchSectionTag">BULK ORDERS</span>
+          <h2>Ordering for multiple counters or locations?</h2>
+          <p>
+            Bulk orders are quoted around your quantity, design needs and rollout plan. Ideal for chains, venues and multi-room businesses.
+          </p>
+          <a className="button buttonSecondary" href={bundleMailto}>Request Bulk Quote <span>→</span></a>
+        </div>
+      </article>
     </Reveal>
   );
 }
 
-function OrderForm() {
+function DirectOrderPanel() {
+  const orderOptions = [
+    {
+      title: "Standard Stand",
+      copy: "Ready-made TapRank stand enquiry.",
+      href: setupMailto,
+      cta: "Email About Standard",
+    },
+    {
+      title: "Custom Stand",
+      copy: "Branded stand with your logo, colours and links.",
+      href: customMailto,
+      cta: "Email About Custom",
+    },
+    {
+      title: "Bulk Orders",
+      copy: "Multiple stands for counters, venues or locations.",
+      href: bundleMailto,
+      cta: "Email About Bulk",
+    },
+  ];
+
   return (
-    <form
-      className="orderForm"
-      action={setupMailto}
-      method="post"
-      encType="text/plain"
-    >
-      <label>
-        <span>Name</span>
-        <input name="Name" type="text" autoComplete="name" />
-      </label>
-      <label>
-        <span>Business name</span>
-        <input name="Business name" type="text" autoComplete="organization" />
-      </label>
-      <label>
-        <span>Email</span>
-        <input name="Email" type="email" autoComplete="email" />
-      </label>
-      <label>
-        <span>Phone optional</span>
-        <input name="Phone" type="tel" autoComplete="tel" />
-      </label>
-      <label className="wide">
-        <span>Setup choice</span>
-        <select name="Setup choice" defaultValue="TapRank Stand">
-          <option>TapRank Stand</option>
-          <option>Custom Setup</option>
-          <option>Buy 2 Get 1 Free Bundle</option>
-        </select>
-      </label>
-      <label className="wide">
-        <span>Message</span>
-        <textarea name="Message" rows="4" placeholder="Tell us your Google review link, website, menu, booking link or social links." />
-      </label>
-      <button className="button fullButton" type="submit">Send Order Enquiry <span>→</span></button>
-    </form>
+    <div className="directOrderPanel">
+      {orderOptions.map((option) => (
+        <a className="directOrderOption" href={option.href} key={option.title}>
+          <span>{option.title}</span>
+          <p>{option.copy}</p>
+          <strong>{option.cta} <b>→</b></strong>
+        </a>
+      ))}
+    </div>
   );
 }
 
@@ -650,7 +707,7 @@ function MobileStickyCta() {
     <a className={`mobileStickyCta ${visible ? "isVisible" : ""}`} href={setupMailto}>
       <span>
         <strong>Get Your TapRank Stand</strong>
-        <small>From £39.99 · No subscription</small>
+        <small>Quick email enquiry</small>
       </span>
       <b>→</b>
     </a>
@@ -706,37 +763,36 @@ export default function Home() {
           <div className="heroBackgroundShape two" aria-hidden="true" />
           <div className="container launchHeroGrid">
             <Reveal className="launchHeroCopy">
-              <span className="heroEyebrow">Counter-ready NFC + QR stands for local businesses</span>
+              <span className="heroEyebrow">TapRank for local businesses</span>
               <h1>One tap to your reviews, menus, bookings and socials.</h1>
               <p>
-                TapRank creates acrylic stands that arrive fully set up, linked to a live page for your business,
-                and ready to place on your counter.
+                A clean NFC + QR touchpoint that connects customers to your most useful business actions
+                while they are still with you.
               </p>
-              <div className="heroActions">
-                <a className="button" href={setupMailto}>Get Your TapRank Stand <span>→</span></a>
-                <a className="button buttonSecondary" href="#live-demos">View Live Examples</a>
-              </div>
-              <div className="heroMicroProof">
-                <strong>£39.99 one-off</strong>
-                <span>Setup included</span>
-                <span>Buy 2, get 1 free</span>
-              </div>
             </Reveal>
             <HeroGallery />
           </div>
         </section>
 
-        <section className="trustStrip launchTrustStrip" aria-label="TapRank buying confidence">
-          <div className="container trustStripGrid">
-            {trustItems.map((item, index) => (
-              <Reveal className="trustStripItem" delay={index * 70} key={item.title}>
-                <span>{item.icon}</span>
-                <div>
-                  <strong>{item.title}</strong>
-                  <small>{item.copy}</small>
-                </div>
-              </Reveal>
-            ))}
+        <section className="section includedSection productChoiceSection" id="products">
+          <div className="container">
+            <SectionIntro
+              eyebrow="PRODUCT OPTIONS"
+              title="Choose a ready-made stand or a branded custom setup."
+              copy="Both options include NFC, QR, setup, a live TapRank page, no subscription and a 1-year warranty."
+            />
+            <ProductSwitcher />
+            <div className="productTrustRow" aria-label="TapRank buying confidence">
+              {trustItems.map((item, index) => (
+                <Reveal className="productTrustItem" delay={index * 55} key={item.title}>
+                  <span>{item.icon}</span>
+                  <div>
+                    <strong>{item.title}</strong>
+                    <small>{item.copy}</small>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -750,23 +806,6 @@ export default function Home() {
             <div className="phoneDemoGrid">
               {demos.map((demo, index) => <PhonePreviewCard demo={demo} index={index} key={demo.href} />)}
             </div>
-          </div>
-        </section>
-
-        <section className="section includedSection productChoiceSection" id="products">
-          <div className="container">
-            <SectionIntro
-              eyebrow="PRODUCT OPTIONS"
-              title="Choose a ready-made stand or a branded custom setup."
-              copy="Both options include NFC, QR, setup, a live TapRank page, no subscription and a 1-year warranty."
-            />
-            <ProductSwitcher />
-          </div>
-        </section>
-
-        <section className="section customStandSection" id="custom-stands">
-          <div className="container">
-            <CustomStandShowcase />
           </div>
         </section>
 
@@ -802,6 +841,12 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="section customStandSection" id="custom-stands">
+          <div className="container">
+            <CustomStandShowcase />
+          </div>
+        </section>
+
         <section className="section pricingRefreshSection" id="pricing">
           <div className="container">
             <SectionIntro
@@ -823,18 +868,10 @@ export default function Home() {
                 </Reveal>
               ))}
             </div>
-            <Reveal className="launchBundle">
-              <div>
-                <span>Launch offer</span>
-                <strong>Buy 2, get 1 free.</strong>
-                <p>Use one at reception, one near the till and one on a table or counter.</p>
-              </div>
-              <a className="button buttonSecondary" href={bundleMailto}>Ask About Bundle <span>→</span></a>
-            </Reveal>
           </div>
         </section>
 
-        <section className="section bulkOrderSection" id="bulk-orders">
+        <section className="section bulkOrderSection" id="launch-bundle">
           <div className="container">
             <BulkOrderSection />
           </div>
@@ -846,8 +883,8 @@ export default function Home() {
               <span className="launchSectionTag">DIRECT ORDER</span>
               <h2>Start with a quick email and we’ll confirm the right setup.</h2>
               <p>
-                Tell us your business name, links and quantity. You can start with the £39.99 stand,
-                the £69.99 custom setup, or the buy 2, get 1 free launch bundle.
+                Choose the closest enquiry below and your email will open with the useful details already laid out.
+                Add your business name, links and quantity, then send it over.
               </p>
               <div className="orderButtons">
                 <a className="button" href={setupMailto}>Get Your TapRank Stand <span>→</span></a>
@@ -855,7 +892,7 @@ export default function Home() {
               </div>
             </Reveal>
             <Reveal delay={100}>
-              <OrderForm />
+              <DirectOrderPanel />
             </Reveal>
           </div>
         </section>

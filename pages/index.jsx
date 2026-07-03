@@ -84,7 +84,7 @@ const productImages = {
   barber: "/product/taprank-stand-barber-counter.jpg",
 };
 
-const heroGallery = [
+const heroStandSlides = [
   {
     src: productImages.standardTransparent,
     alt: "Transparent TapRank acrylic NFC and QR review stand",
@@ -95,6 +95,9 @@ const heroGallery = [
     alt: "Transparent custom TapRank acrylic stand branded for Subway",
     label: "Custom stand",
   },
+];
+
+const heroSupportPhotos = [
   {
     src: productImages.cafe,
     alt: "TapRank NFC and QR review stand placed on a cafe counter beside a till",
@@ -347,7 +350,7 @@ function HeroGallery() {
   const [resetKey, setResetKey] = useState(0);
   const [paused, setPaused] = useState(false);
   const swipeStartX = useRef(null);
-  const activeImage = heroGallery[activeIndex];
+  const activeImage = heroStandSlides[activeIndex];
 
   useEffect(() => {
     if (typeof window === "undefined") return undefined;
@@ -355,7 +358,7 @@ function HeroGallery() {
     if (paused) return undefined;
 
     const timer = window.setTimeout(() => {
-      setActiveIndex((current) => (current + 1) % heroGallery.length);
+      setActiveIndex((current) => (current + 1) % heroStandSlides.length);
     }, 4000);
 
     return () => window.clearTimeout(timer);
@@ -367,7 +370,7 @@ function HeroGallery() {
   }
 
   function moveGallery(direction) {
-    setActiveIndex((current) => (current + direction + heroGallery.length) % heroGallery.length);
+    setActiveIndex((current) => (current + direction + heroStandSlides.length) % heroStandSlides.length);
     setResetKey((current) => current + 1);
   }
 
@@ -385,7 +388,7 @@ function HeroGallery() {
 
   return (
     <Reveal
-      className="launchHeroVisual"
+      className="launchHeroVisual heroProductComposition"
       delay={120}
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
@@ -393,11 +396,11 @@ function HeroGallery() {
       onPointerDown={startSwipe}
       onPointerUp={endSwipe}
     >
-      <div className="galleryGlow" aria-hidden="true" />
-      <div className="galleryMainFrame">
+      <div className="heroVisualHalo" aria-hidden="true" />
+      <div className="heroStandStage">
         <img
           key={activeImage.src}
-          className="galleryMainImage"
+          className="heroStandMain"
           src={activeImage.src}
           alt={activeImage.alt}
           width="1122"
@@ -405,20 +408,47 @@ function HeroGallery() {
           fetchPriority={activeIndex === 0 ? "high" : "auto"}
           loading={activeIndex === 0 ? "eager" : "lazy"}
         />
+        <div className="heroStandMeta" aria-live="polite">
+          <span>{activeImage.label}</span>
+          <strong>NFC + QR ready</strong>
+        </div>
+        <div className="heroStandDots" aria-label="Main product image">
+          {heroStandSlides.map((image, index) => (
+            <button
+              type="button"
+              className={index === activeIndex ? "active" : ""}
+              aria-label={`Show ${image.label}`}
+              aria-pressed={index === activeIndex}
+              onClick={() => chooseImage(index)}
+              key={image.src}
+            />
+          ))}
+        </div>
       </div>
-      <div className="galleryThumbs" aria-label="TapRank product gallery">
-        {heroGallery.map((image, index) => (
-          <button
-            type="button"
-            className={index === activeIndex ? "active" : ""}
-            aria-pressed={index === activeIndex}
-            onClick={() => chooseImage(index)}
-            onPointerDown={(event) => event.stopPropagation()}
+      <div className="heroLifestyleStack" aria-label="TapRank in real businesses">
+        {heroSupportPhotos.map((image, index) => (
+          <figure className={`heroLifestyleCard heroLifestyleCard--${index + 1}`} key={image.src}>
+            <img
+              src={image.src}
+              alt={image.alt}
+              width="1122"
+              height="1402"
+              loading={index === 0 ? "eager" : "lazy"}
+            />
+            <figcaption>{image.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <div className="heroMobilePhotoStrip" aria-label="TapRank product photos">
+        {heroSupportPhotos.slice(0, 3).map((image) => (
+          <img
+            src={image.src}
+            alt={image.alt}
+            width="1122"
+            height="1402"
+            loading="lazy"
             key={image.src}
-          >
-            <img src={image.src} alt="" width="1122" height="1402" loading={index < 2 ? "eager" : "lazy"} />
-            <span>{image.label}</span>
-          </button>
+          />
         ))}
       </div>
     </Reveal>
@@ -488,6 +518,7 @@ function BeforeAfterSlider() {
 
   function startDrag(event) {
     event.preventDefault();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
     updatePosition(event.clientX);
 
     const onMove = (moveEvent) => updatePosition(moveEvent.clientX);
@@ -513,7 +544,7 @@ function BeforeAfterSlider() {
 
   return (
     <Reveal className="comparisonShell proofComparisonShell">
-      <div className="comparisonSlider proofComparisonSlider" ref={sliderRef}>
+      <div className="comparisonSlider proofComparisonSlider" ref={sliderRef} onPointerDown={startDrag}>
         <div className="proofImageLayer beforeProof">
           <img
             src={productImages.googleBefore}
@@ -540,7 +571,7 @@ function BeforeAfterSlider() {
             <strong>They tap or scan while they’re still at the counter.</strong>
           </div>
         </div>
-        <div className="comparisonDivider" style={{ left: `${position}%` }} aria-hidden="true" />
+        <div className="comparisonDivider" style={{ left: `clamp(0px, ${position}%, 100%)` }} aria-hidden="true" />
         <button
           type="button"
           className="comparisonHandle"
@@ -550,7 +581,10 @@ function BeforeAfterSlider() {
           aria-valuemax="100"
           aria-valuenow={Math.round(position)}
           role="slider"
-          onPointerDown={startDrag}
+          onPointerDown={(event) => {
+            event.stopPropagation();
+            startDrag(event);
+          }}
           onKeyDown={adjustWithKeyboard}
         >
           <span />
@@ -769,6 +803,9 @@ export default function Home() {
                 A clean NFC + QR touchpoint that connects customers to your most useful business actions
                 while they are still with you.
               </p>
+              <div className="heroActions heroActions--focused">
+                <a className="button" href="#how-it-works">How it works <span>→</span></a>
+              </div>
             </Reveal>
             <HeroGallery />
           </div>

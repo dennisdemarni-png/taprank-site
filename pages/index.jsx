@@ -73,11 +73,6 @@ const heroGallery = [
     label: "Custom stand",
   },
   {
-    src: productImages.clean,
-    alt: "Plain-background TapRank acrylic NFC and QR review stand",
-    label: "Clean view",
-  },
-  {
     src: productImages.cafe,
     alt: "TapRank NFC and QR review stand placed on a cafe counter beside a till",
     label: "Cafe counter",

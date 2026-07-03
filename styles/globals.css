@@ -3719,7 +3719,7 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 .galleryThumbs {
   width: min(100%, 635px);
   margin: -30px 0 0 auto;
-  grid-template-columns: repeat(7, minmax(66px, 1fr));
+  grid-template-columns: repeat(6, minmax(66px, 1fr));
 }
 
 .galleryThumbs img {
@@ -4208,7 +4208,7 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   }
 
   .galleryThumbs {
-    grid-template-columns: repeat(7, minmax(72px, 1fr));
+    grid-template-columns: repeat(6, minmax(72px, 1fr));
     overflow-x: auto;
   }
 

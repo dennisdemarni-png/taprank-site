@@ -222,26 +222,35 @@ const demos = [
   {
     href: "/r/barber-demo",
     theme: "navy",
-    mark: "✂",
-    title: "Barber demo",
-    business: "Sunset Barber Co.",
-    actions: ["Review us on Google", "Book appointment", "View services"],
+    image: "/product/google-profile-after.png",
+    title: "Review-first page",
+    business: "North & Co. Coffee House",
+    category: "Coffee • Reviews • Menu • Contact",
+    rating: "4.9 (512)",
+    primary: "Leave a Google Review",
+    actions: ["View Menu", "Order Online", "Instagram", "Call Us"],
   },
   {
     href: "/r/restaurant-demo",
     theme: "amber",
-    mark: "🍽",
-    title: "Restaurant demo",
-    business: "Olive & Oak",
-    actions: ["View menu", "Book a table", "Get directions"],
+    image: "/product/taprank-stand-cafe-counter.jpg",
+    title: "Customer action page",
+    business: "North & Co. Coffee House",
+    category: "Coffee • Reviews • Menu • Contact",
+    rating: "4.9 (512)",
+    primary: "Leave a Google Review",
+    actions: ["Website", "Book a Table", "Open in Maps", "Hours"],
   },
   {
     href: "/r/salon-demo",
     theme: "blush",
-    mark: "✦",
-    title: "Salon demo",
-    business: "Luxe Beauty Salon",
-    actions: ["Book treatment", "Message on WhatsApp", "Follow Instagram"],
+    image: "/product/taprank-stand-closeup.jpg",
+    title: "TapRank mobile template",
+    business: "North & Co. Coffee House",
+    category: "Coffee • Reviews • Menu • Contact",
+    rating: "4.9 (512)",
+    primary: "Leave a Google Review",
+    actions: ["View Menu", "Order Online", "Website", "Book a Table"],
   },
 ];
 
@@ -601,15 +610,17 @@ function PhonePreviewCard({ demo, index }) {
       <div className="phoneDemoShell">
         <div className="phoneDemoNotch" />
         <div className="phoneDemoScreen">
-          <div className="phoneDemoHero">
-            <span>{demo.mark}</span>
+          <div className="phoneDemoAvatar">
+            <img src={demo.image} alt="" width="180" height="180" loading="lazy" />
           </div>
           <strong>{demo.business}</strong>
-          <div className="phoneDemoStars">★★★★★</div>
+          <span className="phoneDemoCategory">{demo.category}</span>
+          <div className="phoneDemoStars"><span>★★★★★</span><strong>{demo.rating}</strong></div>
+          <div className="phoneDemoPrimary"><b>G</b><strong>{demo.primary}</strong><i>›</i></div>
           <div className="phoneDemoActions">
             {demo.actions.map((action) => <span key={action}>{action}<i>›</i></span>)}
           </div>
-          <small>Powered by TapRank</small>
+          <small>Powered by <img src="/taprank-logo-transparent.png" alt="TapRank" width="1280" height="331" /></small>
         </div>
       </div>
       <div className="phoneDemoCopy">
@@ -837,8 +848,8 @@ export default function Home() {
           <div className="container">
             <SectionIntro
               eyebrow="LIVE EXAMPLES"
-              title="See what customers open when they tap or scan."
-              copy="Preview TapRank pages for barbers, restaurants and salons — reviews, bookings, menus and socials from one simple page."
+              title="Preview the TapRank page customers open when they tap or scan."
+              copy="A review-first mobile page for customers already inside the venue — with menus, ordering, socials, calls, bookings and maps still one tap away."
             />
             <div className="phoneDemoGrid">
               {demos.map((demo, index) => <PhonePreviewCard demo={demo} index={index} key={demo.href} />)}

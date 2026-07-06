@@ -3034,13 +3034,33 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 }
 
 .phoneDemoScreen {
-  min-height: 400px;
-  padding: 15px;
+  min-height: 440px;
+  padding: 18px 14px 15px;
   display: grid;
   align-content: start;
   text-align: center;
   border-radius: 28px;
   background: linear-gradient(180deg, #ffffff, #f7fbff);
+}
+
+.phoneDemoAvatar {
+  width: 86px;
+  height: 86px;
+  margin: 0 auto 12px;
+  padding: 3px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(7, 24, 53, .15);
+}
+
+.phoneDemoAvatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  border-radius: inherit;
 }
 
 .phoneDemoHero {
@@ -3064,37 +3084,102 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 }
 
 .phoneDemoScreen > strong {
-  margin-top: 14px;
   color: #06142e;
   font-size: 17px;
   letter-spacing: -.4px;
+  line-height: 1.08;
+}
+
+.phoneDemoCategory {
+  margin-top: 5px;
+  color: #6b7585;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: .01em;
 }
 
 .phoneDemoStars {
-  margin-top: 6px;
-  color: var(--gold);
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #17243d;
   font-size: 10px;
-  letter-spacing: 1.5px;
+  letter-spacing: 0;
+}
+
+.phoneDemoStars span {
+  color: var(--gold);
+  letter-spacing: .8px;
+}
+
+.phoneDemoStars strong {
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.phoneDemoPrimary {
+  min-height: 48px;
+  margin-top: 14px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #1c68ee, #064ccf);
+  box-shadow: 0 13px 28px rgba(8, 86, 212, .28);
+}
+
+.phoneDemoPrimary b {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  color: #1b64e8;
+  font-size: 17px;
+  font-weight: 950;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.phoneDemoPrimary strong {
+  flex: 1;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.phoneDemoPrimary i {
+  color: rgba(255,255,255,.92);
+  font-size: 23px;
+  font-style: normal;
+  line-height: 1;
 }
 
 .phoneDemoActions {
-  margin-top: 14px;
+  margin-top: 12px;
   display: grid;
-  gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 7px;
 }
 
 .phoneDemoActions span {
-  min-height: 38px;
-  padding: 0 11px;
+  min-height: 36px;
+  padding: 0 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: #263f5c;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 850;
   border: 1px solid #dfe9f4;
-  border-radius: 13px;
+  border-radius: 12px;
   background: #fff;
+  box-shadow: 0 8px 18px rgba(10, 34, 65, .06);
 }
 
 .phoneDemoActions i {
@@ -3104,13 +3189,24 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
 
 .phoneDemoScreen small {
   margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   color: #8b9aac;
   font-size: 8px;
   font-weight: 800;
 }
 
-.phoneDemoCard--amber .phoneDemoHero { background: linear-gradient(135deg, #3b2709, #d59a28); }
-.phoneDemoCard--blush .phoneDemoHero { background: linear-gradient(135deg, #4b2432, #c6798b); }
+.phoneDemoScreen small img {
+  width: 42px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.phoneDemoCard--amber .phoneDemoPrimary { background: linear-gradient(135deg, #0b5fd5, #0a7cf4); }
+.phoneDemoCard--blush .phoneDemoPrimary { background: linear-gradient(135deg, #125fdb, #0497ff); }
 
 .phoneDemoCopy {
   width: 100%;

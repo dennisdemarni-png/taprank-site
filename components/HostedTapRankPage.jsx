@@ -185,7 +185,7 @@ export default function HostedTapRankPage({ page }) {
 
           <footer className="businessPoweredBy">
             <span>Powered by</span>
-            <strong>TapRank</strong>
+            <img src="/taprank-logo-transparent.png" alt="TapRank" width="1280" height="331" />
           </footer>
         </section>
       </main>

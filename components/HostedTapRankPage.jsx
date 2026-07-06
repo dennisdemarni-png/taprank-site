@@ -1,63 +1,46 @@
 import Head from "next/head";
 
-const themeColours = {
-  barber: "#f4f8ff",
-  restaurant: "#f4f8ff",
-  salon: "#f4f8ff",
+const defaultBusinessPage = {
+  businessName: "North & Co. Coffee House",
+  businessImage: "/product/google-profile-after.png",
+  categoryLine: "Coffee • Reviews • Menu • Contact",
+  ratingValue: "4.9",
+  ratingCount: "512",
+  supportingText: "Tap below to leave a review or explore more.",
+  reviewUrl: "https://www.google.com/search?q=North+%26+Co.+Coffee+House+Manchester+reviews",
+  menuUrl: "#menu",
+  orderUrl: "#order",
+  instagramUrl: "https://www.instagram.com/",
+  phoneNumber: "+441612345678",
+  websiteUrl: "https://www.taprank.co.uk/",
+  bookingUrl: "#book",
+  openingHours: [
+    { days: "Mon – Fri", hours: "7:00 AM – 7:00 PM" },
+    { days: "Sat – Sun", hours: "8:00 AM – 8:00 PM" },
+  ],
+  address: "14 Tib St, Manchester M4 1LG",
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=14+Tib+St%2C+Manchester+M4+1LG",
 };
 
 const iconPaths = {
-  booking: (
-    <>
-      <rect x="5" y="6" width="14" height="13" rx="2.5" />
-      <path d="M8 4v4M16 4v4M5 10h14" />
-    </>
-  ),
   menu: (
     <>
-      <path d="M5 7h14M5 12h14M5 17h10" />
+      <path d="M4.8 6.2c2.7-.8 5.1-.3 7.2 1.5 2.1-1.8 4.5-2.3 7.2-1.5v12.2c-2.7-.8-5.1-.3-7.2 1.5-2.1-1.8-4.5-2.3-7.2-1.5V6.2Z" />
+      <path d="M12 7.7v12.2" />
+    </>
+  ),
+  order: (
+    <>
+      <path d="M6.7 9h10.6l-.9 10.2H7.6L6.7 9Z" />
+      <path d="M9.2 9V7.4a2.8 2.8 0 0 1 5.6 0V9" />
+      <path d="M9.6 13h4.8" />
     </>
   ),
   instagram: (
     <>
       <rect x="5" y="5" width="14" height="14" rx="4" />
-      <circle cx="12" cy="12" r="3" />
+      <circle cx="12" cy="12" r="3.2" />
       <path d="M16.7 7.3h.01" />
-    </>
-  ),
-  whatsapp: (
-    <>
-      <path d="M6.4 18.4 7.3 15A7 7 0 1 1 10 17.3l-3.6 1.1Z" />
-      <path d="M10 9.4c.4 1.9 1.7 3.2 3.6 3.9l1-1" />
-    </>
-  ),
-  directions: (
-    <>
-      <path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z" />
-      <circle cx="12" cy="10" r="2" />
-    </>
-  ),
-  services: (
-    <>
-      <path d="M5 7h14M5 12h14M5 17h8" />
-      <path d="m16 15 3 3" />
-    </>
-  ),
-  allergens: (
-    <>
-      <circle cx="12" cy="12" r="8" />
-      <path d="M12 10v6M12 7h.01" />
-    </>
-  ),
-  treatments: (
-    <>
-      <path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" />
-    </>
-  ),
-  tiktok: (
-    <>
-      <path d="M14 4v9.4a3.5 3.5 0 1 1-3.5-3.5" />
-      <path d="M14 6c1 2 2.4 3.2 4 3.4" />
     </>
   ),
   call: (
@@ -71,103 +54,139 @@ const iconPaths = {
       <path d="M4 12h16M12 4c2 2.2 3 4.8 3 8s-1 5.8-3 8M12 4c-2 2.2-3 4.8-3 8s1 5.8 3 8" />
     </>
   ),
+  booking: (
+    <>
+      <rect x="5" y="6" width="14" height="13" rx="2.5" />
+      <path d="M8 4v4M16 4v4M5 10h14M9 14h.01M12 14h.01M15 14h.01" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 7.8v4.7l3 1.8" />
+    </>
+  ),
+  map: (
+    <>
+      <path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z" />
+      <circle cx="12" cy="10" r="2" />
+    </>
+  ),
 };
 
+function normalisePhoneHref(phoneNumber) {
+  if (!phoneNumber) return "#";
+  return phoneNumber.startsWith("tel:") ? phoneNumber : `tel:${phoneNumber.replace(/\s/g, "")}`;
+}
+
 function ActionIcon({ icon }) {
-  if (icon === "review") {
-    return <span className="hostedActionIcon hostedActionIcon--review" aria-hidden="true">G</span>;
+  if (icon === "google") {
+    return (
+      <span className="businessGoogleIcon" aria-hidden="true">
+        <span>G</span>
+      </span>
+    );
   }
 
   return (
-    <span className={`hostedActionIcon hostedActionIcon--${icon}`} aria-hidden="true">
+    <span className={`businessActionIcon businessActionIcon--${icon}`} aria-hidden="true">
       <svg viewBox="0 0 24 24">{iconPaths[icon] || iconPaths.website}</svg>
     </span>
   );
 }
 
+function Chevron({ compact = false }) {
+  return <span className={compact ? "businessChevron businessChevron--compact" : "businessChevron"} aria-hidden="true">›</span>;
+}
+
 export default function HostedTapRankPage({ page }) {
-  const {
-    slug,
-    theme,
-    businessName,
-    initials,
-    categoryLabel,
-    bannerLabel,
-    heroImage,
-    heroAlt,
-    rating,
-    welcomeText,
-    primaryAction,
-    links,
-  } = page;
+  const business = { ...defaultBusinessPage, ...page };
+  const openingHours = business.openingHours?.length ? business.openingHours : defaultBusinessPage.openingHours;
+  const reviewCount = String(business.ratingCount).replace(/[()]/g, "");
+  const actions = [
+    { label: "View Menu", icon: "menu", href: business.menuUrl },
+    { label: "Order Online", icon: "order", href: business.orderUrl },
+    { label: "Instagram", icon: "instagram", href: business.instagramUrl },
+    { label: "Call Us", icon: "call", href: normalisePhoneHref(business.phoneNumber) },
+    { label: "Website", icon: "website", href: business.websiteUrl },
+    { label: "Book a Table", icon: "booking", href: business.bookingUrl },
+  ];
 
   return (
     <>
       <Head>
-        <title>{businessName} | Powered by TapRank</title>
-        <meta name="description" content={`${businessName} customer links, powered by TapRank.`} />
+        <title>{business.businessName} | Powered by TapRank</title>
+        <meta name="description" content={`${business.businessName} customer actions, powered by TapRank.`} />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        <meta name="theme-color" content={themeColours[theme] || "#ffffff"} />
+        <meta name="theme-color" content="#ffffff" />
         <meta name="robots" content="noindex" />
       </Head>
 
-      <main className={`hostedPage hostedPage--${theme}`} data-slug={slug}>
-        <div className="hostedBackdrop" aria-hidden="true"><span /><span /><span /></div>
-        <section className="hostedCard">
-          <div className="hostedHeroBanner" role="img" aria-label={heroAlt || `${businessName} TapRank page banner`}>
-            {heroImage ? <img src={heroImage} alt="" /> : null}
-            <div className="hostedHeroBrand">
-              <img src="/taprank-logo-dark.png" alt="TapRank" width="1280" height="331" />
+      <main className="businessLinkPage" data-slug={business.slug}>
+        <section className="businessLinkShell" aria-label={`${business.businessName} TapRank page`}>
+          <header className="businessIntro">
+            <div className="businessAvatar">
+              <img
+                src={business.businessImage}
+                alt={`${business.businessName} business image`}
+                width="180"
+                height="180"
+                loading="eager"
+              />
             </div>
-            <span className="hostedHeroLabel">{bannerLabel}</span>
-            <i />
-            <b />
-          </div>
+            <h1>{business.businessName}</h1>
+            <p className="businessCategory">{business.categoryLine}</p>
+            <div className="businessRating" aria-label={`${business.ratingValue} stars from ${reviewCount} reviews`}>
+              <span className="businessStars" aria-hidden="true">★★★★★</span>
+              <strong>{business.ratingValue} ({reviewCount})</strong>
+            </div>
+            <p className="businessInstruction">{business.supportingText}</p>
+          </header>
 
-          <div className="hostedContentPanel">
-            <header className="hostedHeader">
-              <div className="hostedIdentity">
-                <div className="hostedMonogram"><span>{initials}</span></div>
-              </div>
-              <h1>{businessName}</h1>
-              <span className="hostedEyebrow">{categoryLabel}</span>
-              <div className="hostedRating" aria-label={`${rating.score} stars from ${rating.count} reviews`}>
-                <strong>{rating.score}</strong>
-                <span>★★★★★</span>
-                <small>({rating.count})</small>
-              </div>
-              <p>{welcomeText}</p>
-            </header>
+          <a className="businessPrimaryCta" href={business.reviewUrl}>
+            <ActionIcon icon="google" />
+            <strong>Leave a Google Review</strong>
+            <Chevron />
+          </a>
 
-            <nav className="hostedActions" aria-label={`${businessName} links`}>
-              <a className="hostedAction hostedAction--primary" href={primaryAction.href}>
-                <ActionIcon icon={primaryAction.icon} />
-                <strong>{primaryAction.label}</strong>
-                <span className="hostedActionArrow">›</span>
+          <nav className="businessActionGrid" aria-label={`${business.businessName} quick actions`}>
+            {actions.map((action) => (
+              <a className="businessActionCard" href={action.href || "#"} key={action.label}>
+                <ActionIcon icon={action.icon} />
+                <span>{action.label}</span>
+                <Chevron compact />
               </a>
-              {links.map((action, index) => (
-                <a
-                  className={`hostedAction ${action.featured ? "hostedAction--featured" : ""} hostedAction--${index + 1}`}
-                  href={action.href}
-                  key={action.label}
-                >
-                  <ActionIcon icon={action.icon} />
-                  <strong>{action.label}</strong>
-                  <span className="hostedActionArrow">›</span>
-                </a>
-              ))}
-            </nav>
+            ))}
+          </nav>
 
-            <footer className="hostedFooter">
-              <span aria-hidden="true" />
-              <div>
-                <small>Powered by</small>
-                <img className="hostedFooterLogo" src="/taprank-logo-transparent.png" alt="TapRank" width="1280" height="331" />
-                <em>Connect customers to what matters.</em>
+          <section className="businessInfoCard" aria-label="More information">
+            <h2>More info</h2>
+            <div className="businessInfoRow">
+              <ActionIcon icon="clock" />
+              <div className="businessHours">
+                {openingHours.map((item) => (
+                  <p key={`${item.days}-${item.hours}`}>
+                    <span>{item.days}</span>
+                    <strong>{item.hours}</strong>
+                  </p>
+                ))}
               </div>
-              <span aria-hidden="true" />
-            </footer>
-          </div>
+            </div>
+            <div className="businessInfoDivider" />
+            <a className="businessInfoRow businessInfoRow--map" href={business.mapsUrl}>
+              <ActionIcon icon="map" />
+              <div>
+                <strong>{business.address}</strong>
+                <span>Open in Maps</span>
+              </div>
+              <Chevron compact />
+            </a>
+          </section>
+
+          <footer className="businessPoweredBy">
+            <span>Powered by</span>
+            <strong>TapRank</strong>
+          </footer>
         </section>
       </main>
     </>

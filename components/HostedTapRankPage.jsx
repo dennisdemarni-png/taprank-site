@@ -144,7 +144,7 @@ export default function HostedTapRankPage({ page }) {
   const business = { ...defaultBusinessPage, ...page };
   const openingHours = business.openingHours?.length ? business.openingHours : defaultBusinessPage.openingHours;
   const reviewCount = String(business.ratingCount).replace(/[()]/g, "");
-  const actions = [
+  const defaultActions = [
     { label: "View Menu", icon: "menu", href: business.menuUrl },
     { label: "Order Online", icon: "order", href: business.orderUrl },
     { label: "Instagram", icon: "instagram", href: business.instagramUrl },
@@ -152,6 +152,7 @@ export default function HostedTapRankPage({ page }) {
     { label: "Website", icon: "website", href: business.websiteUrl },
     { label: "Book a Table", icon: "booking", href: business.bookingUrl },
   ];
+  const actions = business.actions?.length ? business.actions : defaultActions;
 
   return (
     <>

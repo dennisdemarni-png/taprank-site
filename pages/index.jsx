@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
+import { makeContactMailto, TAPRANK_CONTACT } from "../lib/contact";
 
-function makeMailto(subject, body) {
-  return `mailto:hello@taprank.co.uk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
-const setupMailto = makeMailto(
+const setupMailto = makeContactMailto(
   "Standard TapRank Stand Enquiry",
   `Hi TapRank,
 
@@ -21,7 +18,7 @@ Additional information:
 Thank you.`
 );
 
-const customMailto = makeMailto(
+const customMailto = makeContactMailto(
   "Custom TapRank Stand Enquiry",
   `Hi TapRank,
 
@@ -38,7 +35,7 @@ Additional information:
 Thank you.`
 );
 
-const launchBundleMailto = makeMailto(
+const launchBundleMailto = makeContactMailto(
   "Launch Bundle Enquiry",
   `Hi TapRank,
 
@@ -54,7 +51,7 @@ Additional information:
 Thank you.`
 );
 
-const bundleMailto = makeMailto(
+const bundleMailto = makeContactMailto(
   "Bulk Orders TapRank Stand Enquiry",
   `Hi TapRank,
 
@@ -67,6 +64,21 @@ How many stands:
 Standard or custom stands:
 Number of locations/counters:
 Links I'd like included:
+Additional information:
+
+Thank you.`
+);
+
+const generalMailto = makeContactMailto(
+  "TapRank Business Enquiry",
+  `Hi TapRank,
+
+I'd like to find out more about TapRank for my business.
+
+Business name:
+Business type:
+What I'd like customers to access:
+How many stands, cards or stickers I may need:
 Additional information:
 
 Thank you.`
@@ -749,10 +761,10 @@ function MobileStickyCta() {
   }, []);
 
   return (
-    <a className={`mobileStickyCta ${visible ? "isVisible" : ""}`} href={setupMailto}>
+    <a className={`mobileStickyCta ${visible ? "isVisible" : ""}`} href={TAPRANK_CONTACT.smsHref}>
       <span>
-        <strong>Get Your TapRank Stand</strong>
-        <small>Quick email enquiry</small>
+        <strong>Text TapRank</strong>
+        <small>Quick product enquiry</small>
       </span>
       <b>→</b>
     </a>
@@ -786,8 +798,9 @@ export default function Home() {
             <a href="#how-it-works">How it works</a>
             <a href="#pricing">Pricing</a>
             <a href="#faqs">FAQs</a>
+            <a href="#contact">Contact</a>
           </nav>
-          <a className="button buttonSmall navCta" href={setupMailto}>Get Your TapRank Stand <span>→</span></a>
+          <a className="button buttonSmall navCta" href={setupMailto}>Start with TapRank <span>→</span></a>
           <details className="mobileMenu">
             <summary aria-label="Open navigation"><span /><span /><span /></summary>
             <nav>
@@ -796,7 +809,8 @@ export default function Home() {
               <a href="#how-it-works">How it works</a>
               <a href="#pricing">Pricing</a>
               <a href="#faqs">FAQs</a>
-              <a className="button" href={setupMailto}>Get Your TapRank Stand</a>
+              <a href="#contact">Contact</a>
+              <a className="button" href={setupMailto}>Start with TapRank</a>
             </nav>
           </details>
         </div>
@@ -815,7 +829,13 @@ export default function Home() {
                 while they are still with you.
               </p>
               <div className="heroActions heroActions--focused">
-                <a className="button" href="#how-it-works">How it works <span>→</span></a>
+                <a className="button" href={setupMailto}>Email to get started <span>→</span></a>
+                <a className="button buttonSecondary" href="#how-it-works">How it works</a>
+              </div>
+              <div className="heroQuickContact" aria-label="Quick TapRank contact options">
+                <a href={TAPRANK_CONTACT.callHref}>Call TapRank</a>
+                <span aria-hidden="true">•</span>
+                <a href={TAPRANK_CONTACT.smsHref}>Text us</a>
               </div>
             </Reveal>
             <HeroGallery />
@@ -974,12 +994,28 @@ export default function Home() {
                 loading="lazy"
               />
               <div>
-                <span className="launchSectionTag">READY WHEN YOU ARE</span>
-                <h2>Get your TapRank stand linked and ready for your counter.</h2>
-                <p>One-off payment. No subscription. Setup included.</p>
-                <div className="heroActions">
-                  <a className="button" href={setupMailto}>Get Your TapRank Stand <span>→</span></a>
-                  <a className="button buttonSecondary" href="#live-demos">View Live Examples</a>
+                <span className="launchSectionTag">CONTACT TAPRANK</span>
+                <h2>Ready to connect customers to what matters?</h2>
+                <p>Call, text or email TapRank and we’ll help you choose the right setup for your business.</p>
+                <div className="contactMethodGrid" aria-label="Contact TapRank">
+                  <a className="contactMethodCard" href={TAPRANK_CONTACT.callHref}>
+                    <span>CALL</span>
+                    <strong>Call TapRank</strong>
+                    <small>{TAPRANK_CONTACT.phoneDisplay}</small>
+                    <b aria-hidden="true">→</b>
+                  </a>
+                  <a className="contactMethodCard" href={TAPRANK_CONTACT.smsHref}>
+                    <span>TEXT</span>
+                    <strong>Text us</strong>
+                    <small>Quick product enquiry</small>
+                    <b aria-hidden="true">→</b>
+                  </a>
+                  <a className="contactMethodCard" href={generalMailto}>
+                    <span>EMAIL</span>
+                    <strong>Email to get started</strong>
+                    <small>{TAPRANK_CONTACT.email}</small>
+                    <b aria-hidden="true">→</b>
+                  </a>
                 </div>
               </div>
             </Reveal>
@@ -997,7 +1033,12 @@ export default function Home() {
           <div className="footerLinks">
             <div><h3>Explore</h3><a href="#products">Products</a><a href="#how-it-works">How it works</a><a href="#pricing">Pricing</a></div>
             <div><h3>Live demos</h3><a href="/r/barber-demo">Barber</a><a href="/r/restaurant-demo">Restaurant</a><a href="/r/salon-demo">Salon</a></div>
-            <div><h3>Get in touch</h3><a href={setupMailto}>Get your stand</a><a href="mailto:hello@taprank.co.uk">hello@taprank.co.uk</a></div>
+            <div>
+              <h3>Get in touch</h3>
+              <a href={TAPRANK_CONTACT.callHref}>Call {TAPRANK_CONTACT.phoneDisplay}</a>
+              <a href={TAPRANK_CONTACT.smsHref}>Text TapRank</a>
+              <a href={generalMailto}>{TAPRANK_CONTACT.email}</a>
+            </div>
           </div>
         </div>
         <div className="container footerBottom"><p>© {new Date().getFullYear()} TapRank. One tap to your next customer action.</p><p>taprank.co.uk</p></div>

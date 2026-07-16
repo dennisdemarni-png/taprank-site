@@ -4,7 +4,7 @@ TapRank is a UK NFC and QR product business for local businesses. Its acrylic co
 
 Tagline: **Connect customers to what matters.**
 
-This repository contains the public marketing website and three static hosted-page demos. It is an early MVP: customer pages are currently represented by source-controlled demo data, not a database or admin system.
+This repository contains the public marketing website, three static hosted-page demos, and the first source-managed customer page. It is an early MVP: hosted pages are currently represented by source-controlled data, not a database or admin system.
 
 ## Technical stack
 
@@ -61,6 +61,7 @@ Note: `.gitignore` ignores `.env*.local`, but not every possible `.env` filename
 | `/r/barber-demo` | Statically generated barber demo page |
 | `/r/restaurant-demo` | Statically generated restaurant demo page |
 | `/r/salon-demo` | Statically generated salon demo page |
+| `/r/laser-expert-pro` | Statically generated customer page |
 | `/r/demo` | Server-side temporary redirect to a generic Google search |
 | `/r/{other-slug}` | 404 because static fallback is disabled |
 

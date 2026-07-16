@@ -42,6 +42,7 @@ The homepage is approximately 1,050 lines and the global stylesheet is approxima
 | `/r/barber-demo` | Static generation | Barber demonstration page. |
 | `/r/restaurant-demo` | Static generation | Restaurant demonstration page. |
 | `/r/salon-demo` | Static generation | Salon demonstration page. |
+| `/r/laser-expert-pro` | Static generation | First source-managed customer page, with approved Google Reviews and Instagram destinations. |
 | `/r/demo` | Server-side redirect | Temporary redirect to a generic Google search for “google review”. |
 | Unknown `/r/{slug}` | 404 | No dynamic fallback or database lookup exists. |
 
@@ -49,15 +50,16 @@ There are no API routes.
 
 ## Hosted-page functionality
 
-`lib/taprankPages.js` contains three public demo objects. At build time, `/r/[slug].jsx` generates their pages and passes each object to `HostedTapRankPage`.
+`lib/taprankPages.js` contains three public demo objects and one source-managed customer record. At build time, `/r/[slug].jsx` generates their pages and passes each object to `HostedTapRankPage`.
 
-The hosted-page component supports business name, image, category line, rating, rating count, review URL, menu URL, order URL, Instagram URL, phone, website URL, booking URL, opening hours, address, maps URL, and an optional action array. Default values are merged with supplied data.
+The hosted-page component supports business name, image, category line, rating, rating count, review URL, menu URL, order URL, Instagram URL, phone, website URL, booking URL, opening hours, address, maps URL, and an optional action array. Optional fields render only when supplied by the page record.
 
-Current demo limitations:
+Current hosted-page limitations:
 
-- These are demonstrations, not persisted customer records.
+- Records are source-controlled rather than persisted in a customer-page system.
 - Adding or changing a record requires a source edit, commit, build, and deployment.
 - There is no active/inactive link state, business status, validation, preview/publish workflow, or admin interface.
+- Public destinations receive build-time protocol validation, but there is no remote ownership or availability check during the build.
 - Barber and salon demo data include `#services` and `#book` destinations without matching page sections.
 - Some links and contact values are deliberately generic or demonstrative.
 - The restaurant demo inherits some defaults that point at marketing-page anchors.
@@ -137,10 +139,10 @@ Those facts must be confirmed in Vercel rather than guessed.
 
 - A static, responsive marketing homepage.
 - Central public TapRank sales-contact configuration.
-- Three mobile-first business-page demonstrations.
+- Three mobile-first business-page demonstrations and one source-managed customer page.
 - Logo, favicon, product, and demo assets stored locally.
 - Frozen-lockfile Vercel install/build configuration.
-- Stable public demo paths generated at build time.
+- Stable public demo and customer paths generated at build time.
 
 “Production-ready” here means technically usable in the present static marketing/demo scope. It does not mean a production customer-management platform exists.
 

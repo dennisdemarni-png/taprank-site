@@ -1,27 +1,5 @@
 import Head from "next/head";
 
-const defaultBusinessPage = {
-  businessName: "North & Co. Coffee House",
-  businessImage: "/product/google-profile-after.png",
-  categoryLine: "Coffee • Reviews • Menu • Contact",
-  ratingValue: "4.9",
-  ratingCount: "512",
-  supportingText: "Tap below to leave a review or explore more.",
-  reviewUrl: "https://www.google.com/search?q=North+%26+Co.+Coffee+House+Manchester+reviews",
-  menuUrl: "#menu",
-  orderUrl: "#order",
-  instagramUrl: "https://www.instagram.com/",
-  phoneNumber: "+441612345678",
-  websiteUrl: "https://www.taprank.co.uk/",
-  bookingUrl: "#book",
-  openingHours: [
-    { days: "Mon – Fri", hours: "7:00 AM – 7:00 PM" },
-    { days: "Sat – Sun", hours: "8:00 AM – 8:00 PM" },
-  ],
-  address: "14 Tib St, Manchester M4 1LG",
-  mapsUrl: "https://www.google.com/maps/search/?api=1&query=14+Tib+St%2C+Manchester+M4+1LG",
-};
-
 const lucideIconPaths = {
   menu: (
     <>
@@ -116,7 +94,7 @@ function LucideStyleIcon({ icon }) {
 }
 
 function normalisePhoneHref(phoneNumber) {
-  if (!phoneNumber) return "#";
+  if (!phoneNumber) return null;
   return phoneNumber.startsWith("tel:") ? phoneNumber : `tel:${phoneNumber.replace(/\s/g, "")}`;
 }
 
@@ -141,9 +119,15 @@ function Chevron({ compact = false }) {
 }
 
 export default function HostedTapRankPage({ page }) {
-  const business = { ...defaultBusinessPage, ...page };
-  const openingHours = business.openingHours?.length ? business.openingHours : defaultBusinessPage.openingHours;
-  const reviewCount = String(business.ratingCount).replace(/[()]/g, "");
+  const business = page;
+  const openingHours = Array.isArray(business.openingHours)
+    ? business.openingHours.filter((item) => item?.days && item?.hours)
+    : [];
+  const hasRating = business.ratingValue !== undefined
+    && business.ratingValue !== null
+    && business.ratingCount !== undefined
+    && business.ratingCount !== null;
+  const reviewCount = hasRating ? String(business.ratingCount).replace(/[()]/g, "") : "";
   const defaultActions = [
     { label: "View Menu", icon: "menu", href: business.menuUrl },
     { label: "Order Online", icon: "order", href: business.orderUrl },
@@ -152,7 +136,10 @@ export default function HostedTapRankPage({ page }) {
     { label: "Website", icon: "website", href: business.websiteUrl },
     { label: "Book a Table", icon: "booking", href: business.bookingUrl },
   ];
-  const actions = business.actions?.length ? business.actions : defaultActions;
+  const configuredActions = Array.isArray(business.actions) ? business.actions : defaultActions;
+  const actions = configuredActions.filter((action) => action?.label && action?.href);
+  const hasLocation = Boolean(business.address && business.mapsUrl);
+  const hasMoreInfo = openingHours.length > 0 || hasLocation;
 
   return (
     <>
@@ -167,63 +154,77 @@ export default function HostedTapRankPage({ page }) {
       <main className="businessLinkPage" data-slug={business.slug}>
         <section className="businessLinkShell" aria-label={`${business.businessName} TapRank page`}>
           <header className="businessIntro">
-            <div className="businessAvatar">
-              <img
-                src={business.businessImage}
-                alt={`${business.businessName} business image`}
-                width="180"
-                height="180"
-                loading="eager"
-              />
-            </div>
+            {business.businessImage && (
+              <div className={`businessAvatar${business.businessImageFit === "contain" ? " businessAvatar--contain" : ""}`}>
+                <img
+                  src={business.businessImage}
+                  alt={business.businessImageAlt || `${business.businessName} business image`}
+                  width="180"
+                  height="180"
+                  loading="eager"
+                />
+              </div>
+            )}
             <h1>{business.businessName}</h1>
-            <p className="businessCategory">{business.categoryLine}</p>
-            <div className="businessRating" aria-label={`${business.ratingValue} stars from ${reviewCount} reviews`}>
-              <span className="businessStars" aria-hidden="true">★★★★★</span>
-              <strong>{business.ratingValue} ({reviewCount})</strong>
-            </div>
-            <p className="businessInstruction">{business.supportingText}</p>
+            {business.categoryLine && <p className="businessCategory">{business.categoryLine}</p>}
+            {hasRating && (
+              <div className="businessRating" aria-label={`${business.ratingValue} stars from ${reviewCount} reviews`}>
+                <span className="businessStars" aria-hidden="true">★★★★★</span>
+                <strong>{business.ratingValue} ({reviewCount})</strong>
+              </div>
+            )}
+            {business.supportingText && <p className="businessInstruction">{business.supportingText}</p>}
           </header>
 
-          <a className="businessPrimaryCta" href={business.reviewUrl}>
-            <ActionIcon icon="google" />
-            <strong>Leave a Google Review</strong>
-            <Chevron />
-          </a>
-
-          <nav className="businessActionGrid" aria-label={`${business.businessName} quick actions`}>
-            {actions.map((action) => (
-              <a className="businessActionCard" href={action.href || "#"} key={action.label}>
-                <ActionIcon icon={action.icon} />
-                <span>{action.label}</span>
-                <Chevron compact />
-              </a>
-            ))}
-          </nav>
-
-          <section className="businessInfoCard" aria-label="More information">
-            <h2>More info</h2>
-            <div className="businessInfoRow">
-              <ActionIcon icon="clock" />
-              <div className="businessHours">
-                {openingHours.map((item) => (
-                  <p key={`${item.days}-${item.hours}`}>
-                    <span>{item.days}</span>
-                    <strong>{item.hours}</strong>
-                  </p>
-                ))}
-              </div>
-            </div>
-            <div className="businessInfoDivider" />
-            <a className="businessInfoRow businessInfoRow--map" href={business.mapsUrl}>
-              <ActionIcon icon="map" />
-              <div>
-                <strong>{business.address}</strong>
-                <span>Open in Maps</span>
-              </div>
-              <Chevron compact />
+          {business.reviewUrl && (
+            <a className="businessPrimaryCta" href={business.reviewUrl}>
+              <ActionIcon icon="google" />
+              <strong>Leave a Google Review</strong>
+              <Chevron />
             </a>
-          </section>
+          )}
+
+          {actions.length > 0 && (
+            <nav className="businessActionGrid" aria-label={`${business.businessName} quick actions`}>
+              {actions.map((action) => (
+                <a className="businessActionCard" href={action.href} key={`${action.label}-${action.href}`}>
+                  <ActionIcon icon={action.icon} />
+                  <span>{action.label}</span>
+                  <Chevron compact />
+                </a>
+              ))}
+            </nav>
+          )}
+
+          {hasMoreInfo && (
+            <section className="businessInfoCard" aria-label="More information">
+              <h2>More info</h2>
+              {openingHours.length > 0 && (
+                <div className="businessInfoRow">
+                  <ActionIcon icon="clock" />
+                  <div className="businessHours">
+                    {openingHours.map((item) => (
+                      <p key={`${item.days}-${item.hours}`}>
+                        <span>{item.days}</span>
+                        <strong>{item.hours}</strong>
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {openingHours.length > 0 && hasLocation && <div className="businessInfoDivider" />}
+              {hasLocation && (
+                <a className="businessInfoRow businessInfoRow--map" href={business.mapsUrl}>
+                  <ActionIcon icon="map" />
+                  <div>
+                    <strong>{business.address}</strong>
+                    <span>Open in Maps</span>
+                  </div>
+                  <Chevron compact />
+                </a>
+              )}
+            </section>
+          )}
 
           <footer className="businessPoweredBy">
             <span>Powered by</span>

@@ -5323,6 +5323,11 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   border-radius: 50%;
 }
 
+.businessAvatar--contain img {
+  object-fit: contain;
+  object-position: center;
+}
+
 .businessIntro h1 {
   max-width: 100%;
   margin: 0 auto 10px;
@@ -5451,6 +5456,10 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   background: rgba(255,255,255,.94);
   box-shadow: 0 12px 28px rgba(11,31,60,.105);
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.businessActionCard:only-child {
+  grid-column: 1 / -1;
 }
 
 .businessActionCard:hover {

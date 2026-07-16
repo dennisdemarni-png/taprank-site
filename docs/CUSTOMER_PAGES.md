@@ -6,13 +6,14 @@ A TapRank stand sends an in-venue customer to a permanent, mobile-first page wit
 
 ## Current implementation
 
-The repository currently generates only three demo pages from `lib/taprankPages.js`:
+The repository currently generates three demo pages and one source-managed customer page from `lib/taprankPages.js`:
 
 - `/r/barber-demo`
 - `/r/restaurant-demo`
 - `/r/salon-demo`
+- `/r/laser-expert-pro`
 
-They use `components/HostedTapRankPage.jsx`. They are statically generated at build time, contain demo data, and have no database, admin workflow, or customer ownership. Unknown slugs return 404. This is not yet a production customer-page management system.
+They all use `components/HostedTapRankPage.jsx` and the same shared TapRank styling. They are statically generated at build time and have no database, admin workflow, or customer ownership. Optional sections are rendered only when the record supplies their data. Unknown slugs return 404. This is not yet a production customer-page management system.
 
 ## Intended public URL behaviour
 
@@ -65,7 +66,7 @@ Before publication:
 - Only published enabled links should be public.
 - Link changes should have an audit record once a database-backed admin system exists.
 
-The current source-controlled demo objects do not implement these status rules.
+The current source-controlled page objects do not implement these status rules.
 
 ## Business status and invalid pages
 

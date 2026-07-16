@@ -10,10 +10,10 @@ Browser
   v
 Vercel / Next.js
   |-- /                       static marketing page
-  |-- /r/[slug]               statically generated known demo slugs
+  |-- /r/[slug]               statically generated known page slugs
   |-- /r/demo                 server-rendered redirect
   |
-  |-- lib/taprankPages.js     source-controlled demo records
+  |-- lib/taprankPages.js     source-controlled demo and customer records
   |-- lib/contact.js          public TapRank sales contact values
   |-- public/*                local image/logo assets
   `-- external destinations  Google, Instagram, Maps, mail, phone, SMS
@@ -28,7 +28,7 @@ There is no application database, API layer, authentication service, CMS, queue,
 - `pages/r/[slug].jsx` builds public hosted-page paths from static data.
 - `pages/r/demo.jsx` performs a server-side redirect.
 - `components/HostedTapRankPage.jsx` renders hosted business pages.
-- `lib/taprankPages.js` exports the supported demo slugs and records.
+- `lib/taprankPages.js` exports the supported demo/customer slugs and records.
 - `lib/contact.js` centralises TapRank's public sales phone and email routes.
 - `styles/globals.css` styles all pages globally.
 - `public/` stores all website images and icons.
@@ -37,7 +37,7 @@ There is no application database, API layer, authentication service, CMS, queue,
 
 The Pages Router maps files under `pages/` to URLs. `pages/r/[slug].jsx` uses `getStaticPaths` and `getStaticProps`:
 
-1. `getStaticPaths` reads the slugs exported by `lib/taprankPages.js`.
+1. `getStaticPaths` reads the demo and customer slugs exported by `lib/taprankPages.js`.
 2. Next.js produces those paths at build time.
 3. `fallback: false` makes every other slug a 404.
 4. `getStaticProps` passes the matching static object to the hosted-page component.
@@ -77,7 +77,7 @@ pages/r/[slug].jsx -- build time --> static HTML/page data
 HostedTapRankPage.jsx -- click --> external business destination
 ```
 
-The optional action-array shape can override the component's default action list. Data is not validated or persisted.
+The optional action-array shape can override the component's generated action list. Optional business sections are omitted when their data is absent. Public destinations receive build-time protocol validation, but records are not persisted or remotely verified.
 
 ## APIs, database, and authentication
 

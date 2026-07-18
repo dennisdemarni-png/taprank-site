@@ -82,3 +82,25 @@ This log records confirmed product and architectural decisions. It does not inve
 - **Alternatives considered:** Assuming a different package manager or hosting platform.
 - **Consequences:** Production ownership and settings still require confirmation in Vercel; changes to this contract require deliberate review.
 - **Related files or pull requests:** `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `vercel.json`.
+
+### 2026-07-18 — Standard Stand uses direct Square-hosted checkout
+
+- **Date:** 2026-07-18
+- **Decision:** Send high-intent Standard TapRank Stand calls to action to the confirmed £39.99 Square Payment Link in the same tab. Keep support contact routes as secondary options.
+- **Status:** Accepted.
+- **Context:** The email-first purchase journey created unnecessary friction for a ready-to-buy standard product.
+- **Reason:** Square already provides secure hosted checkout and collects the delivery address without requiring a custom payment form or credentials in this repository.
+- **Alternatives considered:** Continuing email-only ordering; building a custom payment form; opening Square in a new tab.
+- **Consequences:** The website states that secure checkout is handled through Square and that standard UK delivery is included. No return URL is configured until a separately approved onboarding route is live, and a future return URL must never be treated as payment evidence.
+- **Related files or pull requests:** `lib/commerce.js`, `pages/index.jsx`.
+
+### 2026-07-18 — Current hosted pages remain noindex by default
+
+- **Date:** 2026-07-18
+- **Decision:** Keep demos, Laser Expert Pro and future real customer pages `noindex` by default. Indexing requires explicit customer and TapRank approval.
+- **Status:** Accepted.
+- **Context:** Hosted pages contain customer-facing business content, while marketing publication and search indexing permission have not been established.
+- **Reason:** Default non-indexing protects customer approval boundaries without affecting the indexable TapRank marketing homepage.
+- **Alternatives considered:** Automatically indexing all real customer pages.
+- **Consequences:** Each hosted page still receives accurate route-specific metadata and a canonical URL, but search engines are instructed not to index it.
+- **Related files or pull requests:** `components/HostedTapRankPage.jsx`, `docs/CUSTOMER_PAGES.md`.

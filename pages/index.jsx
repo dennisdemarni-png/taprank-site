@@ -1,22 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import { makeContactMailto, TAPRANK_CONTACT } from "../lib/contact";
-
-const setupMailto = makeContactMailto(
-  "Standard TapRank Stand Enquiry",
-  `Hi TapRank,
-
-I'd like to enquire about a Standard TapRank Stand.
-
-Business name:
-Business type:
-Website:
-How many stands:
-Links I'd like included:
-Additional information:
-
-Thank you.`
-);
+import { TAPRANK_COMMERCE } from "../lib/commerce";
 
 const customMailto = makeContactMailto(
   "Custom TapRank Stand Enquiry",
@@ -78,7 +63,7 @@ I'd like to find out more about TapRank for my business.
 Business name:
 Business type:
 What I'd like customers to access:
-How many stands, cards or stickers I may need:
+How many stands I may need:
 Additional information:
 
 Thank you.`
@@ -135,7 +120,7 @@ const heroSupportPhotos = [
 const trustItems = [
   { icon: "✓", title: "No subscription", copy: "One-off payment" },
   { icon: "⚙", title: "Setup included", copy: "Linked before delivery" },
-  { icon: "↗", title: "Shipped within 48 hours", copy: "Fast dispatch" },
+  { icon: "↗", title: "Usually dispatched within 2 working days", copy: "After we receive completed setup details" },
   { icon: "⌁", title: "NFC + QR included", copy: "Tap or scan" },
   { icon: "★", title: "1-year warranty", copy: "Covered for faults" },
 ];
@@ -144,13 +129,14 @@ const productTabs = [
   {
     id: "standard",
     tab: "Standard Stand",
-    title: "Ready-made TapRank Stand",
+    title: "Standard TapRank Stand",
     image: productImages.standardTransparent,
     alt: "Ready-made TapRank acrylic NFC and QR review stand",
     intro: "A clean counter-ready stand for businesses that want reviews and key links live quickly.",
     bestFor: "Best for reviews, menus, bookings, socials and website links.",
-    href: "#pricing",
-    cta: "View Standard Stand Pricing",
+    href: TAPRANK_COMMERCE.standard.checkoutUrl,
+    cta: TAPRANK_COMMERCE.standard.cta,
+    checkoutNote: TAPRANK_COMMERCE.checkoutReassurance,
     features: [
       "NFC tap point and QR code",
       "Live TapRank page",
@@ -163,13 +149,14 @@ const productTabs = [
   {
     id: "custom",
     tab: "Custom Stand",
-    title: "Custom TapRank Setup",
+    title: "Custom TapRank Stand",
     image: productImages.customTransparent,
     alt: "Custom branded TapRank acrylic stand example for Subway",
     intro: "A branded stand designed around your business colours, logo and customer actions.",
     bestFor: "Best for restaurants, takeaways, cafes, barbers, salons and local brands.",
-    href: "#pricing",
-    cta: "View Custom Stand Pricing",
+    href: customMailto,
+    cta: TAPRANK_COMMERCE.custom.cta,
+    checkoutNote: "Enquiry required before custom production begins.",
     features: [
       "Custom stand design",
       "Business colours and logo",
@@ -187,36 +174,46 @@ const steps = [
   { icon: "↗", title: "They act in seconds", copy: "Review, book, follow, view your menu or message your business." },
 ];
 
+const purchaseSteps = [
+  "Purchase securely through Square.",
+  "Submit your business links and details.",
+  "TapRank creates your live page.",
+  "Your stand arrives linked and ready to use.",
+];
+
 const pricingCards = [
   {
-    title: "TapRank Stand",
-    price: "£39.99",
+    title: "Standard TapRank Stand",
+    price: TAPRANK_COMMERCE.standard.price,
     note: "one-off",
     label: "Ready-made",
-    href: setupMailto,
-    cta: "Get Your TapRank Stand",
+    href: TAPRANK_COMMERCE.standard.checkoutUrl,
+    cta: TAPRANK_COMMERCE.standard.cta,
+    checkoutNote: TAPRANK_COMMERCE.checkoutReassurance,
     image: productImages.standardTransparent,
     alt: "Ready-made TapRank acrylic NFC and QR review stand",
+    featured: true,
     features: [
       "Acrylic NFC + QR stand",
       "Live TapRank page",
       "Google review button",
       "Up to 3 extra links",
       "Setup included",
+      "UK delivery included",
       "No subscription",
       "1-year warranty",
     ],
   },
   {
-    title: "Custom TapRank Setup",
-    price: "£69.99",
-    note: "one-off",
+    title: "Custom TapRank Stand",
+    price: TAPRANK_COMMERCE.custom.price,
+    note: "starting price",
     label: "Custom",
     href: customMailto,
-    cta: "Start Your Custom Setup",
+    cta: TAPRANK_COMMERCE.custom.cta,
+    checkoutNote: "Enquiry required before custom production begins.",
     image: productImages.customTransparent,
     alt: "Custom branded TapRank acrylic stand",
-    featured: true,
     features: [
       "Custom stand design",
       "Business colours/logo",
@@ -224,6 +221,7 @@ const pricingCards = [
       "Google review button",
       "Menus, bookings, socials, website or WhatsApp links",
       "Setup included",
+      "Enquiry confirmed before production",
       "No subscription",
       "1-year warranty",
     ],
@@ -239,8 +237,8 @@ const demos = [
     business: "Fade Club Barbers",
     category: "Barber • Reviews • Bookings • Contact",
     rating: "4.9 (248)",
-    primary: "Leave a Google Review",
-    actions: ["View Services", "Book a Cut", "Instagram", "Call Us"],
+    primary: "Preview Google Review Action",
+    actions: ["Example Website", "Call Demo Business", "Directions"],
   },
   {
     href: "/r/restaurant-demo",
@@ -250,8 +248,8 @@ const demos = [
     business: "Ember & Vine",
     category: "Restaurant • Reviews • Menu • Bookings",
     rating: "4.8 (386)",
-    primary: "Leave a Google Review",
-    actions: ["View Menu", "Order Online", "Instagram", "Book a Table"],
+    primary: "Preview Google Review Action",
+    actions: ["Example Menu", "Booking Enquiry", "Call Demo Restaurant", "Directions"],
   },
   {
     href: "/r/salon-demo",
@@ -261,8 +259,8 @@ const demos = [
     business: "Luna Hair Studio",
     category: "Salon • Reviews • Bookings • Contact",
     rating: "4.9 (174)",
-    primary: "Leave a Google Review",
-    actions: ["View Services", "Book Appointment", "Instagram", "Call Us"],
+    primary: "Preview Google Review Action",
+    actions: ["Example Website", "Booking Enquiry", "Call Demo Salon", "Directions"],
   },
 ];
 
@@ -285,7 +283,7 @@ const faqs = [
   ],
   [
     "Can I add my own branding/logo?",
-    "Yes. Choose the Custom TapRank Setup if you want your logo, colours and a more tailored branded stand.",
+    "Yes. Choose the Custom TapRank Stand if you want your logo, colours and a more tailored branded stand.",
   ],
   [
     "Can I use it for menus, bookings, socials and reviews?",
@@ -293,17 +291,79 @@ const faqs = [
   ],
   [
     "Do you offer bulk orders?",
-    "Yes. The launch bundle is buy 2, get 1 free, and larger multi-stand orders can be quoted around your quantity, locations and design needs.",
+    "Yes. Multi-stand orders can be quoted around your quantity, locations and design needs. Use the bulk-order enquiry to tell TapRank what you need.",
   ],
   [
     "How do I order a custom stand?",
-    "Use the custom setup button and send your business name, business type, branding requirements, links and quantity. TapRank will confirm the best setup before production.",
+    "Use the custom stand enquiry button and send your business name, business type, branding requirements, links and quantity. Custom stands start from £69.99, and TapRank will confirm the setup before production.",
+  ],
+  [
+    "When will my stand be dispatched?",
+    TAPRANK_COMMERCE.dispatchPromise,
   ],
   [
     "What does the 1-year warranty cover?",
     "The warranty covers product defects or faults for one year. It does not cover deliberate damage.",
   ],
 ];
+
+const homepageStructuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.taprank.co.uk/#organization",
+      name: "TapRank",
+      url: "https://www.taprank.co.uk/",
+      description: "UK NFC and QR countertop stands connected to hosted TapRank business pages.",
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.taprank.co.uk/#website",
+      url: "https://www.taprank.co.uk/",
+      name: "TapRank",
+      publisher: { "@id": "https://www.taprank.co.uk/#organization" },
+    },
+    {
+      "@type": "Product",
+      "@id": "https://www.taprank.co.uk/#standard-stand",
+      name: TAPRANK_COMMERCE.standard.name,
+      brand: { "@id": "https://www.taprank.co.uk/#organization" },
+      category: "NFC and QR countertop stand",
+      description: "A ready-to-use acrylic NFC and QR stand connected to a hosted TapRank business page, with setup and standard UK delivery included.",
+      image: "https://www.taprank.co.uk/product/taprank-standard-stand-transparent.png",
+      offers: {
+        "@type": "Offer",
+        url: TAPRANK_COMMERCE.standard.checkoutUrl,
+        priceCurrency: "GBP",
+        price: "39.99",
+        availability: "https://schema.org/InStock",
+        shippingDetails: {
+          "@type": "OfferShippingDetails",
+          shippingDestination: { "@type": "DefinedRegion", addressCountry: "GB" },
+          shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "GBP" },
+        },
+      },
+    },
+    {
+      "@type": "Product",
+      "@id": "https://www.taprank.co.uk/#custom-stand",
+      name: TAPRANK_COMMERCE.custom.name,
+      brand: { "@id": "https://www.taprank.co.uk/#organization" },
+      category: "Custom NFC and QR countertop stand",
+      description: "An enquiry-led custom acrylic NFC and QR stand with approved business branding and a hosted TapRank business page, from £69.99.",
+      image: "https://www.taprank.co.uk/product/taprank-custom-subway-stand-transparent.png",
+      offers: {
+        "@type": "Offer",
+        url: "https://www.taprank.co.uk/#pricing",
+        priceCurrency: "GBP",
+        price: "69.99",
+        availability: "https://schema.org/InStock",
+        description: "Starting price; enquiry confirmation is required before production.",
+      },
+    },
+  ],
+};
 
 function BrandLogo({ placement = "header" }) {
   return (
@@ -319,21 +379,31 @@ function BrandLogo({ placement = "header" }) {
 
 function Reveal({ as: Tag = "div", children, className = "", delay = 0, style, ...props }) {
   const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
+  const [waiting, setWaiting] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return undefined;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisible(true);
       return undefined;
     }
+
+    if (!("IntersectionObserver" in window)) {
+      return undefined;
+    }
+
+    const bounds = node.getBoundingClientRect();
+    if (bounds.top <= window.innerHeight && bounds.bottom >= 0) {
+      return undefined;
+    }
+
+    setWaiting(true);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
+          setWaiting(false);
           observer.unobserve(entry.target);
         }
       },
@@ -347,7 +417,7 @@ function Reveal({ as: Tag = "div", children, className = "", delay = 0, style, .
   return (
     <Tag
       ref={ref}
-      className={`reveal ${visible ? "isVisible" : ""} ${className}`.trim()}
+      className={`reveal ${waiting ? "isWaiting" : "isVisible"} ${className}`.trim()}
       style={{ "--delay": `${delay}ms`, ...style }}
       {...props}
     >
@@ -480,16 +550,35 @@ function ProductSwitcher() {
   const [activeId, setActiveId] = useState(productTabs[0].id);
   const activeProduct = productTabs.find((product) => product.id === activeId) || productTabs[0];
 
+  function handleTabKeyDown(event, index) {
+    const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+    if (!keys.includes(event.key)) return;
+
+    event.preventDefault();
+    let nextIndex = index;
+    if (event.key === "ArrowLeft") nextIndex = (index - 1 + productTabs.length) % productTabs.length;
+    if (event.key === "ArrowRight") nextIndex = (index + 1) % productTabs.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = productTabs.length - 1;
+
+    setActiveId(productTabs[nextIndex].id);
+    event.currentTarget.parentElement?.querySelectorAll('[role="tab"]')[nextIndex]?.focus();
+  }
+
   return (
     <Reveal className="productSwitcher">
       <div className="productTabs" role="tablist" aria-label="TapRank product options">
-        {productTabs.map((product) => (
+        {productTabs.map((product, index) => (
           <button
             type="button"
             role="tab"
+            id={`product-tab-${product.id}`}
+            aria-controls="product-panel"
             aria-selected={activeProduct.id === product.id}
+            tabIndex={activeProduct.id === product.id ? 0 : -1}
             className={activeProduct.id === product.id ? "active" : ""}
             onClick={() => setActiveId(product.id)}
+            onKeyDown={(event) => handleTabKeyDown(event, index)}
             key={product.id}
           >
             <span>{product.tab}</span>
@@ -497,7 +586,13 @@ function ProductSwitcher() {
         ))}
       </div>
 
-      <div className={`productSwitchGrid productSwitchGrid--${activeProduct.id}`}>
+      <div
+        className={`productSwitchGrid productSwitchGrid--${activeProduct.id}`}
+        id="product-panel"
+        role="tabpanel"
+        aria-labelledby={`product-tab-${activeProduct.id}`}
+        tabIndex="0"
+      >
         <div className="productSwitchVisual">
           <div className="productOrb" aria-hidden="true" />
           <img
@@ -520,6 +615,7 @@ function ProductSwitcher() {
             ))}
           </div>
           <a className="button" href={activeProduct.href}>{activeProduct.cta} <span>→</span></a>
+          <small className="productCheckoutNote">{activeProduct.checkoutNote}</small>
         </div>
       </div>
     </Reveal>
@@ -528,7 +624,7 @@ function ProductSwitcher() {
 
 function BeforeAfterSlider() {
   const sliderRef = useRef(null);
-  const [position, setPosition] = useState(0);
+  const [position, setPosition] = useState(50);
 
   function updatePosition(clientX) {
     const bounds = sliderRef.current?.getBoundingClientRect();
@@ -569,27 +665,27 @@ function BeforeAfterSlider() {
         <div className="proofImageLayer beforeProof">
           <img
             src={productImages.googleBefore}
-            alt="Example Google business profile before TapRank with fewer reviews"
+            alt="Illustrative Google business profile without a clear counter prompt"
             width="1122"
             height="1402"
             loading="lazy"
           />
           <div className="proofCaption proofCaption--before">
-            <span>Before TapRank</span>
+            <span>Without a counter prompt</span>
             <strong>Customers leave and forget to search for you.</strong>
           </div>
         </div>
         <div className="proofImageLayer afterProof" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
           <img
             src={productImages.googleAfter}
-            alt="Example Google business profile after TapRank with stronger review proof"
+            alt="Illustrative Google business profile paired with a clear TapRank review action"
             width="1122"
             height="1402"
             loading="lazy"
           />
           <div className="proofCaption proofCaption--after">
-            <span>After TapRank</span>
-            <strong>They tap or scan while they’re still at the counter.</strong>
+            <span>With TapRank at the counter</span>
+            <strong>Give customers a clear way to tap or scan while they’re still there.</strong>
           </div>
         </div>
         <div className="comparisonDivider" style={{ left: `clamp(0px, ${position}%, 100%)` }} aria-hidden="true" />
@@ -611,7 +707,7 @@ function BeforeAfterSlider() {
           <span />
         </button>
       </div>
-      <p className="proofNote">Drag the slider to compare the idea: less friction before, clearer review action after.</p>
+      <p className="proofNote">Illustrative comparison only. TapRank makes the action easier to find; results vary by business and customer.</p>
     </Reveal>
   );
 }
@@ -661,7 +757,7 @@ function CustomStandShowcase() {
           <span>Salons</span>
           <span>Local services</span>
         </div>
-        <a className="button" href="#pricing">See Custom Stand Pricing <span>→</span></a>
+        <a className="button" href={customMailto}>{TAPRANK_COMMERCE.custom.cta} <span>→</span></a>
       </Reveal>
       <Reveal className="customStandVisual" delay={120}>
         <div className="customStandHalo" aria-hidden="true" />
@@ -679,22 +775,24 @@ function CustomStandShowcase() {
 
 function BulkOrderSection() {
   return (
-    <Reveal className="bundleBulkGrid">
-      <article className="bundleBulkCard bundleBulkCard--launch">
-        <div className="bulkStandCluster bulkStandCluster--standard" aria-hidden="true">
-          <img className="bulkStand bulkStand--one" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
-          <img className="bulkStand bulkStand--two" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
-          <img className="bulkStand bulkStand--three" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
-        </div>
-        <div className="bulkOrderCopy">
-          <span className="launchSectionTag">LAUNCH BUNDLE</span>
-          <h2>Buy 2, get 1 free.</h2>
-          <p>
-            A simple launch offer for businesses that want TapRank at the till, reception and another busy customer point.
-          </p>
-          <a className="button buttonSecondary" href={launchBundleMailto}>Ask About Launch Bundle <span>→</span></a>
-        </div>
-      </article>
+    <Reveal className={`bundleBulkGrid ${TAPRANK_COMMERCE.launchBundleEnabled ? "" : "bundleBulkGrid--single"}`.trim()}>
+      {TAPRANK_COMMERCE.launchBundleEnabled ? (
+        <article className="bundleBulkCard bundleBulkCard--launch">
+          <div className="bulkStandCluster bulkStandCluster--standard" aria-hidden="true">
+            <img className="bulkStand bulkStand--one" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
+            <img className="bulkStand bulkStand--two" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
+            <img className="bulkStand bulkStand--three" src={productImages.standardTransparent} alt="" width="1122" height="1402" loading="lazy" />
+          </div>
+          <div className="bulkOrderCopy">
+            <span className="launchSectionTag">LAUNCH BUNDLE</span>
+            <h2>Buy 2, get 1 free.</h2>
+            <p>
+              A simple launch offer for businesses that want TapRank at the till, reception and another busy customer point.
+            </p>
+            <a className="button buttonSecondary" href={launchBundleMailto}>Ask About Launch Bundle <span>→</span></a>
+          </div>
+        </article>
+      ) : null}
 
       <article className="bundleBulkCard bundleBulkCard--bulk">
         <div className="bulkStandCluster bulkStandCluster--custom" aria-hidden="true">
@@ -715,41 +813,6 @@ function BulkOrderSection() {
   );
 }
 
-function DirectOrderPanel() {
-  const orderOptions = [
-    {
-      title: "Standard Stand",
-      copy: "Ready-made TapRank stand enquiry.",
-      href: setupMailto,
-      cta: "Email About Standard",
-    },
-    {
-      title: "Custom Stand",
-      copy: "Branded stand with your logo, colours and links.",
-      href: customMailto,
-      cta: "Email About Custom",
-    },
-    {
-      title: "Bulk Orders",
-      copy: "Multiple stands for counters, venues or locations.",
-      href: bundleMailto,
-      cta: "Email About Bulk",
-    },
-  ];
-
-  return (
-    <div className="directOrderPanel">
-      {orderOptions.map((option) => (
-        <a className="directOrderOption" href={option.href} key={option.title}>
-          <span>{option.title}</span>
-          <p>{option.copy}</p>
-          <strong>{option.cta} <b>→</b></strong>
-        </a>
-      ))}
-    </div>
-  );
-}
-
 function MobileStickyCta() {
   const [visible, setVisible] = useState(false);
 
@@ -761,10 +824,10 @@ function MobileStickyCta() {
   }, []);
 
   return (
-    <a className={`mobileStickyCta ${visible ? "isVisible" : ""}`} href={TAPRANK_CONTACT.smsHref}>
+    <a className={`mobileStickyCta ${visible ? "isVisible" : ""}`} href={TAPRANK_COMMERCE.standard.checkoutUrl}>
       <span>
-        <strong>Text TapRank</strong>
-        <small>Quick product enquiry</small>
+        <strong>Buy Standard Stand — £39.99</strong>
+        <small>Secure Square checkout</small>
       </span>
       <b>→</b>
     </a>
@@ -775,17 +838,30 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>TapRank | NFC & QR Review Stands for Local Businesses</title>
+        <title>TapRank | NFC & QR Stands for Reviews, Bookings & More</title>
         <meta
           name="description"
-          content="TapRank creates NFC and QR stands that arrive fully set up and help customers review, book, follow and connect with your business in one tap."
+          content="Ready-to-use TapRank NFC and QR stands connect customers to reviews, bookings, socials and more. Setup and UK delivery included, from £39.99."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffffff" />
-        <meta property="og:title" content="TapRank | NFC & QR Review Stands for Local Businesses" />
+        <link rel="canonical" href="https://www.taprank.co.uk/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="TapRank" />
+        <meta property="og:url" content="https://www.taprank.co.uk/" />
+        <meta property="og:title" content="TapRank | NFC & QR Stands for Reviews, Bookings & More" />
         <meta
           property="og:description"
-          content="NFC + QR stands that arrive fully set up, linked to a live page for your business, and ready to place on your counter."
+          content="Ready-to-use NFC + QR stands connected to hosted TapRank business pages. Setup and UK delivery included, from £39.99."
+        />
+        <meta property="og:image" content="https://www.taprank.co.uk/product/taprank-stand-cafe-counter.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="TapRank | NFC & QR Stands for Reviews, Bookings & More" />
+        <meta name="twitter:description" content="Ready-to-use NFC + QR stands with setup and UK delivery included, from £39.99." />
+        <meta name="twitter:image" content="https://www.taprank.co.uk/product/taprank-stand-cafe-counter.jpg" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageStructuredData) }}
         />
       </Head>
 
@@ -800,7 +876,7 @@ export default function Home() {
             <a href="#faqs">FAQs</a>
             <a href="#contact">Contact</a>
           </nav>
-          <a className="button buttonSmall navCta" href={setupMailto}>Start with TapRank <span>→</span></a>
+          <a className="button buttonSmall navCta" href={TAPRANK_COMMERCE.standard.checkoutUrl}>{TAPRANK_COMMERCE.standard.cta} <span>→</span></a>
           <details className="mobileMenu">
             <summary aria-label="Open navigation"><span /><span /><span /></summary>
             <nav>
@@ -810,7 +886,7 @@ export default function Home() {
               <a href="#pricing">Pricing</a>
               <a href="#faqs">FAQs</a>
               <a href="#contact">Contact</a>
-              <a className="button" href={setupMailto}>Start with TapRank</a>
+              <a className="button" href={TAPRANK_COMMERCE.standard.checkoutUrl}>{TAPRANK_COMMERCE.standard.cta}</a>
             </nav>
           </details>
         </div>
@@ -823,15 +899,13 @@ export default function Home() {
           <div className="container launchHeroGrid">
             <Reveal className="launchHeroCopy">
               <span className="heroEyebrow">TapRank for local businesses</span>
-              <h1>One tap to your reviews, menus, bookings and socials.</h1>
-              <p>
-                A clean NFC + QR touchpoint that connects customers to your most useful business actions
-                while they are still with you.
-              </p>
+              <h1>Make it easier for customers to review, book and follow your business — right at the counter.</h1>
+              <p>A ready-to-use NFC + QR stand connected to your own TapRank page. Setup included, from £39.99.</p>
               <div className="heroActions heroActions--focused">
-                <a className="button" href={setupMailto}>Email to get started <span>→</span></a>
-                <a className="button buttonSecondary" href="#how-it-works">How it works</a>
+                <a className="button" href={TAPRANK_COMMERCE.standard.checkoutUrl}>{TAPRANK_COMMERCE.standard.cta} <span>→</span></a>
+                <a className="button buttonSecondary" href="#live-demos">See a Live Page</a>
               </div>
+              <p className="checkoutReassurance">{TAPRANK_COMMERCE.checkoutReassurance}</p>
               <div className="heroQuickContact" aria-label="Quick TapRank contact options">
                 <a href={TAPRANK_CONTACT.callHref}>Call TapRank</a>
                 <span aria-hidden="true">•</span>
@@ -920,7 +994,7 @@ export default function Home() {
             <SectionIntro
               eyebrow="PRICING"
               title="Simple one-off pricing. No subscription."
-              copy="Two clear ways to launch, both with setup included and a 1-year warranty."
+              copy="Buy the Standard Stand securely through Square or enquire about a branded Custom Stand."
             />
             <div className="pricingRefreshGrid">
               {pricingCards.map((plan, index) => (
@@ -933,35 +1007,32 @@ export default function Home() {
                     {plan.features.map((feature) => <li key={feature}>{feature}</li>)}
                   </ul>
                   <a className={`button fullButton ${plan.featured ? "" : "buttonSecondary"}`} href={plan.href}>{plan.cta}</a>
+                  <small className="pricingCheckoutNote">{plan.checkoutNote}</small>
                 </Reveal>
               ))}
             </div>
+            <Reveal className="purchaseJourney" aria-label="What happens after you buy a Standard TapRank Stand">
+              <div className="purchaseJourneyIntro">
+                <span className="launchSectionTag">WHAT HAPPENS NEXT</span>
+                <h3>From secure checkout to a stand that is ready to use.</h3>
+                <p>{TAPRANK_COMMERCE.checkoutReassurance}</p>
+              </div>
+              <ol className="purchaseJourneySteps">
+                {purchaseSteps.map((step, index) => (
+                  <li key={step}>
+                    <span>{index + 1}</span>
+                    <strong>{step}</strong>
+                  </li>
+                ))}
+              </ol>
+              <p className="purchaseDispatchNote">{TAPRANK_COMMERCE.dispatchPromise}</p>
+            </Reveal>
           </div>
         </section>
 
-        <section className="section bulkOrderSection" id="launch-bundle">
+        <section className="section bulkOrderSection" id="bulk-orders">
           <div className="container">
             <BulkOrderSection />
-          </div>
-        </section>
-
-        <section className="section orderSection" id="order">
-          <div className="container orderGrid">
-            <Reveal className="orderCopy">
-              <span className="launchSectionTag">DIRECT ORDER</span>
-              <h2>Start with a quick email and we’ll confirm the right setup.</h2>
-              <p>
-                Choose the closest enquiry below and your email will open with the useful details already laid out.
-                Add your business name, links and quantity, then send it over.
-              </p>
-              <div className="orderButtons">
-                <a className="button" href={setupMailto}>Get Your TapRank Stand <span>→</span></a>
-                <a className="button buttonSecondary" href={customMailto}>Start Your Custom Setup</a>
-              </div>
-            </Reveal>
-            <Reveal delay={100}>
-              <DirectOrderPanel />
-            </Reveal>
           </div>
         </section>
 

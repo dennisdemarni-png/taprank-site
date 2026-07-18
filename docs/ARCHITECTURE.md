@@ -11,9 +11,10 @@ Browser
 Vercel / Next.js
   |-- /                       static marketing page
   |-- /r/[slug]               statically generated known page slugs
-  |-- /r/demo                 server-rendered redirect
+  |-- /r/demo                 server-rendered redirect to /r/barber-demo
   |
   |-- lib/taprankPages.js     source-controlled demo and customer records
+  |-- lib/commerce.js         public product, price and Square checkout configuration
   |-- lib/contact.js          public TapRank sales contact values
   |-- public/*                local image/logo assets
   `-- external destinations  Google, Instagram, Maps, mail, phone, SMS
@@ -30,6 +31,7 @@ There is no application database, API layer, authentication service, CMS, queue,
 - `components/HostedTapRankPage.jsx` renders hosted business pages.
 - `lib/taprankPages.js` exports the supported demo/customer slugs and records.
 - `lib/contact.js` centralises TapRank's public sales phone and email routes.
+- `lib/commerce.js` centralises the confirmed Standard Stand Square link, current public prices, delivery reassurance, and dispatch wording.
 - `styles/globals.css` styles all pages globally.
 - `public/` stores all website images and icons.
 
@@ -42,7 +44,7 @@ The Pages Router maps files under `pages/` to URLs. `pages/r/[slug].jsx` uses `g
 3. `fallback: false` makes every other slug a 404.
 4. `getStaticProps` passes the matching static object to the hosted-page component.
 
-`pages/r/demo.jsx` uses `getServerSideProps` only to return a temporary redirect.
+`pages/r/demo.jsx` uses `getServerSideProps` only to return a temporary internal redirect to `/r/barber-demo`.
 
 ## Rendering model
 
@@ -61,9 +63,11 @@ No UI library, utility CSS framework, CSS-in-JS library, or formal component pac
 
 ## Current data flow
 
-### Marketing contact
+### Marketing checkout and contact
 
-`lib/contact.js` contains intentionally public TapRank contact values and a mailto builder. `pages/index.jsx` imports those values and routes sales buttons to `tel:`, `sms:`, and `mailto:` destinations.
+`lib/commerce.js` contains the intentionally public Square Payment Link for the Standard TapRank Stand. High-intent Standard Stand calls to action navigate to Square in the same tab. Square hosts checkout and collects payment and delivery details; TapRank does not implement a payment form or treat a future return URL as payment evidence.
+
+`lib/contact.js` contains intentionally public TapRank contact values and a mailto builder. `pages/index.jsx` retains those values for telephone, SMS, general support, custom-stand enquiries, and bulk-order enquiries.
 
 ### Hosted demo pages
 
@@ -93,6 +97,7 @@ Any future privileged data operation must therefore introduce a trusted server-s
 
 - Vercel is configured as the deployment target in `vercel.json`.
 - GitHub is the source remote.
+- Square hosts the approved Standard TapRank Stand checkout. No Square credentials or API integration are present.
 - Public page actions can link to Google, Maps, Instagram, telephone, SMS, email, and other configured URLs.
 - No third-party service is called with authenticated API credentials.
 

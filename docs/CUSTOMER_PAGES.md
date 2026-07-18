@@ -15,6 +15,8 @@ The repository currently generates three demo pages and one source-managed custo
 
 They all use `components/HostedTapRankPage.jsx` and the same shared TapRank styling. They are statically generated at build time and have no database, admin workflow, or customer ownership. Optional sections are rendered only when the record supplies their data. Unknown slugs return 404. This is not yet a production customer-page management system.
 
+Each demo record is explicit and internally consistent; demo actions use clearly demonstrative destinations rather than inheriting content from another fictional business. `/r/demo` redirects internally to `/r/barber-demo`. Demo and real customer pages remain `noindex, follow` by default. Customer-page indexing requires separate TapRank and customer approval.
+
 ## Intended public URL behaviour
 
 - Every business receives a unique permanent route: `/r/[slug]`.

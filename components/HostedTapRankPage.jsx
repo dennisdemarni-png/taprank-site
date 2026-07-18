@@ -120,6 +120,10 @@ function Chevron({ compact = false }) {
 
 export default function HostedTapRankPage({ page }) {
   const business = page;
+  const canonicalUrl = `https://www.taprank.co.uk/r/${business.slug}`;
+  const metaDescription = business.categoryLine
+    ? `${business.businessName} — ${business.categoryLine}. Customer actions on a TapRank-hosted business page.`
+    : `${business.businessName} customer actions on a TapRank-hosted business page.`;
   const openingHours = Array.isArray(business.openingHours)
     ? business.openingHours.filter((item) => item?.days && item?.hours)
     : [];
@@ -145,10 +149,17 @@ export default function HostedTapRankPage({ page }) {
     <>
       <Head>
         <title>{business.businessName} | Powered by TapRank</title>
-        <meta name="description" content={`${business.businessName} customer actions, powered by TapRank.`} />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="description" content={metaDescription} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffffff" />
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex, follow" />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="TapRank" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={`${business.businessName} | Powered by TapRank`} />
+        <meta property="og:description" content={metaDescription} />
+        {business.businessImage ? <meta property="og:image" content={`https://www.taprank.co.uk${business.businessImage}`} /> : null}
       </Head>
 
       <main className="businessLinkPage" data-slug={business.slug}>
@@ -179,7 +190,7 @@ export default function HostedTapRankPage({ page }) {
           {business.reviewUrl && (
             <a className="businessPrimaryCta" href={business.reviewUrl}>
               <ActionIcon icon="google" />
-              <strong>Leave a Google Review</strong>
+              <strong>{business.reviewLabel || "Leave a Google Review"}</strong>
               <Chevron />
             </a>
           )}

@@ -15,7 +15,7 @@ This repository contains the public marketing website, three static hosted-page 
 - pnpm lockfile and Vercel build configuration
 - Node.js 20.9 or newer
 
-There is currently no database, authentication, CMS, API route, analytics service, or checkout implementation in this repository.
+There is currently no database, authentication, CMS, API route, analytics service, custom payment form, or Square API integration. The marketing homepage links the Standard TapRank Stand directly to the approved Square-hosted checkout.
 
 ## Local setup
 
@@ -57,12 +57,12 @@ Note: `.gitignore` ignores `.env*.local`, but not every possible `.env` filename
 
 | Route | Behaviour |
 | --- | --- |
-| `/` | Static marketing homepage |
+| `/` | Static marketing homepage with direct Square checkout for the Standard TapRank Stand |
 | `/r/barber-demo` | Statically generated barber demo page |
 | `/r/restaurant-demo` | Statically generated restaurant demo page |
 | `/r/salon-demo` | Statically generated salon demo page |
 | `/r/laser-expert-pro` | Statically generated customer page |
-| `/r/demo` | Server-side temporary redirect to a generic Google search |
+| `/r/demo` | Server-side temporary redirect to `/r/barber-demo` |
 | `/r/{other-slug}` | 404 because static fallback is disabled |
 
 See [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md) for the full audit.
@@ -75,7 +75,7 @@ See [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md) for the full audit.
 
 ```text
 components/              Hosted TapRank page component
-lib/                     Static page data and public contact configuration
+lib/                     Static page data, public commerce and contact configuration
 pages/                   Next.js Pages Router pages
 public/                  Product, business, icon, and logo assets
 styles/                  Global site styling

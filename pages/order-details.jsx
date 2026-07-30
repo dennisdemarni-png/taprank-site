@@ -23,6 +23,64 @@ const formSections = [
   ["4", "Branding", "Add any visual guidance and confirm the submission."],
 ];
 
+const optionalLinkOptions = [
+  {
+    field: "websiteUrl",
+    label: "Website",
+    placeholder: "https://yourbusiness.co.uk",
+    type: "url",
+    value: "website",
+  },
+  {
+    field: "bookingUrl",
+    label: "Booking page",
+    placeholder: "https://...",
+    type: "url",
+    value: "booking",
+  },
+  {
+    field: "menuUrl",
+    label: "Menu or ordering page",
+    placeholder: "https://...",
+    type: "url",
+    value: "menu",
+  },
+  {
+    field: "instagramUrl",
+    label: "Instagram profile",
+    placeholder: "https://instagram.com/...",
+    type: "url",
+    value: "instagram",
+  },
+  {
+    field: "facebookUrl",
+    label: "Facebook page",
+    placeholder: "https://facebook.com/...",
+    type: "url",
+    value: "facebook",
+  },
+  {
+    field: "tiktokUrl",
+    label: "TikTok profile",
+    placeholder: "https://tiktok.com/@...",
+    type: "url",
+    value: "tiktok",
+  },
+  {
+    field: "whatsappNumber",
+    hint: "Include the country code, such as +44.",
+    label: "WhatsApp number",
+    placeholder: "+44...",
+    type: "tel",
+    value: "whatsapp",
+  },
+  {
+    label: "Another customer link",
+    type: "custom",
+    value: "additional",
+  },
+];
+
 function Field({
   children,
   error,
@@ -120,7 +178,9 @@ export default function OrderDetailsPage() {
   const [errors, setErrors] = useState({});
   const [generalError, setGeneralError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [linkToAdd, setLinkToAdd] = useState(optionalLinkOptions[0].value);
   const [logoName, setLogoName] = useState("");
+  const [optionalLinks, setOptionalLinks] = useState([]);
   const [success, setSuccess] = useState(null);
   const errorSummaryRef = useRef(null);
 
@@ -133,6 +193,29 @@ export default function OrderDetailsPage() {
       errorSummaryRef.current?.focus();
     }
   }, [generalError]);
+
+  const availableOptionalLinks = optionalLinkOptions.filter(
+    (option) => !optionalLinks.includes(option.value)
+  );
+
+  function addOptionalLink() {
+    if (!linkToAdd || optionalLinks.includes(linkToAdd)) return;
+
+    const nextLinks = [...optionalLinks, linkToAdd];
+    setOptionalLinks(nextLinks);
+    setLinkToAdd(
+      optionalLinkOptions.find((option) => !nextLinks.includes(option.value))
+        ?.value || ""
+    );
+  }
+
+  function removeOptionalLink(linkValue) {
+    setOptionalLinks((currentLinks) =>
+      currentLinks.filter((value) => value !== linkValue)
+    );
+
+    if (!linkToAdd) setLinkToAdd(linkValue);
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -545,79 +628,124 @@ export default function OrderDetailsPage() {
                     />
                   </div>
 
-                  <div className="orderFormGrid">
-                    <UrlInput
-                      error={errors.websiteUrl}
-                      label="Website"
-                      name="websiteUrl"
-                      placeholder="https://yourbusiness.co.uk"
-                    />
-                    <UrlInput
-                      error={errors.bookingUrl}
-                      label="Booking page"
-                      name="bookingUrl"
-                      placeholder="https://..."
-                    />
-                    <UrlInput
-                      error={errors.menuUrl}
-                      label="Menu or ordering page"
-                      name="menuUrl"
-                      placeholder="https://..."
-                    />
-                    <UrlInput
-                      error={errors.instagramUrl}
-                      label="Instagram profile"
-                      name="instagramUrl"
-                      placeholder="https://instagram.com/..."
-                    />
-                    <UrlInput
-                      error={errors.facebookUrl}
-                      label="Facebook page"
-                      name="facebookUrl"
-                      placeholder="https://facebook.com/..."
-                    />
-                    <UrlInput
-                      error={errors.tiktokUrl}
-                      label="TikTok profile"
-                      name="tiktokUrl"
-                      placeholder="https://tiktok.com/@..."
-                    />
-                    <TextInput
-                      error={errors.whatsappNumber}
-                      hint="Include the country code, such as +44."
-                      label="WhatsApp number"
-                      maxLength={40}
-                      name="whatsappNumber"
-                      optional
-                      placeholder="+44..."
-                      type="tel"
-                    />
-                  </div>
-
                   <div className="orderSubsection">
                     <div>
-                      <strong>One additional customer link</strong>
+                      <strong>Add any other links you want customers to see</strong>
                       <p>
-                        Add another useful destination such as rewards, offers
-                        or a different social profile.
+                        Choose only what you need. You can add more than one.
                       </p>
                     </div>
-                    <div className="orderFormGrid">
-                      <TextInput
-                        error={errors.additionalLinkLabel}
-                        label="Button label"
-                        maxLength={80}
-                        name="additionalLinkLabel"
+
+                    <div className="orderLinkPicker">
+                      <Field
+                        hint="Select a destination, then choose Add link."
+                        label="Link type"
+                        name="optionalLinkType"
                         optional
-                        placeholder="For example: View our rewards"
-                      />
-                      <UrlInput
-                        error={errors.additionalLinkUrl}
-                        label="Button destination"
-                        name="additionalLinkUrl"
-                        placeholder="https://..."
-                      />
+                      >
+                        {({ describedBy }) => (
+                          <select
+                            aria-describedby={describedBy}
+                            disabled={availableOptionalLinks.length === 0}
+                            id="optionalLinkType"
+                            onChange={(event) =>
+                              setLinkToAdd(event.target.value)
+                            }
+                            value={linkToAdd}
+                          >
+                            {availableOptionalLinks.length ? (
+                              availableOptionalLinks.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))
+                            ) : (
+                              <option value="">All link types added</option>
+                            )}
+                          </select>
+                        )}
+                      </Field>
+                      <button
+                        className="orderAddLinkButton"
+                        disabled={!linkToAdd}
+                        onClick={addOptionalLink}
+                        type="button"
+                      >
+                        <span aria-hidden="true">＋</span>
+                        Add link
+                      </button>
                     </div>
+
+                    {optionalLinks.length ? (
+                      <div className="orderAddedLinks">
+                        {optionalLinks.map((linkValue) => {
+                          const option = optionalLinkOptions.find(
+                            (item) => item.value === linkValue
+                          );
+
+                          if (!option) return null;
+
+                          return (
+                            <div className="orderAddedLink" key={option.value}>
+                              <div className="orderAddedLinkHeader">
+                                <strong>{option.label}</strong>
+                                <button
+                                  aria-label={`Remove ${option.label}`}
+                                  onClick={() =>
+                                    removeOptionalLink(option.value)
+                                  }
+                                  type="button"
+                                >
+                                  Remove
+                                </button>
+                              </div>
+
+                              {option.type === "custom" ? (
+                                <div className="orderFormGrid">
+                                  <TextInput
+                                    error={errors.additionalLinkLabel}
+                                    label="Button label"
+                                    maxLength={80}
+                                    name="additionalLinkLabel"
+                                    optional
+                                    placeholder="For example: View our rewards"
+                                  />
+                                  <UrlInput
+                                    error={errors.additionalLinkUrl}
+                                    label="Button destination"
+                                    name="additionalLinkUrl"
+                                    placeholder="https://..."
+                                  />
+                                </div>
+                              ) : option.type === "url" ? (
+                                <UrlInput
+                                  error={errors[option.field]}
+                                  label={option.label}
+                                  name={option.field}
+                                  placeholder={option.placeholder}
+                                />
+                              ) : (
+                                <TextInput
+                                  error={errors[option.field]}
+                                  hint={option.hint}
+                                  label={option.label}
+                                  maxLength={40}
+                                  name={option.field}
+                                  optional
+                                  placeholder={option.placeholder}
+                                  type="tel"
+                                />
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <p className="orderNoLinks">
+                        No extra links added. Your main customer action is
+                        enough if that is all you need.
+                      </p>
+                    )}
                   </div>
                 </fieldset>
 

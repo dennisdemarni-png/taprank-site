@@ -5946,7 +5946,6 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   min-height: 76px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 24px;
 }
 
@@ -5959,27 +5958,6 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   width: 100%;
   height: auto;
   display: block;
-}
-
-.orderHeaderHelp {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #60758b;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.orderHeaderHelp a {
-  min-height: 42px;
-  padding: 0 16px;
-  display: inline-flex;
-  align-items: center;
-  color: #075bd8;
-  text-decoration: none;
-  border: 1px solid #d6e4f2;
-  border-radius: 999px;
-  background: #fff;
 }
 
 .orderHero {
@@ -6377,6 +6355,99 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   font-size: 12px;
 }
 
+.orderLinkPicker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+}
+
+.orderAddLinkButton {
+  min-height: 52px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #075bd8;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+  cursor: pointer;
+  border: 1px solid #b9d2e8;
+  border-radius: 13px;
+  background: #f4f9ff;
+}
+
+.orderAddLinkButton:hover {
+  border-color: #147cff;
+  background: #eaf5ff;
+}
+
+.orderAddLinkButton:focus-visible {
+  outline: 3px solid rgba(20, 124, 255, .2);
+  outline-offset: 2px;
+}
+
+.orderAddLinkButton:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.orderAddedLinks {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.orderAddedLink {
+  padding: 18px;
+  border: 1px solid #d8e6f2;
+  border-radius: 16px;
+  background: #f8fbff;
+}
+
+.orderAddedLinkHeader {
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.orderAddedLinkHeader strong {
+  color: #102541;
+  font-size: 13px;
+}
+
+.orderAddedLinkHeader button {
+  padding: 4px;
+  color: #657b91;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.orderAddedLinkHeader button:hover,
+.orderAddedLinkHeader button:focus-visible {
+  color: #075bd8;
+}
+
+.orderNoLinks {
+  margin: 16px 0 0 !important;
+  padding: 14px 16px;
+  color: #60758b !important;
+  line-height: 1.5;
+  border: 1px dashed #cbdbea;
+  border-radius: 13px;
+  background: #fbfdff;
+}
+
 .orderFilePicker {
   min-height: 76px;
   padding: 13px;
@@ -6759,16 +6830,6 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
     width: 128px;
   }
 
-  .orderHeaderHelp > span {
-    display: none;
-  }
-
-  .orderHeaderHelp a {
-    min-height: 40px;
-    padding: 0 12px;
-    font-size: 11px;
-  }
-
   .orderHero {
     padding: 52px 0 48px;
   }
@@ -6815,8 +6876,13 @@ body { background: linear-gradient(180deg, #ffffff 0%, #f7fbff 42%, #ffffff 100%
   }
 
   .orderFormGrid,
-  .orderChoiceGrid {
+  .orderChoiceGrid,
+  .orderLinkPicker {
     grid-template-columns: 1fr;
+  }
+
+  .orderAddLinkButton {
+    width: 100%;
   }
 
   .orderSubmitRow {

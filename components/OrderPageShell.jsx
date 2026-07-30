@@ -13,10 +13,6 @@ export default function OrderPageShell({ children }) {
               height="174"
             />
           </a>
-          <div className="orderHeaderHelp">
-            <span>Need help?</span>
-            <a href={TAPRANK_CONTACT.callHref}>{TAPRANK_CONTACT.phoneDisplay}</a>
-          </div>
         </div>
       </header>
 

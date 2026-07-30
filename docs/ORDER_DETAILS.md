@@ -4,6 +4,8 @@
 
 `/order-details` collects the business information TapRank needs after a customer has purchased or agreed an order. It supports fulfilment; it is not a payment form and a submission is not evidence of payment.
 
+Customers provide one required main destination, then progressively add only the optional website, booking, menu, social, WhatsApp or custom links they need. Removing an optional link removes that field from the submitted form.
+
 The first release deliberately excludes customer accounts, an admin dashboard, analytics, Square API/webhooks and automatic payment verification.
 
 ## Data flow

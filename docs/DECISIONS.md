@@ -104,3 +104,25 @@ This log records confirmed product and architectural decisions. It does not inve
 - **Alternatives considered:** Automatically indexing all real customer pages.
 - **Consequences:** Each hosted page still receives accurate route-specific metadata and a canonical URL, but search engines are instructed not to index it.
 - **Related files or pull requests:** `components/HostedTapRankPage.jsx`, `docs/CUSTOMER_PAGES.md`.
+
+### 2026-07-28 — Supabase-backed post-checkout setup records
+
+- **Date:** 2026-07-28
+- **Decision:** Collect post-checkout business details through a server-validated `/order-details` flow and store them in private Supabase Postgres/Storage records.
+- **Status:** Accepted.
+- **Context:** Square collects payment and delivery information, but TapRank still needs the business profile, links and branding required to prepare the hosted page and stand.
+- **Reason:** A small private operating record reduces fulfilment errors without introducing customer accounts or a full admin platform.
+- **Alternatives considered:** Email-only onboarding; a client-direct public database insert; building customer accounts and an admin dashboard immediately.
+- **Consequences:** TapRank must own and configure the Supabase project, environment secrets, RLS, backups, retention and operational access. The form remains separate from payment verification.
+- **Related files or pull requests:** `pages/order-details.jsx`, `pages/api/order-details.js`, `supabase/migrations/`, `docs/ORDER_DETAILS.md`.
+
+### 2026-07-28 — Order submission does not verify Square payment
+
+- **Date:** 2026-07-28
+- **Decision:** Keep `payment_status` unverified at submission and require manual Square reconciliation before production.
+- **Status:** Accepted.
+- **Context:** The approved phase does not include Square API credentials, webhooks or automatic payment matching.
+- **Reason:** A redirect or public form can be reached without completing a genuine payment.
+- **Alternatives considered:** Trusting the redirect; adding Square API/webhooks in the same release.
+- **Consequences:** TapRank operators must match each submission to Square. Automatic verification remains separate future work.
+- **Related files or pull requests:** `pages/api/order-details.js`, `docs/ORDER_DETAILS.md`, `docs/OPERATIONS_RUNBOOK.md`.

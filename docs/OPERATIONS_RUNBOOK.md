@@ -32,6 +32,19 @@ This runbook describes the manual MVP process. Keep private order/customer recor
 26. Keep the permanent URL reserved for that business even when its links change.
 27. Follow the controlled update/rollback procedures below for future changes.
 
+## Post-checkout setup submission
+
+1. Open the new private row in Supabase and record its TapRank submission reference.
+2. Match the contact email, name, product, quantity and optional receipt reference against Square.
+3. Do not treat the form submission or Square redirect as proof of payment.
+4. Mark `payment_status` as `confirmed` only after checking the Square order.
+5. If payment cannot be matched, mark it `not_found` and contact the purchaser before production.
+6. Keep the order-contact fields private. Publish only separately supplied public business details.
+7. Open an uploaded logo only from the private `order-branding` bucket and only when needed.
+8. Verify every destination before adding it to a customer page.
+9. Progress the submission status from `new` through the appropriate fulfilment states.
+10. Follow `docs/ORDER_DETAILS.md` for environment, security, verification, backup and rollback requirements.
+
 ## Current source-managed page procedure
 
 Until an admin system exists, a production customer page requires a source and deployment change. This is a temporary operating mode.

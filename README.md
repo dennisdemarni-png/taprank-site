@@ -4,7 +4,7 @@ TapRank is a UK NFC and QR product business for local businesses. Its acrylic co
 
 Tagline: **Connect customers to what matters.**
 
-This repository contains the public marketing website, three static hosted-page demos, and the first source-managed customer page. It is an early MVP: hosted pages are currently represented by source-controlled data, not a database or admin system.
+This repository contains the public marketing website, a secure post-checkout setup form, three static hosted-page demos, and the first source-managed customer page. It is an early MVP: hosted pages are currently represented by source-controlled data, while private order-setup submissions use Supabase after the project migration and server environment are configured.
 
 ## Technical stack
 
@@ -12,10 +12,11 @@ This repository contains the public marketing website, three static hosted-page 
 - React 19.2.7
 - JavaScript and JSX
 - Custom global CSS
+- Supabase Postgres and private Storage for post-checkout setup submissions
 - pnpm lockfile and Vercel build configuration
 - Node.js 20.9 or newer
 
-There is currently no database, authentication, CMS, API route, analytics service, custom payment form, or Square API integration. The marketing homepage links the Standard TapRank Stand directly to the approved Square-hosted checkout.
+There is no authentication, CMS, admin dashboard, analytics service, custom payment form, Square API, webhook or automated payment verification. The marketing homepage links the Standard TapRank Stand directly to the approved Square-hosted checkout. `/order-details` collects setup information after purchase but does not prove payment.
 
 ## Local setup
 
@@ -33,14 +34,17 @@ Open `http://localhost:3000`.
 
 ## Environment setup
 
-The application currently references no environment variables, so no `.env.example` is required. If environment variables are introduced later:
+Copy `.env.example` to an ignored `.env.local` and configure:
 
-- document placeholders in `.env.example`;
-- keep local values in an ignored local environment file such as `.env.local`;
-- configure production values in the deployment platform;
-- never commit secrets or privileged credentials.
+| Variable | Purpose | Browser-safe |
+| --- | --- | --- |
+| `SUPABASE_URL` | Supabase project API URL | No need to expose it |
+| `SUPABASE_SECRET_KEY` | Server-only key used for private records and logo storage | **No** |
+| `ORDER_DETAILS_RATE_LIMIT_SECRET` | Long random server-only value used to hash rate-limit identifiers | **No** |
 
-Note: `.gitignore` ignores `.env*.local`, but not every possible `.env` filename. Check staged files carefully before committing environment configuration.
+The order form renders without these values, but its submission endpoint fails closed with a support message until they are configured. Never commit real values or use a privileged key in browser code.
+
+Apply the migration in `supabase/migrations/` before enabling production submissions. See [`docs/ORDER_DETAILS.md`](docs/ORDER_DETAILS.md).
 
 ## Commands
 
@@ -58,6 +62,9 @@ Note: `.gitignore` ignores `.env*.local`, but not every possible `.env` filename
 | Route | Behaviour |
 | --- | --- |
 | `/` | Static marketing homepage with direct Square checkout for the Standard TapRank Stand |
+| `/order-details` | Static, `noindex` post-checkout business setup form |
+| `/privacy` | Setup-form privacy notice |
+| `/api/order-details` | Server-only multipart submission endpoint |
 | `/r/barber-demo` | Statically generated barber demo page |
 | `/r/restaurant-demo` | Statically generated restaurant demo page |
 | `/r/salon-demo` | Statically generated salon demo page |
@@ -74,11 +81,12 @@ See [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md) for the full audit.
 ## Repository structure
 
 ```text
-components/              Hosted TapRank page component
-lib/                     Static page data, public commerce and contact configuration
-pages/                   Next.js Pages Router pages
+components/              Hosted-page and order-form layout components
+lib/                     Static page data, validation, Supabase server client and public configuration
+pages/                   Next.js Pages Router pages and secure API route
 public/                  Product, business, icon, and logo assets
 styles/                  Global site styling
+supabase/migrations/     Reviewed database, RLS, rate-limit and private-storage setup
 docs/                    Product, technical, and operating documentation
 AGENTS.md                Instructions for future coding agents
 package.json             Runtime versions and scripts
@@ -92,6 +100,7 @@ vercel.json              Vercel build settings
 - [Current repository state](docs/CURRENT_STATE.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Customer pages](docs/CUSTOMER_PAGES.md)
+- [Post-checkout setup system](docs/ORDER_DETAILS.md)
 - [Operations runbook](docs/OPERATIONS_RUNBOOK.md)
 - [Roadmap](docs/ROADMAP.md)
 - [Decision log](docs/DECISIONS.md)

@@ -2,7 +2,7 @@
 
 ## Current architecture
 
-TapRank is a single Next.js Pages Router application deployed as a marketing site plus statically generated demo pages.
+TapRank is a single Next.js Pages Router application deployed as a marketing site, post-checkout setup flow and statically generated hosted pages.
 
 ```text
 Browser
@@ -10,6 +10,9 @@ Browser
   v
 Vercel / Next.js
   |-- /                       static marketing page
+  |-- /order-details          static post-checkout setup form
+  |-- /privacy                setup privacy notice
+  |-- /api/order-details      trusted server submission boundary
   |-- /r/[slug]               statically generated known page slugs
   |-- /r/demo                 server-rendered redirect to /r/barber-demo
   |
@@ -17,21 +20,29 @@ Vercel / Next.js
   |-- lib/commerce.js         public product, price and Square checkout configuration
   |-- lib/contact.js          public TapRank sales contact values
   |-- public/*                local image/logo assets
+  |-- Supabase Postgres       private setup records
+  |-- Supabase Storage        optional private customer logos
   `-- external destinations  Google, Instagram, Maps, mail, phone, SMS
 ```
 
-There is no application database, API layer, authentication service, CMS, queue, background worker, or server-side customer-management system.
+Supabase is used only for private post-checkout setup submissions. There is no authentication service, CMS, admin dashboard, queue, background worker, dynamic customer-page database or Square API integration.
 
 ## Folder and component organisation
 
 - `pages/index.jsx` owns the marketing homepage, its section data, and most interactive homepage components.
 - `pages/_app.jsx` loads the global stylesheet and favicon metadata.
+- `pages/order-details.jsx` renders the `noindex` post-checkout form.
+- `pages/api/order-details.js` validates, rate-limits and stores private submissions.
+- `pages/privacy.jsx` explains how setup details are used.
 - `pages/r/[slug].jsx` builds public hosted-page paths from static data.
 - `pages/r/demo.jsx` performs a server-side redirect.
 - `components/HostedTapRankPage.jsx` renders hosted business pages.
 - `lib/taprankPages.js` exports the supported demo/customer slugs and records.
 - `lib/contact.js` centralises TapRank's public sales phone and email routes.
 - `lib/commerce.js` centralises the confirmed Standard Stand Square link, current public prices, delivery reassurance, and dispatch wording.
+- `lib/orderDetails.js` centralises form options and shared server validation.
+- `lib/supabaseAdmin.js` creates the server-only privileged Supabase client.
+- `supabase/migrations/` defines private onboarding records, rate limiting and branding storage.
 - `styles/globals.css` styles all pages globally.
 - `public/` stores all website images and icons.
 
@@ -53,7 +64,7 @@ The Pages Router maps files under `pages/` to URLs. `pages/r/[slug].jsx` uses `g
 - Demo redirect: evaluated server-side per request.
 - Interactions: client-side React state/effects for galleries, accordions, menus, sliders, and similar UI.
 
-There is no runtime customer record lookup. A data or slug change needs a new build and deployment.
+There is no runtime customer-page lookup. A public customer-page data or slug change still needs a new build and deployment. Private order submissions do not automatically create or publish a customer page.
 
 ## Styling system
 
@@ -85,13 +96,14 @@ The optional action-array shape can override the component's generated action li
 
 ## APIs, database, and authentication
 
-- Existing API routes: none.
-- Existing database: none.
+- Existing API routes: `POST /api/order-details`.
+- Existing database integration: private Supabase order-detail records after migration/configuration.
+- Existing private file storage: Supabase `order-branding` bucket after migration/configuration.
 - Existing authentication: none.
 - Existing authorisation/ownership rules: none.
 - Existing admin interface: none.
 
-Any future privileged data operation must therefore introduce a trusted server-side boundary; it must not place admin credentials in browser JavaScript.
+The order-details endpoint is the current trusted server boundary. Its Supabase secret key must remain server-only. Customer-page administration still needs a separately approved authentication and ownership model.
 
 ## Third-party services
 
@@ -103,7 +115,7 @@ Any future privileged data operation must therefore introduce a trusted server-s
 
 ## Environment configuration
 
-The current application references no environment variables. If future services are added, values should be documented with placeholders in `.env.example`, stored locally in `.env.local`, and configured in Vercel by environment. Server-only secrets must never use a public client prefix or be returned to the browser.
+The post-checkout endpoint requires `SUPABASE_URL`, `SUPABASE_SECRET_KEY` and `ORDER_DETAILS_RATE_LIMIT_SECRET`. Placeholders are documented in `.env.example`; real values belong in ignored `.env.local` files and Vercel environment settings. They must never use a public client prefix or be returned to the browser.
 
 ## Build and deployment
 

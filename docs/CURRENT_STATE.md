@@ -1,8 +1,8 @@
 # Current repository state
 
-Implementation snapshot: **18 July 2026**
+Implementation snapshot: **28 July 2026**
 
-PR 1 base commit: `814fafd` (`launch first customer page (#17)`)
+PR 2 base commit: `dd33e34` (`improve website conversion and demo accuracy (#18)`)
 
 This file records evidence from the repository. Proposed systems are documented separately and are not described here as existing.
 
@@ -20,13 +20,20 @@ This file records evidence from the repository. Proposed systems are documented 
 
 ```text
 components/HostedTapRankPage.jsx  Reusable public hosted-page UI
+components/OrderPageShell.jsx      Shared setup/privacy layout
 lib/commerce.js                   Public product, price and Square checkout configuration
 lib/contact.js                    Central public TapRank sales contact values
+lib/orderDetails.js               Setup-form options and validation
+lib/supabaseAdmin.js              Server-only Supabase client
 lib/taprankPages.js               Static demo business-page records
 pages/_app.jsx                    Global CSS and favicon metadata
 pages/index.jsx                   Marketing homepage and its interactions
+pages/order-details.jsx           Post-checkout setup form
+pages/privacy.jsx                 Setup privacy notice
+pages/api/order-details.js        Trusted setup-submission endpoint
 pages/r/[slug].jsx                Static hosted-page route
 pages/r/demo.jsx                  Server-rendered redirect
+supabase/migrations/              Private record, rate-limit and Storage schema
 public/                           Logos, icons, product and demo images
 styles/globals.css                All global and page styling
 vercel.json                       Vercel install/build commands
@@ -39,6 +46,9 @@ The homepage and global stylesheet remain large, coupled files. Much of the home
 | Route | Rendering | Current behaviour |
 | --- | --- | --- |
 | `/` | Static page | Marketing homepage with direct Square checkout for the Standard Stand, enquiry-led Custom Stand and bulk journeys, demos, pricing and FAQs. |
+| `/order-details` | Static page | `noindex` post-checkout form for business, link and branding details. |
+| `/privacy` | Static page | `noindex` setup-form privacy notice. |
+| `/api/order-details` | Server API | Validates, rate-limits and stores multipart setup submissions when Supabase is configured. |
 | `/r/[slug]` | Static generation | Builds only the slugs exported by `lib/taprankPages.js`; `fallback: false`. |
 | `/r/barber-demo` | Static generation | Barber demonstration page. |
 | `/r/restaurant-demo` | Static generation | Restaurant demonstration page. |
@@ -47,7 +57,7 @@ The homepage and global stylesheet remain large, coupled files. Much of the home
 | `/r/demo` | Server-side redirect | Temporary internal redirect to `/r/barber-demo`. |
 | Unknown `/r/{slug}` | 404 | No dynamic fallback or database lookup exists. |
 
-There are no API routes.
+The only API route is the server-only order-details submission endpoint.
 
 ## Hosted-page functionality
 
@@ -74,21 +84,19 @@ The stylesheet contains selectors for several historical homepage and hosted-pag
 
 ## Data, authentication, and content management
 
-- Database: none.
+- Database: Supabase Postgres integration for private order setup records; migration and environment configuration are required per deployment.
 - Authentication: none.
 - CMS: none.
 - Admin interface: none.
 - Customer accounts: none.
-- Persistent application storage: none.
+- Persistent application storage: private Supabase records and optional private logo files after configuration.
 - Analytics or event tracking: none found.
-- Checkout: outbound Square-hosted checkout for the Standard Stand; no custom payment form, Square API, webhook or payment verification.
+- Checkout: outbound Square-hosted checkout for the Standard Stand; `/order-details` does not contain a payment form and has no Square API, webhook or automatic payment verification.
 - Subscription billing: none.
 
 ## Environment variables and secrets
 
-No `process.env` references or tracked environment files were found. The current runtime needs no documented environment variable, so `.env.example` does not exist.
-
-`.gitignore` excludes `.env*.local`, but does not exclude every possible base or production `.env` filename. Future work must check staged files carefully and must never commit secrets. Deployment-platform environment configuration, if any exists independently of the code, is unknown.
+The private submission endpoint reads `SUPABASE_URL`, `SUPABASE_SECRET_KEY` and `ORDER_DETAILS_RATE_LIMIT_SECRET`. `.env.example` contains placeholders and `.gitignore` excludes real `.env*` files. The endpoint fails closed when configuration is absent.
 
 `lib/contact.js` contains business-facing phone and email values used in `tel:`, `sms:`, and `mailto:` links. They are intentionally public contact details, not secrets.
 
@@ -159,7 +167,7 @@ Those facts must be confirmed in Vercel rather than guessed.
 3. **No authentication or ownership model.** An admin/customer portal cannot be added safely without introducing these deliberately.
 4. **Build-time slug list.** Unknown customer slugs return 404 and every new slug needs a full deployment.
 5. **Demonstrative demo destinations.** Demo actions intentionally use fictional phone numbers, `example.com`, Google search previews and broad map areas rather than real merchant accounts.
-6. **No checkout-to-onboarding connection.** Square checkout is live as an outbound link, but `/order-details`, payment matching and post-checkout data capture are not implemented.
+6. **Manual payment matching.** `/order-details` captures setup information, but Square payment still needs manual confirmation before production.
 7. **No automated quality gates.** Lint, type-check, tests, accessibility tests, and end-to-end route checks are absent.
 8. **Large, coupled files.** The homepage and global stylesheet increase regression risk and make unused-code decisions difficult.
 9. **Potential unused assets/selectors.** Several public images and historical selectors appear unreferenced. They were not removed because deletion needs separate evidence and approval.
@@ -169,6 +177,9 @@ Those facts must be confirmed in Vercel rather than guessed.
 13. **Deployment ownership is undocumented.** A recovery or rollback could depend on knowledge held outside the repository.
 14. **Asset rights unknown.** The licensing/usage status of existing photos cannot be confirmed from code.
 15. **Source-managed commerce configuration.** Current prices, dispatch wording and the public Square link are intentionally centralised in source and still require review/deployment to change.
+16. **Supabase deployment is external state.** The repository defines the migration and server integration, but cannot prove a production project, environment variables, plan, region or completed migration.
+17. **No onboarding admin interface.** TapRank initially reviews and updates private submissions in the Supabase dashboard.
+18. **Storage backup gap.** Database backups do not restore deleted branding objects; a separate branding-file backup process is still required.
 
 ## Behaviour future work must preserve
 

@@ -1026,6 +1026,9 @@ export default function Home() {
                 ))}
               </ol>
               <p className="purchaseDispatchNote">{TAPRANK_COMMERCE.dispatchPromise}</p>
+              <a className="purchaseDetailsLink" href="/order-details">
+                Already purchased? Submit your setup details <span aria-hidden="true">→</span>
+              </a>
             </Reveal>
           </div>
         </section>
@@ -1109,6 +1112,11 @@ export default function Home() {
               <a href={TAPRANK_CONTACT.callHref}>Call {TAPRANK_CONTACT.phoneDisplay}</a>
               <a href={TAPRANK_CONTACT.smsHref}>Text TapRank</a>
               <a href={generalMailto}>{TAPRANK_CONTACT.email}</a>
+            </div>
+            <div>
+              <h3>Order support</h3>
+              <a href="/order-details">Submit setup details</a>
+              <a href="/privacy">Privacy notice</a>
             </div>
           </div>
         </div>

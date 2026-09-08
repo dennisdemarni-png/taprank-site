@@ -104,3 +104,32 @@ Vercel environment semantics: https://vercel.com/docs/environment-variables/syst
 
 Production approval, final Square amounts/URLs, Etsy URL and advertising analytics
 remain separate follow-up work. Preview is a design review, not launch approval.
+
+## Targeted refinement pass — 8 September 2026
+
+The established layout, typography, hero, variant selector and checkout gates are
+preserved. The tap demonstration has larger, high-contrast connected labels for
+the physical stand and hosted page. Its step transitions and reduced-motion rules
+remain. The six action tabs now show large HTML/CSS customer-action previews, with
+supplied platform imagery and native SVG utility icons. These are clearly labelled
+illustrations, not links to unrelated businesses.
+
+A concise proof section after differentiation pairs the user-supplied anonymous
+customer result (more than 4× the reviews in approximately two months) with Iryna
+S.'s individual five-star Trustpilot review from July 2026. The review text was
+provided by TapRank and matched to the public listing:
+https://uk.trustpilot.com/reviews/6a5bcd66e47e7599cd68a220
+No aggregate Trustpilot rating, TrustScore, widget, guarantee, exact before/after
+counts, or claim that this reviewer is the growth case study is introduced.
+The growth claim is supplied by TapRank, not an independently audited measurement.
+
+The three demo records now use customer-facing action labels and an explicit
+`isDemo` flag. Their disclosure appears near the footer, styled by the isolated
+`components/HostedDemo.module.css`. Destination URLs and the real Laser Expert Pro
+record are unchanged. This narrowly scoped demo refinement supersedes the earlier
+statement that all customer/demo component implementations were untouched.
+
+Mobile final-CTA stands are symmetrically framed with Google dominant. The sticky
+purchase bar is suppressed while this section is visible. The header background
+is fully opaque. Shared global CSS, checkout configuration, order APIs and
+fulfilment functionality remain unchanged in this pass.

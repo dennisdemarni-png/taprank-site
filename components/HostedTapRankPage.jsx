@@ -1,4 +1,5 @@
 import Head from "next/head";
+import demoStyles from "./HostedDemo.module.css";
 
 const lucideIconPaths = {
   menu: (
@@ -237,6 +238,7 @@ export default function HostedTapRankPage({ page }) {
             </section>
           )}
 
+          {business.isDemo && <p className={demoStyles.disclosure}>TapRank demonstration business — actions shown for illustration.</p>}
           <footer className="businessPoweredBy">
             <span>Powered by</span>
             <img src="/taprank-logo-transparent.png" alt="TapRank" width="1280" height="331" />

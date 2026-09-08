@@ -8,8 +8,8 @@ Tagline: **Connect customers to what matters.**
 
 ### Products currently sold
 
-- Standard acrylic NFC + QR countertop stand: currently £39.99.
-- Custom-designed acrylic NFC + QR countertop stand: currently £69.99.
+- Standard acrylic NFC + QR countertop stand: currently £64.99.
+- Custom-designed acrylic NFC + QR countertop stand: currently £84.99.
 - A TapRank-hosted mobile business page connected to each stand.
 
 Pricing is commercial context and may change. It must not become embedded in unrelated application logic.

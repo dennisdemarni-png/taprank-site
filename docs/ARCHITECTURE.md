@@ -1,5 +1,11 @@
 # Architecture
 
+> **Redesign branch, 8 September 2026:** The homepage conversion redesign is
+> implemented for Preview only and is not approved for production. See
+> [homepage redesign notes](HOMEPAGE_REDESIGN.md) for architecture, current
+> prices, pending checkout links, verification and production safeguards.
+> The older homepage descriptions below record the pre-redesign baseline.
+
 ## Current architecture
 
 TapRank is a single Next.js Pages Router application deployed as a marketing site, post-checkout setup flow and statically generated hosted pages.

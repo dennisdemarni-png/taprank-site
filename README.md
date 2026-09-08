@@ -1,5 +1,11 @@
 # TapRank
 
+> **Redesign branch, 8 September 2026:** The homepage conversion redesign is
+> implemented for Preview only and is not approved for production. See
+> [homepage redesign notes](docs/HOMEPAGE_REDESIGN.md) for architecture, current
+> prices, pending checkout links, verification and production safeguards.
+> The older homepage descriptions below record the pre-redesign baseline.
+
 TapRank is a UK NFC and QR product business for local businesses. Its acrylic countertop stands send customers to permanent, mobile-first TapRank pages for reviews, menus, rewards, social media, booking, contact details, offers, and other approved links.
 
 Tagline: **Connect customers to what matters.**

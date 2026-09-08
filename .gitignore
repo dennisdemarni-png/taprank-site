@@ -13,3 +13,6 @@ out/
 
 # Vercel project settings
 .vercel/
+
+# macOS folder metadata (not website assets)
+.DS_Store

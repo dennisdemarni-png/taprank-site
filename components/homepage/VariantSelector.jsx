@@ -1,0 +1,25 @@
+import { useState } from "react";
+import { checkoutFor, ETSY_URL } from "../../lib/commerce";
+import { TAPRANK_CONTACT } from "../../lib/contact";
+import { homepageEvent } from "../../lib/homepageEvents";
+import { variants } from "./content";
+import { Arrow, Eyebrow, Stand } from "./Visuals";
+import s from "./Homepage.module.css";
+export default function VariantSelector({ selected, onSelect }) {
+  const [showIncluded, setShowIncluded] = useState(true);
+  const url = checkoutFor(selected.id);
+  return <section className={s.purchaseSection} id="options" aria-labelledby="options-title"><div className={s.wrap}>
+    <div className={s.purchaseHeading}><Eyebrow>One TapRank. Make it your own.</Eyebrow><h2 id="options-title">Choose your connection.</h2><p>Four stand designs. The same simple tap-to-page experience.</p></div>
+    <div className={s.purchaseGrid} style={{ "--variant-accent": selected.accent }}>
+      <div className={s.purchaseArt}><span className={s.productBadge}>NFC + QR included</span><Stand src={selected.image} alt={`${selected.name} TapRank A7 acrylic stand${selected.id === "custom" ? " branding examples" : ""}`} className={selected.id === "custom" ? s.customProduct : ""} /><p>{selected.caption}</p><span className={s.productSpec}>A7 acrylic tabletop display · Setup included</span></div>
+      <div className={s.purchaseDetails}><p className={s.selectorLabel}>Choose your stand design</p><div className={s.variantOptions} role="group" aria-label="TapRank variants">{variants.map(variant => <button type="button" key={variant.id} aria-pressed={selected.id === variant.id} data-event="variant_selected" onClick={() => onSelect(variant)} style={{ "--option-accent": variant.accent }}><span className={s.radioMark} aria-hidden="true" /><span>{variant.name}<small>£{variant.price}</small></span></button>)}</div>
+        <div className={s.variantDescription} aria-live="polite" aria-atomic="true"><h3>{selected.name}</h3><p>{selected.description}</p><div className={s.price}>£{selected.price}<span>GBP · One-off payment</span></div></div>
+        {url ? <a className={s.button} href={url} data-event="square_checkout_click" onClick={() => homepageEvent("square_checkout_click", { variant: selected.id })}>Buy {selected.id === "custom" ? "Custom TapRank" : selected.name} <Arrow /></a> : <button className={s.button} type="button" disabled aria-describedby="checkout-note">Checkout coming soon</button>}
+        <p className={s.checkoutNote} id="checkout-note">{url ? "Secure payment with Square. Free UK delivery." : <>Online checkout for this option will be available soon. <a href={`mailto:${TAPRANK_CONTACT.email}`}>Contact TapRank</a> for help ordering.</>}</p>
+        {ETSY_URL ? <a className={s.etsyLink} href={ETSY_URL} data-event="etsy_click" onClick={() => homepageEvent("etsy_click", { variant: selected.id })}>Prefer Etsy? Shop TapRank on Etsy <Arrow /></a> : <p className={s.etsyPending}>Prefer Etsy? Shop link coming soon.</p>}
+        <div className={s.included}><button type="button" aria-expanded={showIncluded} aria-controls="included-list" onClick={() => setShowIncluded(!showIncluded)}>Everything you need is included <span aria-hidden="true">{showIncluded ? "−" : "+"}</span></button><ul id="included-list" hidden={!showIncluded}><li>TapRank-hosted business page</li><li>QR generated and configured by TapRank</li><li>NFC configured before dispatch</li><li>{selected.id === "custom" ? "Your logo, colours & tailored stand and page design" : "Standard TapRank stand and hosted-page branding"}</li><li>1-year replacement warranty</li><li>No subscription · Ready for immediate use</li></ul></div>
+        <p className={s.dispatch}>Free UK delivery <span aria-hidden="true">·</span> Dispatch within 48 hours</p>
+      </div>
+    </div>
+  </div></section>;
+}

@@ -1,5 +1,11 @@
 # Current repository state
 
+> **Redesign branch, 8 September 2026:** The homepage conversion redesign is
+> implemented for Preview only and is not approved for production. See
+> [homepage redesign notes](HOMEPAGE_REDESIGN.md) for architecture, current
+> prices, pending checkout links, verification and production safeguards.
+> The older homepage descriptions below record the pre-redesign baseline.
+
 Implementation snapshot: **28 July 2026**
 
 PR 2 base commit: `dd33e34` (`improve website conversion and demo accuracy (#18)`)

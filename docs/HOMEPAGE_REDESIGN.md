@@ -96,7 +96,7 @@ use the normal Next.js build. No production environment variables were changed.
   during this Preview review because Preview may share production credentials.
 - No standalone lint or TypeScript project/type-check script exists.
 
-Advertising analytics remain separate follow-up work; no trackers are activated.
+Meta Pixel base/PageView tracking is now explicitly approved globally. Other conversion-event tracking remains separate follow-up work.
 
 ## Targeted refinement pass — 8 September 2026
 
@@ -139,3 +139,13 @@ five customer actions. Replace this file or `assets.restaurantPage` to refresh i
 Laser Expert Pro is no longer a generic homepage image; its actual route and
 original supplied asset remain untouched. Etsy uses the exact user-approved listing;
 all four Square destinations are now approved and enabled.
+
+## Global Meta Pixel
+
+User-approved pixel `1100460359044969` is mounted once from `pages/_app.jsx` via
+`components/MetaPixel.jsx`. The standard base library loads asynchronously after
+hydration, with one PageView on full load and another on completed non-shallow
+Next page navigation. Hash links do not count as new pages. A hidden noscript
+PageView image handles browsers with JavaScript disabled. All UI routes, including
+hosted pages and order setup, share the integration. No extra customer fields or
+custom conversion events are passed by this code. Homepage event hooks stay inactive.

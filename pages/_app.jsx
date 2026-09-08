@@ -1,4 +1,5 @@
 import Head from "next/head";
+import MetaPixel from "../components/MetaPixel";
 import "../styles/globals.css";
 
 export default function App({ Component, pageProps }) {
@@ -9,6 +10,7 @@ export default function App({ Component, pageProps }) {
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </Head>
+      <MetaPixel />
       <Component {...pageProps} />
     </>
   );

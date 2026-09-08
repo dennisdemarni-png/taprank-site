@@ -1,6 +1,6 @@
-# Homepage conversion redesign — Preview only
+# Homepage conversion redesign — production approved
 
-Status: implemented on `homepage-conversion-redesign`, **not approved for production**.
+Status: user explicitly approved pushing and merging the redesign live.
 Base: `a3d15e4`, the GitHub main commit inspected on 8 September 2026.
 
 ## Experience and architecture
@@ -83,24 +83,20 @@ adapter must use fixed UI identifiers, never private order or contact informatio
 
 ## Preview safety and verification
 
-The build script runs `scripts/assert-preview.mjs` before Next. On Vercel it fails
-closed unless `VERCEL_ENV=preview`. Local production-mode builds remain allowed.
-This is a temporary safeguard until explicit production approval; remove it only
-as part of the approved launch. It does not prevent someone manually promoting an
-already-built Preview: do not promote, merge, or change production settings.
-Vercel environment semantics: https://vercel.com/docs/environment-variables/system-environment-variables
+The user explicitly approved the production merge after Preview review. The temporary
+Preview-only build guard has been removed; both Vercel Preview and Production now
+use the normal Next.js build. No production environment variables were changed.
 
 - `pnpm run build`: production compilation and generation of all existing routes.
 - `pnpm run test:homepage`: pricing, missing-checkout gates, asset existence and
-  the production-build safeguard.
+  exact approved checkout destinations.
 - Browser QA: desktop and mobile, four variants, action previews, demo controls,
   FAQs, navigation, missing-checkout states and responsive overflow.
 - Runtime route checks use GET only. API POSTs and real purchases are prohibited
   during this Preview review because Preview may share production credentials.
 - No standalone lint or TypeScript project/type-check script exists.
 
-Production approval and advertising analytics
-remain separate follow-up work. Preview is a design review, not launch approval.
+Advertising analytics remain separate follow-up work; no trackers are activated.
 
 ## Targeted refinement pass — 8 September 2026
 

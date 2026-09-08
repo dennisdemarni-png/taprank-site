@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import test from 'node:test';
-import { spawnSync } from 'node:child_process';
 // Load dependency-free public configuration without altering the project's module mode.
 const load = path => import(`data:text/javascript;base64,${Buffer.from(readFileSync(new URL(path, import.meta.url))).toString('base64')}`);
 const { CHECKOUTS, checkoutFor, EXISTING_STANDARD_CHECKOUT_URL, ETSY_URL } = await load('../lib/commerce.js');
@@ -28,10 +27,4 @@ test('Google defaults and all four offers use the approved current GBP prices', 
 test('all referenced approved assets exist with exact case and filename', () => {
   const paths = [assets.logo, assets.whiteLogo, assets.restaurantPage, assets.spacePage, assets.video, ...Object.values(assets.platforms), ...variants.map(v => v.image), ...actions.flatMap(a => [a.image, a.extraImage].filter(Boolean))];
   for (const path of paths) assert.ok(existsSync(new URL(`../public${path}`, import.meta.url)), path);
-});
-test('unapproved Vercel production builds fail while Preview and local builds are allowed', () => {
-  for (const [vercel, target, status] of [['1', 'production', 1], ['1', '', 1], ['1', 'preview', 0], ['', '', 0]]) {
-    const result = spawnSync(process.execPath, ['scripts/assert-preview.mjs'], { env: { ...process.env, VERCEL: vercel, VERCEL_ENV: target } });
-    assert.equal(result.status, status, `${vercel}/${target}`);
-  }
 });

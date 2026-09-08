@@ -38,7 +38,7 @@
 .menuButton, .mobileNav { display: none; }
 .hero { display: grid; grid-template-columns: .93fr 1.07fr; padding-top: 65px; }
 .heroCopy { position: relative; z-index: 2; padding: 12px 0 52px; }
-.home h1 { font-size: clamp(58px, 6.25vw, 87px); line-height: .99; letter-spacing: -.067em; margin-bottom: 25px; }
+.home h1 { font-size: clamp(58px, 6.25vw, 87px); line-height: .99; letter-spacing: -.055em; margin-bottom: 25px; }
 .home .lead { max-width: 430px; font-size: 16px; color: var(--muted); line-height: 1.8; }
 .heroButtons { display: flex; gap: 26px; align-items: center; margin-top: 29px; }
 .home .heroPrice { margin-top: 19px; font-size: 13px; }
@@ -216,11 +216,11 @@
 .finalSection .lightButton { margin-block: 30px 25px; }
 .finalSection .trustLine { color: #c7d1e4; font-size: 10px; gap: 8px 13px; }
 .finalSection .trustLine li::before { color: #94b4ff; }
-.finalStands { display: flex; position: relative; align-items: center; height: 350px; }
-.finalStands .stand { width: 65%; flex-shrink: 0; margin-left: -23%; transform: rotate(-9deg); }
-.finalStands .stand:first-child { margin-left: -7%; }
-.finalStands .stand:nth-child(2) { z-index: 2; transform: translateY(-16px); }
-.finalStands .stand:nth-child(3) { transform: rotate(9deg); }
+.finalStands { position: relative; width: min(100%, 550px); min-width: 0; margin-inline: auto; aspect-ratio: 1.45; }
+.finalStands .stand { position: absolute; width: 48%; top: 9%; margin: 0; }
+.finalStands .stand:first-child { left: 5%; transform: rotate(-7deg); }
+.finalStands .stand:nth-child(2) { left: 26%; z-index: 2; transform: translateY(-8px) scale(1.08); }
+.finalStands .stand:nth-child(3) { left: 47%; transform: rotate(7deg); }
 .footer { padding: 55px 0 22px; }
 .footerGrid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; }
 .footerGrid > div { display: flex; flex-direction: column; align-items: flex-start; }
@@ -270,7 +270,7 @@
   .mobileNav a { padding: 12px 8px; font-size: 14px; }
   .hero { padding-top: 33px; grid-template-columns: 1fr; }
   .heroCopy { padding: 0; }
-  .home h1 { font-size: clamp(51px, 10.5vw, 70px); letter-spacing: -.06em; margin-bottom: 18px; }
+  .home h1 { font-size: clamp(51px, 10.5vw, 70px); letter-spacing: -.05em; margin-bottom: 18px; }
   .home h1 br:first-child { display: initial; }
   .home .lead { max-width: 480px; font-size: 14px; line-height: 1.7; }
   .heroButtons { margin-top: 22px; gap: 23px; }
@@ -375,7 +375,7 @@
   .faq details > p { font-size: 12px; }
   .finalSection { padding: 50px 0 20px; }
   .finalGrid { grid-template-columns: 1fr; gap: 20px; }
-  .finalStands { width: min(450px, 100%); margin: auto; height: 270px; }
+  .finalStands { width: min(450px, 100%); margin: auto; }
   .finalSection .trustLine { font-size: 9px; }
   .footer { padding: 35px 0 100px; }
   .footerGrid { grid-template-columns: 1fr 1fr; gap: 30px; }
@@ -399,7 +399,7 @@
   .demoVisual { min-height: 320px; }
   .customArt { min-height: 290px; }
   .customCaption { bottom: 4px; }
-  .finalStands { height: 240px; }
+
 }
 @media (prefers-reduced-motion: reduce) {
   .home *, .home *::before, .home *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
@@ -504,11 +504,7 @@
   .resultProof, .reviewProof { padding: 28px; }
   .resultNumber { font-size: 94px; }
   .reviewProof blockquote p:first-child { font-size: 25px; }
-  .finalStands { height: clamp(245px, 72vw, 320px); }
-  .finalStands .stand { position: absolute; width: 60%; top: 14px; margin: 0; }
-  .finalStands .stand:first-child { left: -5%; margin: 0; transform: rotate(-7deg); }
-  .finalStands .stand:nth-child(2) { left: 20%; transform: translateY(-8px) scale(1.08); }
-  .finalStands .stand:nth-child(3) { left: 45%; transform: rotate(7deg); }
+
 }
 @media (max-width: 380px) {
   .demoVisual { min-height: 380px; }
@@ -517,3 +513,8 @@
   .liveActionPreview { padding: 20px 13px; }
   .customerAction strong { font-size: 20px; }
 }
+
+/* The current route capture needs no zoom or baked-in device frame. */
+.phone.demoPagePhone { aspect-ratio: 390 / 844; border: 5px solid #172239; background: #fff; box-shadow: 0 15px 25px #06132925; }
+.phone.demoPagePhone img { transform: none; object-fit: contain; filter: none; }
+.finalStands .stand img { transform: none; }

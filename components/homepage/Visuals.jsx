@@ -8,8 +8,8 @@ export function Logo({ white = false }) {
 export function Stand({ src = assets.google, alt = "TapRank Google Review NFC and QR acrylic tabletop stand", priority = false, className = "" }) {
   return <div className={`${s.stand} ${className}`}><Image src={src} alt={alt} fill sizes="(max-width: 600px) 90vw, (max-width: 1000px) 55vw, 600px" priority={priority} /></div>;
 }
-export function Phone({ src = assets.laserPage, alt = "Laser Expert Pro TapRank-hosted page example with review and Instagram links", className = "", priority = false }) {
-  return <div className={`${s.phone} ${className}`}><Image src={src} alt={alt} fill sizes="(max-width: 600px) 200px, 320px" priority={priority} /></div>;
+export function Phone({ src = assets.restaurantPage, alt = "Restaurant TapRank page example with Google reviews, menu, bookings, calling and directions", className = "", priority = false }) {
+  return <div className={`${s.phone} ${src === assets.restaurantPage ? s.demoPagePhone : ""} ${className}`}><Image src={src} alt={alt} fill sizes="(max-width: 600px) 200px, 320px" priority={priority} /></div>;
 }
 export function Eyebrow({ children }) { return <p className={s.eyebrow}>{children}</p>; }
 export function TrustLine() {

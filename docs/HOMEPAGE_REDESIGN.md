@@ -51,28 +51,25 @@ Square destination when `approved` is true; it never falls back to another varia
 
 | Variant | URL status | Enabled |
 | --- | --- | --- |
-| Google Review | User-supplied Square placeholder; user says price is not correct yet | No |
-| Instagram | TODO: approved destination required | No |
-| Tripadvisor | TODO: approved destination required | No |
-| Custom | TODO: approved destination required | No |
+| Google Review | https://square.link/u/kbq7PFVV | Yes |
+| Instagram | https://square.link/u/Nr0kuTQ2 | Yes |
+| Tripadvisor | https://square.link/u/fuQpb9Eo | Yes |
+| Custom | https://square.link/u/tzzKvksd | Yes |
 
-Confirm the supplied placeholder's product/variant and £64.99 amount before
-approving Google checkout. Configure the other exact variant destinations and
-prices separately. The previous Standard `square.link` URL is retained as
-`EXISTING_STANDARD_CHECKOUT_URL`; it is not used by the redesigned purchase UI.
-Missing checkouts show an unavailable purchase button and a contact link.
+All four exact destinations are explicitly approved by TapRank. Selecting a variant
+updates the primary Square link. The mobile Choose and final CTA return to the
+selector without resetting the selected variant. No purchases were made in QA.
+Unknown or unapproved future destinations still fail closed.
 
-No approved Etsy destination was found. `ETSY_URL` is null. The lower-emphasis
-Etsy line is ready to become a link when the user supplies the approved URL.
-Do not invent a shop address. No purchases or order submissions were made in QA.
+The user-approved Etsy listing is configured in `ETSY_URL` and displayed as a
+lower-emphasis secondary link. Square remains the primary purchase route. No purchases or order submissions were made in QA.
 
 ## Supplied assets
 
 The exact directory is `public/Assets/redesign/` (capital A). Original images and
 video are committed intact, with their existing names. Consult its README first.
 The file labelled Restaurant actually depicts Space Jump; the redesign uses the
-correctly named Space Jump and Laser Expert Pro examples, plus supplied restaurant
-action screenshots. Custom compositions are labelled as branding examples, not
+correctly named Space Jump example and a current restaurant demo route capture. Custom compositions are labelled as branding examples, not
 endorsements. The video shows an older physical stand and is labelled accordingly.
 Current stand PNGs and TapRank logos remain the source of truth.
 
@@ -102,7 +99,7 @@ Vercel environment semantics: https://vercel.com/docs/environment-variables/syst
   during this Preview review because Preview may share production credentials.
 - No standalone lint or TypeScript project/type-check script exists.
 
-Production approval, final Square amounts/URLs, Etsy URL and advertising analytics
+Production approval and advertising analytics
 remain separate follow-up work. Preview is a design review, not launch approval.
 
 ## Targeted refinement pass — 8 September 2026
@@ -133,3 +130,16 @@ Mobile final-CTA stands are symmetrically framed with Google dominant. The stick
 purchase bar is suppressed while this section is visible. The header background
 is fully opaque. Shared global CSS, checkout configuration, order APIs and
 fulfilment functionality remain unchanged in this pass.
+
+## Small visual corrections
+
+Hero tracking is slightly loosened without changing type size or line breaks.
+The final three-stand group uses a bounded, proportional stage with symmetric
+insets that accommodate rotation, on desktop and mobile.
+
+The default homepage phone now uses `restaurant-demo-homepage.jpg`, captured from
+the unchanged `/r/restaurant-demo` production render at 390 × 844. This shows all
+five customer actions. Replace this file or `assets.restaurantPage` to refresh it.
+Laser Expert Pro is no longer a generic homepage image; its actual route and
+original supplied asset remain untouched. Etsy uses the exact user-approved listing;
+all four Square destinations are now approved and enabled.

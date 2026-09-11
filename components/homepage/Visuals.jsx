@@ -13,5 +13,5 @@ export function Phone({ src = assets.restaurantPage, alt = "Restaurant TapRank p
 }
 export function Eyebrow({ children }) { return <p className={s.eyebrow}>{children}</p>; }
 export function TrustLine() {
-  return <ul className={s.trustLine}><li>Free UK delivery</li><li>No subscription</li><li>Dispatch within 48 hours</li></ul>;
+  return <ul className={s.trustLine}><li>Free UK delivery</li><li>No subscription</li><li>Dispatch within 48 hours of receiving your details</li></ul>;
 }

@@ -132,3 +132,9 @@ Google Reviews are TapRank's primary use case, but Instagram and Tripadvisor sho
 The website should be conversion-focused, visually clear and product-led.
 
 Do not add unnecessary features, decorative clutter or invented product functionality.
+## Web demo derivatives
+
+`Video/taprank-demo-web.mp4` is the web-optimised H.264 copy of the approved
+current-design demonstration, with `Video/taprank-demo-poster.jpg` extracted from
+that same video. Originals remain intact. The homepage loads the movie only on
+request, with native controls and no autoplay.

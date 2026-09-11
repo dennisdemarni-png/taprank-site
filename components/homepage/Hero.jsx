@@ -8,15 +8,15 @@ export default function Hero() {
     <section className={`${s.wrap} ${s.hero}`} aria-labelledby="hero-title" id="hero">
       <div className={s.heroCopy}>
         <Eyebrow>Small stand. More possibilities.</Eyebrow>
-        <h1 id="hero-title">Turn happy<br />customers<br /><em>into action.</em></h1>
-        <p className={s.lead}>The NFC + QR tabletop stand that connects your customers to reviews, socials, bookings and more. One tap. Your business, at their fingertips.</p>
-        <div className={s.heroButtons}><a className={s.button} href="#options" data-event="hero_buy_click" onClick={() => homepageEvent("hero_buy_click")}>Buy TapRank <Arrow /></a><a className={s.textLink} href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a></div>
+        <h1 id="hero-title">More reviews.<br />More followers.<br /><em>One simple tap.</em></h1>
+        <p className={s.lead}>An NFC + QR tabletop stand. Customers tap or scan to open your business page for reviews, socials, bookings and more.</p>
+        <div className={s.heroButtons}><a className={s.button} href="#options" data-event="hero_buy_click" onClick={() => homepageEvent("hero_buy_click")}>Buy TapRank <Arrow /></a><a className={s.textLink} href="#watch-demo">Watch an 8-second demo <span aria-hidden="true">↓</span></a></div>
         <p className={s.heroPrice}>From <strong>£64.99</strong> <span>· One-off payment</span></p>
       </div>
       <div className={s.heroVisual}>
         <div className={s.heroDisc} aria-hidden="true" />
         <div className={s.heroClassicStand}><Stand priority src={assets.googleClassic} alt="Google Review Classic design TapRank stand" /><span>Classic design <small>Sold out</small></span></div>
-        <div className={s.heroCurrentStand}><Stand priority src={assets.google} alt="Google Review Current design TapRank stand" /><span>Current design</span></div>
+        <div className={s.heroCurrentStand}><Stand priority src={assets.google} alt="Google Review Current design TapRank stand" /><span>Current design <small>Available now</small></span></div>
         <div className={s.heroPhone}><Phone priority /><span>Your TapRank page</span></div>
         <div className={s.tapConnector} aria-hidden="true"><span>One tap opens it all</span><svg viewBox="0 0 160 80"><path d="M5 60 Q70 90 145 12 M125 12 L145 12 L144 32" /></svg></div>
         <span className={s.productFootnote}>A7 acrylic · NFC + QR · Ready to use</span>

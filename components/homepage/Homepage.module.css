@@ -100,7 +100,7 @@
 .videoRow p { color: #adb9ce; font-size: 12px; margin-top: 3px; }
 .videoRow .outlineButton { font-size: 13px; min-height: 46px; white-space: nowrap; }
 .videoPanel { padding: 32px 0 0; text-align: center; }
-.videoPanel video { display: block; max-height: 620px; width: min(100%, 650px); background: #091020; margin: auto; }
+.videoPanel video { display: block; aspect-ratio: 9 / 16; height: auto; width: min(100%, 349px); object-fit: contain; background: #091020; margin: auto; }
 .videoPanel p { color: #c1cce0; font-size: 13px; max-width: 650px; margin: 16px auto 0; }
 .problem { padding-block: 115px; text-align: center; }
 .problem h2 { font-size: clamp(32px, 4vw, 55px); }
@@ -547,4 +547,29 @@
  .heroVisual .heroPhone { width: 25%; right: 0; top: 70px; }
  .heroClassicStand > span, .heroCurrentStand > span { font-size: 10px; }
  .heroClassicStand small { font-size: 9px; }
+}
+
+/* Conversion refinement: reveal the product early and keep buying within reach. */
+.heroCurrentStand small { display: block; color: #1755ef; font-size: 10px; margin-top: 3px; }
+.home .setupNote { background: #edf2fb; border-left: 2px solid var(--blue); padding: 12px 15px; font-size: 13px; line-height: 1.65; margin-top: 16px; }
+.setupNote strong { display: block; }
+.videoRow { scroll-margin-top: 100px; }
+@media (max-width: 760px) {
+  .hero { padding-top: 22px; }
+  .heroCopy { display: contents; }
+  .heroCopy > .eyebrow { order: 0; margin-bottom: 12px; }
+  .heroCopy h1 { order: 1; font-size: clamp(39px, 9.5vw, 65px); margin-bottom: 14px; }
+  .heroCopy .lead { order: 2; font-size: 13px; line-height: 1.6; }
+  .heroVisual { order: 3; margin-top: 12px; min-height: 320px; }
+  .heroCopy .heroButtons { order: 4; margin-top: 6px; flex-wrap: wrap; gap: 8px 18px; }
+  .heroCopy .heroPrice { order: 5; margin: 10px 0 18px; }
+  .heroBottom { order: 6; }
+  .purchaseArt { order: 6; }
+  .purchaseDetails .designSelector { order: 2; }
+  .purchaseDetails .variantDescription { order: 3; min-height: 0; padding: 10px 0; }
+  .variantDescription p { min-height: 0; }
+  .purchaseDetails > .included, .purchaseDetails > .dispatch { order: 7; }
+  .purchaseDetails > .button { gap: 12px; }
+  .home .setupNote { margin-top: 0; }
+  .purchaseSection { padding-bottom: 100px; }
 }

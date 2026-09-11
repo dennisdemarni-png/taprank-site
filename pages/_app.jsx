@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { Analytics } from "@vercel/analytics/next";
 import MetaPixel from "../components/MetaPixel";
 import "../styles/globals.css";
 
@@ -12,6 +13,7 @@ export default function App({ Component, pageProps }) {
       </Head>
       <MetaPixel />
       <Component {...pageProps} />
+      <Analytics />
     </>
   );
 }

@@ -25,7 +25,7 @@ test('Google defaults and all four offers use the approved current GBP prices', 
   assert.ok(!/39\.99|69\.99/.test(JSON.stringify({variants, faqs})));
 });
 test('all referenced approved assets exist with exact case and filename', () => {
-  const paths = [assets.logo, assets.whiteLogo, assets.googleClassic, assets.restaurantPage, assets.spacePage, assets.video, ...Object.values(assets.platforms), ...variants.map(v => v.image), ...actions.flatMap(a => [a.image, a.extraImage].filter(Boolean))];
+  const paths = [assets.logo, assets.whiteLogo, assets.googleClassic, assets.restaurantPage, assets.spacePage, assets.video, assets.videoPoster, ...Object.values(assets.platforms), ...variants.map(v => v.image), ...actions.flatMap(a => [a.image, a.extraImage].filter(Boolean))];
   for (const path of paths) assert.ok(existsSync(new URL(`../public${path}`, import.meta.url)), path);
 });
 
@@ -38,4 +38,24 @@ test('Google New Design defaults while Classic and unknown designs cannot reach 
   assert.equal(checkoutFor('google', 'classic'), null);
   assert.equal(checkoutFor('google', 'unknown'), null);
   assert.equal(CHECKOUTS.google.classic.url, null);
+});
+
+
+test('storefront tracking keeps checkout starts distinct from purchases and excludes private fields', async () => {
+  const { homepageEvent } = await load('../lib/homepageEvents.js');
+  const calls = [];
+  globalThis.window = { location: { pathname: '/' }, fbq: (...args) => calls.push(args) };
+  try {
+    for (const variant of ['google', 'instagram', 'tripadvisor', 'custom']) homepageEvent('square_checkout_click', { variant, email: 'private@example.com' });
+    assert.deepEqual(calls.map(c => c[2].value), [64.99, 64.99, 64.99, 84.99]);
+    assert.ok(calls.every(c => c[1] === 'InitiateCheckout' && !('email' in c[2])));
+    homepageEvent('square_checkout_click', { variant: 'google', design: 'classic' });
+    homepageEvent('Purchase', { variant: 'google' });
+    window.location.pathname = '/r/restaurant-demo';
+    homepageEvent('variant_selected', { variant: 'google' });
+    assert.equal(calls.length, 4);
+    window.location.pathname = '/';
+    window.fbq = () => { throw Error('blocked'); };
+    assert.doesNotThrow(() => homepageEvent('hero_buy_click'));
+  } finally { delete globalThis.window; }
 });

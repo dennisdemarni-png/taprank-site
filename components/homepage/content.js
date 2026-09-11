@@ -10,7 +10,8 @@ export const assets = {
   restaurantPage: `${root}/Hosted pages/restaurant-demo-homepage.jpg`,
   spacePage: `${root}/Hosted pages/Spacejump web design showcase on phone.png`,
   // The supplied Restaurant file also depicts Space Jump; do not mislabel it.
-  video: `${root}/Video/Product Video (New Design).mp4`,
+  videoPoster: `${root}/Video/taprank-demo-poster.jpg`,
+  video: `${root}/Video/taprank-demo-web.mp4`,
   platforms: { google: `${root}/Platform logos/Google.PNG`, instagram: `${root}/Platform logos/Instagram.PNG`, tripadvisor: `${root}/Platform logos/Tripadvisor.PNG` },
 };
 export const googleDesigns = [
@@ -39,7 +40,7 @@ export const faqs = [
   ["What’s the difference between Standard and Custom?", "Standard is £64.99: choose Google Review, Instagram or Tripadvisor, with the standard TapRank-hosted page design. Custom Logo + Branding is £84.99 and includes your logo, colours and tailored stand design, plus a custom-branded hosted page."],
   ["Can I change the links later?", "Yes. Contact TapRank to arrange a link update. Your stand points to a permanent TapRank page, so changing destinations does not require reprinting the QR code or reprogramming the NFC. Updates are managed by TapRank."],
   ["Is there a monthly subscription?", "No monthly subscription is required. Your one-off purchase includes the stand, setup and TapRank-hosted business page."],
-  ["How quickly is it dispatched?", "Dispatch is within 48 hours, with free UK delivery. Dispatch is when your order leaves us; it is not a promise of delivery within 48 hours."],
+  ["How quickly is it dispatched?", "We dispatch within 48 hours of receiving your business details, with free UK delivery. Dispatch is when your order leaves us; it is not a promise of delivery within 48 hours."],
   ["What warranty is included?", "Every TapRank includes a 1-year replacement warranty. Contact TapRank with your order details if you need help with a replacement."],
   ["Can I order multiple stands?", "Yes. Contact TapRank with your quantity, locations and branding needs for a multiple-stand enquiry."],
 ];

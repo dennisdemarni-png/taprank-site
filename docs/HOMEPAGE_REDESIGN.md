@@ -171,3 +171,27 @@ The hero now displays both Google physical stands together, labelled Current des
 and Classic design (sold out). It contains no design selector. The purchase section
 retains the sole selector, using those same labels. Internal `new`/`classic` IDs and
 checkout mappings are preserved; Current design remains the default.
+
+## Conversion refinement — September 11
+
+Approved implementation following the live conversion audit; customer-proof changes
+are excluded pending business permission. Mobile shows the two stands and demo phone
+before the hero purchase controls. Clearer outcome copy, shorter explanation and an
+early eight-second video link retain the existing design language. Mobile purchase
+controls precede the large product render; the sticky bar uses the selected approved
+Square URL and hides when the actual checkout button or final CTA is visible. Classic
+remains sold out and offers an explicit switch to Current design. Setup reassurance
+now sits beside checkout. The user confirmed the 48-hour dispatch period starts when business details are
+received; homepage reassurance, ordering copy and FAQ now say so.
+
+The supplied original video is preserved. A 720-resolution H.264 MP4 web derivative
+and extracted JPEG poster serve the demonstration, mounted only on request with no
+autoplay and preload none. No dependencies were added.
+
+The approved existing Meta integration now records a separate storefront_view on
+homepage visits and allowlisted homepage interactions. Square clicks send
+InitiateCheckout with the selected product, GBP price and optional Google design.
+They never send Purchase. Order fields, contact details and arbitrary event context
+are excluded. Hosted pages cannot emit these homepage interactions. Confirmed sales
+still require a separate Square payment/webhook integration and Events Manager
+receipt needs account-side verification. No Square or fulfilment configuration changed.

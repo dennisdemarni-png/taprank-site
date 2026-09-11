@@ -7,6 +7,7 @@ import VariantSelector from "./VariantSelector";
 import { CustomShowcase, FAQ, FinalCTA, Ordering, TrustStrip } from "./ClosingSections";
 import { variants, googleDesigns } from "./content";
 import { Arrow, Logo } from "./Visuals";
+import { checkoutFor } from "../../lib/commerce";
 import { homepageEvent } from "../../lib/homepageEvents";
 import { TAPRANK_CONTACT } from "../../lib/contact";
 import s from "./Homepage.module.css";
@@ -14,7 +15,7 @@ function MobilePurchase({ selected, googleDesign }) {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const hero = document.getElementById("hero");
-    const options = document.getElementById("options");
+    const options = document.getElementById("purchase-checkout");
     const finalCta = document.getElementById("final-cta");
     if (!hero || !options || !window.IntersectionObserver) return;
     let heroPassed = false;
@@ -31,8 +32,9 @@ function MobilePurchase({ selected, googleDesign }) {
     observer.observe(hero); observer.observe(options);
     if (finalCta) observer.observe(finalCta);
     return () => observer.disconnect();
-  }, []);
-  return visible ? <div className={s.mobileSticky}><span><strong>{selected.name}{selected.id === "google" ? ` · ${googleDesign.name}` : ""}</strong><small>{selected.id === "google" && googleDesign.soldOut ? "Sold out" : `£${selected.price} · Free UK delivery`}</small></span><a className={s.button} href="#options">Choose <Arrow /></a></div> : null;
+  }, [googleDesign.soldOut, selected.id]);
+  const url = checkoutFor(selected.id, googleDesign.id);
+  return visible ? <div className={s.mobileSticky}><span><strong>{selected.name}{selected.id === "google" ? ` · ${googleDesign.name}` : ""}</strong><small>{selected.id === "google" && googleDesign.soldOut ? "Sold out" : `£${selected.price} · Free UK delivery`}</small></span><a className={s.button} href={url || "#options"} onClick={() => url && homepageEvent("square_checkout_click", { variant: selected.id, ...(selected.id === "google" ? { design: googleDesign.id } : {}) })}>{url ? "Buy now" : "See options"} <Arrow /></a></div> : null;
 }
 export default function Homepage() {
   const [selected, setSelected] = useState(variants[0]);

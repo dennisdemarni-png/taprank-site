@@ -532,3 +532,19 @@
 
 /* Current renders have tighter transparent bounds than Classic. */
 .home .stand.currentStand img { transform: none; }
+
+/* Both physical Google designs are visible immediately; selection stays below. */
+.heroClassicStand, .heroCurrentStand { position: absolute; text-align: center; }
+.heroClassicStand { width: 54%; left: -6%; top: 95px; transform: rotate(-7deg); }
+.heroCurrentStand { width: 64%; left: 18%; top: 25px; transform: rotate(-5deg); z-index: 1; }
+.heroClassicStand > span, .heroCurrentStand > span { display: block; font-size: 12px; color: #344562; transform: rotate(5deg); }
+.heroClassicStand small { display: block; font-size: 10px; color: #65718a; margin-top: 3px; }
+.heroVisual .heroPhone { width: 25%; right: 0; top: 100px; z-index: 2; }
+.heroVisual .tapConnector { display: none; }
+@media (max-width: 760px) {
+ .heroClassicStand { width: 54%; left: -5%; top: 60px; }
+ .heroCurrentStand { width: 64%; left: 18%; top: 15px; }
+ .heroVisual .heroPhone { width: 25%; right: 0; top: 70px; }
+ .heroClassicStand > span, .heroCurrentStand > span { font-size: 10px; }
+ .heroClassicStand small { font-size: 9px; }
+}

@@ -518,3 +518,17 @@
 .phone.demoPagePhone { aspect-ratio: 390 / 844; border: 5px solid #172239; background: #fff; box-shadow: 0 15px 25px #06132925; }
 .phone.demoPagePhone img { transform: none; object-fit: contain; filter: none; }
 .finalStands .stand img { transform: none; }
+
+/* Google remains one product, with two recognisable design choices. */
+.heroDesign { grid-column: 2; padding: 0 25px 24px; }
+.heroDesign > p, .designSelector > p { font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+.designOptions { display: flex; gap: 10px; }
+.designOptions button { flex: 1; display: flex; align-items: center; gap: 9px; padding: 7px 12px; border: 1px solid #d5ddea; border-radius: 8px; background: #fff; color: #162744; text-align: left; font: inherit; font-size: 13px; cursor: pointer; }
+.designOptions button[aria-pressed='true'] { border-color: #1755ef; box-shadow: inset 0 0 0 1px #1755ef; background: #f4f7ff; }
+.designOptions img { width: 65px; height: 65px; object-fit: contain; }
+.designOptions small { display: block; color: #677184; font-size: 11px; margin-top: 3px; }
+.designSelector { margin-top: 20px; }
+@media (max-width: 760px) { .heroDesign { grid-column: 1; padding: 0 0 24px; } .designOptions button { padding: 6px; gap: 5px; font-size: 12px; } .designOptions img { width: 55px; height: 62px; } }
+
+/* Current renders have tighter transparent bounds than Classic. */
+.home .stand.currentStand img { transform: none; }

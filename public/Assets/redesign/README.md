@@ -1,3 +1,14 @@
+# Current asset update — 11 September 2026
+
+The current standard renders are `Stands/Google review stand New design.png`,
+`Stands/Instagram new design.png`, and `Stands/Trip advisor new design.png`.
+`Stands/Google review stand.png` is Google Review — Classic (currently sold out).
+Custom stands Transparent.png remains unchanged. The current demonstration is
+`Video/Product Video (New Design).mp4`; the older video below is retained only as
+an archive. These supplied files were copied intact from Documents/Assets.
+
+The original asset notes below are retained as historical context.
+
 # TapRank Homepage Redesign Assets
 
 These assets are approved for the new TapRank homepage redesign.

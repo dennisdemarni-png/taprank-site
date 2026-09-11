@@ -14,8 +14,8 @@ export const assets = {
   platforms: { google: `${root}/Platform logos/Google.PNG`, instagram: `${root}/Platform logos/Instagram.PNG`, tripadvisor: `${root}/Platform logos/Tripadvisor.PNG` },
 };
 export const googleDesigns = [
-  { id: "new", name: "New Design", image: assets.google, soldOut: false },
-  { id: "classic", name: "Classic", image: assets.googleClassic, soldOut: true },
+  { id: "new", name: "Current design", image: assets.google, soldOut: false },
+  { id: "classic", name: "Classic design", image: assets.googleClassic, soldOut: true },
 ];
 export const variants = [
   { id: "google", name: "Google Review", price: "64.99", accent: "#1654ed", image: assets.google, description: "Make leaving a Google review the obvious next step. Connect customers to your other useful links on the same TapRank page.", caption: "A little prompt. A lasting impression." },

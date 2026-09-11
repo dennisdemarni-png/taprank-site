@@ -165,3 +165,9 @@ from the four main products, and design is included in checkout event context.
 The current video remains unmounted until requested, uses preload none, native
 controls and playsInline, and never autoplays. Original media files remain available.
 The user explicitly approved publishing this refresh live after verification.
+
+### Hero presentation correction
+The hero now displays both Google physical stands together, labelled Current design
+and Classic design (sold out). It contains no design selector. The purchase section
+retains the sole selector, using those same labels. Internal `new`/`classic` IDs and
+checkout mappings are preserved; Current design remains the default.

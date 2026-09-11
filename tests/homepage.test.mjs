@@ -4,7 +4,7 @@ import test from 'node:test';
 // Load dependency-free public configuration without altering the project's module mode.
 const load = path => import(`data:text/javascript;base64,${Buffer.from(readFileSync(new URL(path, import.meta.url))).toString('base64')}`);
 const { CHECKOUTS, checkoutFor, EXISTING_STANDARD_CHECKOUT_URL, ETSY_URL } = await load('../lib/commerce.js');
-const { variants, assets, actions, faqs } = await load('../components/homepage/content.js');
+const { variants, assets, actions, faqs, googleDesigns } = await load('../components/homepage/content.js');
 
 test('approved variants map to their exact Square destinations; unknown products fail closed', () => {
   const expected = {
@@ -25,6 +25,17 @@ test('Google defaults and all four offers use the approved current GBP prices', 
   assert.ok(!/39\.99|69\.99/.test(JSON.stringify({variants, faqs})));
 });
 test('all referenced approved assets exist with exact case and filename', () => {
-  const paths = [assets.logo, assets.whiteLogo, assets.restaurantPage, assets.spacePage, assets.video, ...Object.values(assets.platforms), ...variants.map(v => v.image), ...actions.flatMap(a => [a.image, a.extraImage].filter(Boolean))];
+  const paths = [assets.logo, assets.whiteLogo, assets.googleClassic, assets.restaurantPage, assets.spacePage, assets.video, ...Object.values(assets.platforms), ...variants.map(v => v.image), ...actions.flatMap(a => [a.image, a.extraImage].filter(Boolean))];
   for (const path of paths) assert.ok(existsSync(new URL(`../public${path}`, import.meta.url)), path);
+});
+
+test('Google New Design defaults while Classic and unknown designs cannot reach checkout', () => {
+  assert.equal(googleDesigns[0].id, 'new');
+  assert.equal(googleDesigns[0].image, assets.google);
+  assert.equal(googleDesigns[1].image, assets.googleClassic);
+  assert.equal(googleDesigns[1].soldOut, true);
+  assert.equal(checkoutFor('google', 'new'), 'https://square.link/u/kbq7PFVV');
+  assert.equal(checkoutFor('google', 'classic'), null);
+  assert.equal(checkoutFor('google', 'unknown'), null);
+  assert.equal(CHECKOUTS.google.classic.url, null);
 });

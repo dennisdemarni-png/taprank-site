@@ -2,16 +2,21 @@ const root = "/Assets/redesign";
 export const assets = {
   logo: `${root}/Brand/Taprank logo Transparent.png`,
   whiteLogo: `${root}/Brand/White Taprank logo Transparent Background.png`,
-  google: `${root}/Stands/Google review stand.png`,
-  instagram: `${root}/Stands/Instagram stand.png`,
-  tripadvisor: `${root}/Stands/Tripadvisor stand.png`,
+  google: `${root}/Stands/Google review stand New design.png`,
+  googleClassic: `${root}/Stands/Google review stand.png`,
+  instagram: `${root}/Stands/Instagram new design.png`,
+  tripadvisor: `${root}/Stands/Trip advisor new design.png`,
   custom: `${root}/Stands/Custom stands Transparent.png`,
   restaurantPage: `${root}/Hosted pages/restaurant-demo-homepage.jpg`,
   spacePage: `${root}/Hosted pages/Spacejump web design showcase on phone.png`,
   // The supplied Restaurant file also depicts Space Jump; do not mislabel it.
-  video: `${root}/Video/Taprank outdated product video. referrence only.mp4`,
+  video: `${root}/Video/Product Video (New Design).mp4`,
   platforms: { google: `${root}/Platform logos/Google.PNG`, instagram: `${root}/Platform logos/Instagram.PNG`, tripadvisor: `${root}/Platform logos/Tripadvisor.PNG` },
 };
+export const googleDesigns = [
+  { id: "new", name: "New Design", image: assets.google, soldOut: false },
+  { id: "classic", name: "Classic", image: assets.googleClassic, soldOut: true },
+];
 export const variants = [
   { id: "google", name: "Google Review", price: "64.99", accent: "#1654ed", image: assets.google, description: "Make leaving a Google review the obvious next step. Connect customers to your other useful links on the same TapRank page.", caption: "A little prompt. A lasting impression." },
   { id: "instagram", name: "Instagram", price: "64.99", accent: "#af2875", image: assets.instagram, description: "Keep the connection going after they leave. Put your Instagram front and centre, with reviews, bookings and more on your TapRank page.", caption: "From in-person moments to online connections." },

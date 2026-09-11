@@ -149,3 +149,19 @@ Next page navigation. Hash links do not count as new pages. A hidden noscript
 PageView image handles browsers with JavaScript disabled. All UI routes, including
 hosted pages and order setup, share the integration. No extra customer fields or
 custom conversion events are passed by this code. Homepage event hooks stay inactive.
+
+## September 11 product refresh
+
+Imported supplied assets unchanged from `/Users/demarnidennis/Documents/Assets`:
+Google review stand New design.png, Instagram new design.png, Trip advisor new
+design.png, and Product Video (New Design).mp4. The previous Google review stand.png
+is retained as Classic. Custom assets, content, price and checkout remain unchanged.
+
+The hero and purchase section share a Google New Design/Classic thumbnail selector.
+New Design defaults and keeps the approved Google Square URL. Classic is selectable
+but sold out, with a null checkout URL; it cannot fall back to New Design. The mobile
+bar includes the selected design and sold-out status. Google design state is separate
+from the four main products, and design is included in checkout event context.
+The current video remains unmounted until requested, uses preload none, native
+controls and playsInline, and never autoplays. Original media files remain available.
+The user explicitly approved publishing this refresh live after verification.

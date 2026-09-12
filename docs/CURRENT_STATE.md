@@ -6,6 +6,11 @@
 > prices, pending checkout links, verification and production safeguards.
 > The older homepage descriptions below record the pre-redesign baseline.
 
+> **CRO implementation, 12 September 2026:** Four static product landing pages,
+> reusable outbound-link handling and non-navigating demo controls are now present
+> on the working branch. See [CRO pass](CRO_PASS.md). The detailed snapshot below
+> remains the earlier audit baseline unless explicitly superseded by that document.
+
 Implementation snapshot: **28 July 2026**
 
 PR 2 base commit: `dd33e34` (`improve website conversion and demo accuracy (#18)`)
@@ -28,6 +33,9 @@ This file records evidence from the repository. Proposed systems are documented 
 components/HostedTapRankPage.jsx  Reusable public hosted-page UI
 components/OrderPageShell.jsx      Shared setup/privacy layout
 lib/commerce.js                   Public product, price and Square checkout configuration
+lib/storefront.js                 Shared cart configuration validation and safe browser shapes
+lib/cartServer.js                 HttpOnly cart identity and private cart lookup
+lib/squareServer.js               Server-only dynamic Square Checkout client
 lib/contact.js                    Central public TapRank sales contact values
 lib/orderDetails.js               Setup-form options and validation
 lib/supabaseAdmin.js              Server-only Supabase client
@@ -37,6 +45,10 @@ pages/index.jsx                   Marketing homepage and its interactions
 pages/order-details.jsx           Post-checkout setup form
 pages/privacy.jsx                 Setup privacy notice
 pages/api/order-details.js        Trusted setup-submission endpoint
+pages/api/cart.js                 Private cart and custom-logo endpoint
+pages/api/checkout.js             Server-priced Square checkout creation endpoint
+pages/api/order-status.js         Minimal order confirmation status endpoint
+pages/api/square/webhook.js       Raw-body signature validation and payment matching
 pages/r/[slug].jsx                Static hosted-page route
 pages/r/demo.jsx                  Server-rendered redirect
 supabase/migrations/              Private record, rate-limit and Storage schema
@@ -53,8 +65,13 @@ The homepage and global stylesheet remain large, coupled files. Much of the home
 | --- | --- | --- |
 | `/` | Static page | Marketing homepage with direct Square checkout for the Standard Stand, enquiry-led Custom Stand and bulk journeys, demos, pricing and FAQs. |
 | `/order-details` | Static page | `noindex` post-checkout form for business, link and branding details. |
+| `/order-confirmation` | Static page | `noindex` Square return page that shows only verified payment status. |
 | `/privacy` | Static page | `noindex` setup-form privacy notice. |
 | `/api/order-details` | Server API | Validates, rate-limits and stores multipart setup submissions when Supabase is configured. |
+| `/api/cart` | Server API | Reads and writes a private cookie-addressed configured cart after migration. |
+| `/api/checkout` | Server API | Revalidates server prices and creates a Square-hosted payment link. |
+| `/api/order-status` | Server API | Returns a minimal order status for a high-entropy order reference. |
+| `/api/square/webhook` | Server API | Validates Square signatures and marks matching completed payments paid. |
 | `/r/[slug]` | Static generation | Builds only the slugs exported by `lib/taprankPages.js`; `fallback: false`. |
 | `/r/barber-demo` | Static generation | Barber demonstration page. |
 | `/r/restaurant-demo` | Static generation | Restaurant demonstration page. |
@@ -63,7 +80,7 @@ The homepage and global stylesheet remain large, coupled files. Much of the home
 | `/r/demo` | Server-side redirect | Temporary internal redirect to `/r/barber-demo`. |
 | Unknown `/r/{slug}` | 404 | No dynamic fallback or database lookup exists. |
 
-The only API route is the server-only order-details submission endpoint.
+The server routes include the existing order-details submission plus a gated private cart, dynamic Square checkout, minimal order-status lookup and signed Square webhook endpoint.
 
 ## Hosted-page functionality
 
@@ -90,14 +107,14 @@ The stylesheet contains selectors for several historical homepage and hosted-pag
 
 ## Data, authentication, and content management
 
-- Database: Supabase Postgres integration for private order setup records; migration and environment configuration are required per deployment.
+- Database: Supabase Postgres integration for private order setup records and the private storefront cart/order schema. The storefront migration was applied to the current TapRank project on 12 September 2026; each deployment still requires matching server environment configuration.
 - Authentication: none.
 - CMS: none.
 - Admin interface: none.
 - Customer accounts: none.
 - Persistent application storage: private Supabase records and optional private logo files after configuration.
 - Analytics or event tracking: none found.
-- Checkout: outbound Square-hosted checkout for the Standard Stand; `/order-details` does not contain a payment form and has no Square API, webhook or automatic payment verification.
+- Checkout: existing approved outbound Square links remain available as fallback. Dedicated product pages contain a gated dynamic Square-hosted checkout. Cart creation, Custom-logo storage and Square Sandbox payment-link creation have been verified, but it is not production-ready until the signed webhook is configured on a stable deployment and a complete Sandbox payment is verified. TapRank does not host card fields.
 - Subscription billing: none.
 
 ## Environment variables and secrets
@@ -183,7 +200,7 @@ Those facts must be confirmed in Vercel rather than guessed.
 13. **Deployment ownership is undocumented.** A recovery or rollback could depend on knowledge held outside the repository.
 14. **Asset rights unknown.** The licensing/usage status of existing photos cannot be confirmed from code.
 15. **Source-managed commerce configuration.** Current prices, dispatch wording and the public Square link are intentionally centralised in source and still require review/deployment to change.
-16. **Supabase deployment is external state.** The repository defines the migration and server integration, but cannot prove a production project, environment variables, plan, region or completed migration.
+16. **Supabase deployment is external state.** The storefront migration was observed succeeding in the current TapRank project on 12 September 2026, but the repository cannot prove another deployment's project, environment variables, plan or region.
 17. **No onboarding admin interface.** TapRank initially reviews and updates private submissions in the Supabase dashboard.
 18. **Storage backup gap.** Database backups do not restore deleted branding objects; a separate branding-file backup process is still required.
 

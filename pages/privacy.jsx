@@ -32,9 +32,11 @@ export default function PrivacyPage() {
           <article>
             <h2>What we collect</h2>
             <p>
-              We collect the order reference you provide, contact details,
-              public business information, customer-action links, opening
-              hours, branding instructions and optional logo files. We do not
+              We collect product and cart selections, the order reference,
+              contact details, public business information, customer-action
+              links, opening hours, branding instructions and logo files where
+              required. A configured cart may be saved before payment so the
+              information can be connected to the resulting order. We do not
               ask for or store card numbers, security codes or online banking
               credentials.
             </p>
@@ -53,8 +55,9 @@ export default function PrivacyPage() {
           <article>
             <h2>Payment verification</h2>
             <p>
-              Sending the setup form does not prove payment. TapRank checks the
-              submitted details against its Square order records before
+              Sending setup details or returning from checkout does not prove
+              payment. Square sends TapRank an order identifier and payment
+              status so a configured order can be matched and confirmed before
               production. Payment information collected by Square is handled
               separately under Square’s own privacy terms.
             </p>

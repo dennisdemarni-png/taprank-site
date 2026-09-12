@@ -1,5 +1,7 @@
 import Head from "next/head";
+import { useEffect, useRef, useState } from "react";
 import demoStyles from "./HostedDemo.module.css";
+import { externalLinkProps } from "../lib/publicLinks";
 
 const lucideIconPaths = {
   menu: (
@@ -119,8 +121,24 @@ function Chevron({ compact = false }) {
   return <span className={compact ? "businessChevron businessChevron--compact" : "businessChevron"} aria-hidden="true">›</span>;
 }
 
+function DestinationControl({ isDemo, href, className, onDemoAction, label, children }) {
+  if (isDemo) {
+    return <button type="button" className={className} onClick={onDemoAction} aria-label={`${label} — demo preview`} aria-describedby="demo-disclosure">{children}</button>;
+  }
+
+  return <a className={className} href={href} {...externalLinkProps(href)}>{children}</a>;
+}
+
 export default function HostedTapRankPage({ page }) {
   const business = page;
+  const [demoMessageVisible, setDemoMessageVisible] = useState(false);
+  const demoTimer = useRef(null);
+  useEffect(() => () => { if (demoTimer.current) window.clearTimeout(demoTimer.current); }, []);
+  function showDemoMessage() {
+    setDemoMessageVisible(true);
+    if (demoTimer.current) window.clearTimeout(demoTimer.current);
+    demoTimer.current = window.setTimeout(() => setDemoMessageVisible(false), 3200);
+  }
   const canonicalUrl = `https://www.taprank.co.uk/r/${business.slug}`;
   const metaDescription = business.categoryLine
     ? `${business.businessName} — ${business.categoryLine}. Customer actions on a TapRank-hosted business page.`
@@ -149,7 +167,7 @@ export default function HostedTapRankPage({ page }) {
   return (
     <>
       <Head>
-        <title>{business.businessName} | Powered by TapRank</title>
+        <title>{`${business.businessName} | Powered by TapRank`}</title>
         <meta name="description" content={metaDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffffff" />
@@ -189,21 +207,21 @@ export default function HostedTapRankPage({ page }) {
           </header>
 
           {business.reviewUrl && (
-            <a className="businessPrimaryCta" href={business.reviewUrl}>
+            <DestinationControl isDemo={business.isDemo} className="businessPrimaryCta" href={business.reviewUrl} onDemoAction={showDemoMessage} label={business.reviewLabel || "Leave a Google Review"}>
               <ActionIcon icon="google" />
               <strong>{business.reviewLabel || "Leave a Google Review"}</strong>
               <Chevron />
-            </a>
+            </DestinationControl>
           )}
 
           {actions.length > 0 && (
             <nav className="businessActionGrid" aria-label={`${business.businessName} quick actions`}>
               {actions.map((action) => (
-                <a className="businessActionCard" href={action.href} key={`${action.label}-${action.href}`}>
+                <DestinationControl isDemo={business.isDemo} className="businessActionCard" href={action.href} onDemoAction={showDemoMessage} label={action.label} key={`${action.label}-${action.href}`}>
                   <ActionIcon icon={action.icon} />
                   <span>{action.label}</span>
                   <Chevron compact />
-                </a>
+                </DestinationControl>
               ))}
             </nav>
           )}
@@ -226,24 +244,25 @@ export default function HostedTapRankPage({ page }) {
               )}
               {openingHours.length > 0 && hasLocation && <div className="businessInfoDivider" />}
               {hasLocation && (
-                <a className="businessInfoRow businessInfoRow--map" href={business.mapsUrl}>
+                <DestinationControl isDemo={business.isDemo} className="businessInfoRow businessInfoRow--map" href={business.mapsUrl} onDemoAction={showDemoMessage} label="Get directions">
                   <ActionIcon icon="map" />
                   <div>
                     <strong>{business.address}</strong>
                     <span>Open in Maps</span>
                   </div>
                   <Chevron compact />
-                </a>
+                </DestinationControl>
               )}
             </section>
           )}
 
-          {business.isDemo && <p className={demoStyles.disclosure}>TapRank demonstration business — actions shown for illustration.</p>}
+          {business.isDemo && <p className={demoStyles.disclosure} id="demo-disclosure">TapRank demonstration business — actions are interactive previews and do not open external services.</p>}
           <footer className="businessPoweredBy">
             <span>Powered by</span>
             <img src="/taprank-logo-transparent.png" alt="TapRank" width="1280" height="331" />
           </footer>
         </section>
+        {business.isDemo && <div className={`${demoStyles.toast}${demoMessageVisible ? ` ${demoStyles.toastVisible}` : ""}`} role="status" aria-live="polite" aria-atomic="true">{demoMessageVisible ? "Demo preview — this action would open the business’s live link." : ""}</div>}
       </main>
     </>
   );

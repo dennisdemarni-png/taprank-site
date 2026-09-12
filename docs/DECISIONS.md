@@ -126,3 +126,14 @@ This log records confirmed product and architectural decisions. It does not inve
 - **Alternatives considered:** Trusting the redirect; adding Square API/webhooks in the same release.
 - **Consequences:** TapRank operators must match each submission to Square. Automatic verification remains separate future work.
 - **Related files or pull requests:** `pages/api/order-details.js`, `docs/ORDER_DETAILS.md`, `docs/OPERATIONS_RUNBOOK.md`.
+
+### 2026-09-12 — Configure before purchase with a TapRank cart and Square-hosted payment
+
+- **Date:** 2026-09-12
+- **Decision:** Dedicated product pages collect the required primary action and business configuration before checkout. Custom buyers choose Google Review, Instagram or Tripadvisor and must upload a logo. Up to five secondary links, opening times and location are optional. Quantity duplicates one configuration; different configurations use separate cart items.
+- **Status:** Implemented behind a database and Sandbox verification gate.
+- **Context:** TapRank needs a familiar product-page buying flow that can connect each paid line item to its fulfilment configuration.
+- **Reason:** This removes duplicate setup entry while keeping card entry and payment authentication with Square.
+- **Alternatives considered:** Continuing only with static Payment Links; embedding Square card fields immediately; building customer accounts.
+- **Consequences:** TapRank stores private anonymous carts and order snapshots in Supabase. Prices are server-controlled. Only a signed Square webhook can mark an order paid. Existing approved Square links remain as rollback/fallback until verification is complete.
+- **Related files:** `components/product/`, `pages/api/cart.js`, `pages/api/checkout.js`, `pages/api/square/webhook.js`, `supabase/migrations/202609120001_create_storefront_commerce.sql`, `docs/STOREFRONT_CHECKOUT.md`.

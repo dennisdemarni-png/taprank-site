@@ -17,6 +17,12 @@ They all use `components/HostedTapRankPage.jsx` and the same shared TapRank styl
 
 Each demo record is explicit and internally consistent; demo actions use clearly demonstrative destinations rather than inheriting content from another fictional business. `/r/demo` redirects internally to `/r/barber-demo`. Demo and real customer pages remain `noindex, follow` by default. Customer-page indexing requires separate TapRank and customer approval.
 
+Demo-page actions are rendered as accessible in-page preview buttons. They do not
+open any configured web, review, social, booking, map, email or telephone
+destination and instead show a subtle status message explaining what a live action
+would do. Real customer pages continue to render genuine destinations as links;
+external HTTP/HTTPS destinations open in a safe new tab.
+
 ## Intended public URL behaviour
 
 - Every business receives a unique permanent route: `/r/[slug]`.

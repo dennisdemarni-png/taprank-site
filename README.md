@@ -21,7 +21,7 @@ This repository contains the public marketing website, a secure post-checkout se
 - pnpm lockfile and Vercel build configuration
 - Node.js 20.9 or newer
 
-There is no authentication, CMS, admin dashboard, analytics service, custom payment form, Square API, webhook or automated payment verification. The marketing homepage links the Standard TapRank Stand directly to the approved Square-hosted checkout. `/order-details` collects setup information after purchase but does not prove payment.
+There is no authentication, CMS, admin dashboard or custom card form. The product pages now contain a gated product configurator, private cart, dynamic Square-hosted checkout API and signed payment webhook. The current Supabase migration, cart, private Custom-logo upload and Square Sandbox payment-link creation have been verified. The new flow must not be treated as live until its signed-webhook and completed-payment checks pass on a stable HTTPS deployment. Existing approved Square Payment Links remain available as a fallback. `/order-details` remains available for earlier/manual orders.
 
 ## Local setup
 
@@ -46,6 +46,12 @@ Copy `.env.example` to an ignored `.env.local` and configure:
 | `SUPABASE_URL` | Supabase project API URL | No need to expose it |
 | `SUPABASE_SECRET_KEY` | Server-only key used for private records and logo storage | **No** |
 | `ORDER_DETAILS_RATE_LIMIT_SECRET` | Long random server-only value used to hash rate-limit identifiers | **No** |
+| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Referrer-restricted browser key for Google business search | Yes |
+| `NEXT_PUBLIC_SQUARE_APPLICATION_ID` | Square application identifier | Yes |
+| `NEXT_PUBLIC_SQUARE_LOCATION_ID` | Square location identifier | Yes |
+| `SQUARE_ACCESS_TOKEN` | Server-only Square API credential | **No** |
+| `SQUARE_WEBHOOK_SIGNATURE_KEY` | Server-only webhook verification secret | **No** |
+| `SQUARE_WEBHOOK_NOTIFICATION_URL` | Exact public webhook URL used in signature verification | No need to expose it |
 
 The order form renders without these values, but its submission endpoint fails closed with a support message until they are configured. Never commit real values or use a privileged key in browser code.
 
@@ -66,10 +72,19 @@ Apply the migration in `supabase/migrations/` before enabling production submiss
 
 | Route | Behaviour |
 | --- | --- |
-| `/` | Static marketing homepage with direct Square checkout for the Standard TapRank Stand |
+| `/` | Static marketing homepage with direct Square checkout and links to dedicated product pages |
+| `/google-review-stand` | Direct-response Google Review TapRank product page |
+| `/instagram-stand` | Instagram TapRank product page |
+| `/tripadvisor-stand` | Tripadvisor TapRank product page |
+| `/custom-taprank` | Custom Branding + Logo TapRank product page |
 | `/order-details` | Static, `noindex` post-checkout business setup form |
+| `/order-confirmation` | `noindex` Square return/status page; never treats the redirect as payment proof |
 | `/privacy` | Setup-form privacy notice |
 | `/api/order-details` | Server-only multipart submission endpoint |
+| `/api/cart` | Private cookie-addressed product cart API |
+| `/api/checkout` | Server-validated dynamic Square Checkout API |
+| `/api/order-status` | Minimal reference-scoped payment status API |
+| `/api/square/webhook` | Raw-body Square signature verification and paid-order update endpoint |
 | `/r/barber-demo` | Statically generated barber demo page |
 | `/r/restaurant-demo` | Statically generated restaurant demo page |
 | `/r/salon-demo` | Statically generated salon demo page |
@@ -86,7 +101,7 @@ See [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md) for the full audit.
 ## Repository structure
 
 ```text
-components/              Hosted-page and order-form layout components
+components/              Homepage, product-page, hosted-page and order-form components
 lib/                     Static page data, validation, Supabase server client and public configuration
 pages/                   Next.js Pages Router pages and secure API route
 public/                  Product, business, icon, and logo assets
@@ -106,6 +121,8 @@ vercel.json              Vercel build settings
 - [Architecture](docs/ARCHITECTURE.md)
 - [Customer pages](docs/CUSTOMER_PAGES.md)
 - [Post-checkout setup system](docs/ORDER_DETAILS.md)
+- [Product configurator, cart and Square checkout](docs/STOREFRONT_CHECKOUT.md)
+- [Conversion-rate optimisation pass](docs/CRO_PASS.md)
 - [Operations runbook](docs/OPERATIONS_RUNBOOK.md)
 - [Roadmap](docs/ROADMAP.md)
 - [Decision log](docs/DECISIONS.md)

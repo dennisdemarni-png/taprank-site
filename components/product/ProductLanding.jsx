@@ -9,18 +9,23 @@ import { externalLinkProps } from "../../lib/publicLinks";
 import { homepageEvent } from "../../lib/homepageEvents";
 import CartDrawer from "./CartDrawer";
 import ProductConfigurator from "./ProductConfigurator";
+import ProductGallery from "./ProductGallery";
+import PromotionBar from "./PromotionBar";
+import { formatPrice } from "../../lib/commerce";
+import { PRODUCT_PROMOTION, promotionState, validRegularPricePence } from "../../lib/promotion";
 import styles from "./ProductLanding.module.css";
 
 const origin = "https://www.taprank.co.uk";
 
 const comparisonRows = [
-  ["NFC tap", "Commonly included", "Included and configured"],
-  ["QR code", "Commonly included", "Included and configured"],
-  ["Customer journey", "Usually one direct destination", "Hosted TapRank business page"],
-  ["Other useful links", "Not part of a simple single-link stand", "Instagram, bookings, menu, call, directions and more"],
-  ["Setup", "Varies", "TapRank configures the page, NFC and QR"],
-  ["Monthly subscription", "Varies", "None required"],
-  ["Replacement warranty", "Varies", "1-year replacement warranty"],
+  { feature: "NFC tap", basic: "Included", basicState: "yes", taprank: "Included + configured" },
+  { feature: "QR code", basic: "Included", basicState: "yes", taprank: "Included + configured" },
+  { feature: "Hosted business page", basic: "Not typical", basicState: "no", taprank: "Included" },
+  { feature: "Reviews, socials, bookings + menu", basic: "Not typical", basicState: "no", taprank: "Included where relevant" },
+  { feature: "Configured for your business", basic: "Varies", basicState: "varies", taprank: "TapRank handles setup" },
+  { feature: "No app required", basic: "Commonly", basicState: "yes", taprank: "Yes" },
+  { feature: "No subscription required", basic: "Depends on provider", basicState: "varies", taprank: "Yes" },
+  { feature: "Replacement warranty", basic: "Depends on provider", basicState: "varies", taprank: "1 year" },
 ];
 
 function PurchaseLink({ product, location, className = styles.primaryButton, children }) {
@@ -39,7 +44,7 @@ function PurchaseLink({ product, location, className = styles.primaryButton, chi
 function Header({ product, cart, onOpenCart }) {
   return (
     <>
-      <div className={styles.announcement}>Free UK delivery <span>·</span> One-off payment <span>·</span> No subscription</div>
+      <PromotionBar />
       <header className={styles.header}>
         <div className={styles.wrap}>
           <a href="/" aria-label="TapRank home"><Logo /></a>
@@ -48,6 +53,7 @@ function Header({ product, cart, onOpenCart }) {
             <a href="#compare">Compare</a>
             <a href="#faq">FAQ</a>
           </nav>
+          <details className={styles.mobileMenu}><summary aria-label="Open navigation"><span></span><span></span><span></span></summary><nav aria-label="Mobile product navigation"><a href="#how-it-works">How it works</a><a href="#products">Products</a><a href="/custom-taprank">Custom</a><a href="#faq">FAQ</a></nav></details>
           <button className={styles.cartButton} type="button" onClick={onOpenCart} aria-label={`Open cart with ${cart?.itemCount || 0} items`}>Cart <span>{cart?.itemCount || 0}</span></button>
           <PurchaseLink product={product} location="header" className={styles.headerButton}>Configure</PurchaseLink>
         </div>
@@ -56,40 +62,27 @@ function Header({ product, cart, onOpenCart }) {
   );
 }
 
-function Hero({ product, onCartChanged, onOpenCart }) {
+function Hero({ product, designId, onDesignChange, onCartChanged, onOpenCart, onSelectionChange }) {
+  const activePromotion = promotionState().active;
+  const regularPricePence = activePromotion ? validRegularPricePence(product.pricePence) : null;
   return (
     <section className={`${styles.wrap} ${styles.hero}`} id="product-hero" aria-labelledby="product-title">
       <div className={styles.heroGallery}>
-        <div className={styles.heroArt} style={{ "--accent": product.accent }}>
-          <span className={styles.available}>Current design · Available now</span>
-          <div className={`${styles.productImage} ${product.id === "custom" ? styles.customImage : ""}`}>
-            <Image src={product.image} alt={product.imageAlt} fill priority loading="eager" sizes="(max-width: 760px) 92vw, 50vw" />
-          </div>
-          <small>A7 acrylic tabletop stand · NFC + QR</small>
-        </div>
-        <div className={styles.galleryNotes}><span>Front and centre on your counter</span><span>Tap or scan in seconds</span><span>Arrives ready to use</span></div>
+        <ProductGallery product={product} designId={designId} />
       </div>
       <div className={styles.heroCopy}>
         <p className={styles.eyebrow}>{product.eyebrow}</p>
         <h1 id="product-title">{product.headline}</h1>
         <p className={styles.lead}>{product.lead}</p>
-        <div className={styles.price}><strong>£{product.price}</strong><span>One-off payment</span></div>
-        <ul className={styles.reassurance}>
-          <li>No subscription</li>
-          <li>Free UK delivery</li>
-          <li>Arrives configured and ready to use</li>
+        <div className={styles.price}>{activePromotion ? <small>{PRODUCT_PROMOTION.saleLabel}</small> : null}<strong>£{product.price}</strong>{regularPricePence ? <del>{formatPrice(regularPricePence)}</del> : null}<span>One-off payment</span></div>
+        <ul className={styles.heroBenefits}>
+          <li>Make the next customer action effortless</li>
+          <li>NFC + QR — configured and ready to use</li>
+          <li>Free UK delivery · No subscription</li>
+          <li>Includes your TapRank-hosted business page</li>
         </ul>
-        <ProductConfigurator product={product} onCartChanged={onCartChanged} onOpenCart={onOpenCart} />
+        <ProductConfigurator product={product} designId={designId} onDesignChange={onDesignChange} onCartChanged={onCartChanged} onOpenCart={onOpenCart} onSelectionChange={onSelectionChange} />
       </div>
-      {product.id === "google" && (
-        <details className={styles.classicNote} id="classic-design">
-          <summary>Looking for our Classic design? <span>You may have seen it in one of our earlier ads. View Classic</span></summary>
-          <div>
-            <Image src={assets.googleClassic} alt="Google Review TapRank Classic stand design" width={150} height={150} />
-            <p><strong>Classic design</strong><span>This earlier design is currently sold out. The Current design above is available now.</span></p>
-          </div>
-        </details>
-      )}
     </section>
   );
 }
@@ -148,8 +141,8 @@ function Comparison({ product }) {
       </div>
       <div className={styles.comparison} role="table" aria-label="Basic review stand compared with TapRank">
         <div className={styles.comparisonHead} role="row"><span role="columnheader">Feature</span><span role="columnheader">Basic NFC/QR review stand</span><strong role="columnheader">TapRank</strong></div>
-        {comparisonRows.map(([feature, basic, taprank]) => (
-          <div role="row" key={feature}><strong role="rowheader">{feature}</strong><span role="cell">{basic}</span><span role="cell">{taprank}</span></div>
+        {comparisonRows.map(({ feature, basic, basicState, taprank }) => (
+          <div role="row" key={feature}><strong role="rowheader">{feature}</strong><span role="cell" data-state={basicState}><i aria-hidden="true">{basicState === "yes" ? "✓" : basicState === "no" ? "×" : "—"}</i>{basic}</span><span role="cell"><i aria-hidden="true">✓</i>{taprank}</span></div>
         ))}
       </div>
       <div className={styles.inlineCta}><p><strong>Stand, hosted page and setup—all included.</strong><span>Choose what you want customers to notice first.</span></p><PurchaseLink product={product} location="after_comparison" className={styles.secondaryButton}>Get {product.shortName} · £{product.price}</PurchaseLink></div>
@@ -207,7 +200,7 @@ function FAQ({ product }) {
   );
 }
 
-function MobilePurchase({ product, cart, onOpenCart }) {
+function MobilePurchase({ product, selection, cart, onOpenCart }) {
   const [visible, setVisible] = useState(false);
   const heroPassed = useRef(false);
   const finalVisible = useRef(false);
@@ -226,7 +219,7 @@ function MobilePurchase({ product, cart, onOpenCart }) {
     if (final) observer.observe(final);
     return () => observer.disconnect();
   }, []);
-  return visible ? <div className={styles.mobilePurchase}><span><strong>{product.name}</strong><small>{cart?.itemCount ? `${cart.itemCount} in cart` : `£${product.price} · Free UK delivery`}</small></span>{cart?.itemCount ? <button className={styles.stickyButton} type="button" onClick={onOpenCart}>View cart</button> : <PurchaseLink product={product} location="mobile_sticky" className={styles.stickyButton}>Configure</PurchaseLink>}</div> : null;
+  return visible ? <div className={styles.mobilePurchase}><span><strong>{selection?.label || product.name}</strong><small>{cart?.itemCount ? `${cart.itemCount} in cart` : `${formatPrice(selection?.pricePence || product.pricePence)} · ${selection?.quantity || 1} stand${(selection?.quantity || 1) > 1 ? "s" : ""}`}</small></span>{cart?.itemCount ? <button className={styles.stickyButton} type="button" onClick={onOpenCart}>View cart</button> : <PurchaseLink product={product} location="mobile_sticky" className={styles.stickyButton}>Add to cart</PurchaseLink>}</div> : null;
 }
 
 function Footer() {
@@ -246,6 +239,8 @@ export default function ProductLanding({ productId }) {
   const product = productLandingContent[productId];
   const [cart, setCart] = useState({ items: [], itemCount: 0, totalPence: 0, status: "active" });
   const [cartOpen, setCartOpen] = useState(false);
+  const [designId, setDesignId] = useState("current");
+  const [purchaseSelection, setPurchaseSelection] = useState({ label: product.name, pricePence: product.pricePence, quantity: 1 });
   useEffect(() => { homepageEvent("product_page_view", { variant: product.id }); }, [product.id]);
   useEffect(() => {
     let active = true;
@@ -263,7 +258,7 @@ export default function ProductLanding({ productId }) {
       <a className={styles.skipLink} href="#main">Skip to content</a>
       <Header product={product} cart={cart} onOpenCart={() => setCartOpen(true)} />
       <main id="main">
-        <Hero product={product} onCartChanged={setCart} onOpenCart={() => setCartOpen(true)} />
+        <Hero product={product} designId={designId} onDesignChange={setDesignId} onCartChanged={setCart} onOpenCart={() => setCartOpen(true)} onSelectionChange={setPurchaseSelection} />
         <div className={`${styles.wrap} ${styles.videoWrap}`}><ProductDemoVideo onPlay={() => homepageEvent("demo_video_play", { variant: product.id })} headingId={`${product.id}-video-title`} /></div>
         <HowItWorks product={product} />
         <Proof product={product} />
@@ -274,7 +269,7 @@ export default function ProductLanding({ productId }) {
         <section className={styles.finalCta} id="product-final-cta"><div className={styles.wrap}><p className={styles.eyebrow}>Ready when you are</p><h2>Turn the next customer moment into action.</h2><PurchaseLink product={product} location="final" className={styles.lightButton} /><ul><li>One-off payment</li><li>Free UK delivery</li><li>No subscription</li></ul></div></section>
       </main>
       <Footer />
-      <MobilePurchase product={product} cart={cart} onOpenCart={() => setCartOpen(true)} />
+      <MobilePurchase product={product} selection={purchaseSelection} cart={cart} onOpenCart={() => setCartOpen(true)} />
       <CartDrawer cart={cart} open={cartOpen} onClose={() => setCartOpen(false)} onCartChanged={setCart} />
     </div>
   );

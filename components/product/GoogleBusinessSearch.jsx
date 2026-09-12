@@ -15,7 +15,7 @@ export default function GoogleBusinessSearch({ onSelect }) {
   useEffect(() => {
     if (!ready || !mountRef.current) return undefined;
     if (!window.google?.maps?.importLibrary) {
-      setError("Business search could not start. Check the Google key restrictions or enter the link manually below.");
+      setError("Business search is temporarily unavailable. You can enter your link manually below.");
       return undefined;
     }
     let autocomplete;
@@ -27,7 +27,7 @@ export default function GoogleBusinessSearch({ onSelect }) {
         const { PlaceAutocompleteElement } = await window.google.maps.importLibrary("places");
         if (cancelled || !mountRef.current) return;
         autocomplete = new PlaceAutocompleteElement();
-        autocomplete.placeholder = "Search by business name or postcode";
+        autocomplete.placeholder = "Type your business name…";
         autocomplete.includedRegionCodes = ["gb"];
         autocomplete.setAttribute("aria-label", "Search for your business on Google");
         mountRef.current.replaceChildren(autocomplete);
@@ -42,7 +42,7 @@ export default function GoogleBusinessSearch({ onSelect }) {
             });
             setError("");
           } catch {
-            setError("We couldn’t load that listing. Enter the link manually below.");
+            setError("We couldn’t load that listing. Try again or enter your link manually.");
           }
         };
         autocomplete.addEventListener("gmp-select", listener);
@@ -60,7 +60,7 @@ export default function GoogleBusinessSearch({ onSelect }) {
   }, [ready]);
 
   if (!apiKey) {
-    return <p className={styles.searchUnavailable}>Business search is not configured. Enter the link manually below.</p>;
+    return <p className={styles.searchUnavailable}>Business search is temporarily unavailable. Enter your link manually below.</p>;
   }
 
   return (
@@ -71,12 +71,12 @@ export default function GoogleBusinessSearch({ onSelect }) {
         strategy="afterInteractive"
         onLoad={() => setReady(true)}
         onReady={() => setReady(true)}
-        onError={() => setError("Business search could not load. Enter the link manually below.")}
+        onError={() => setError("Business search is temporarily unavailable. Enter your link manually below.")}
       />
       <div className={styles.googleSearch} ref={mountRef} aria-live="polite">
         {!ready ? <span>Loading secure business search…</span> : null}
       </div>
-      {error ? <p className={styles.fieldError}>{error}</p> : null}
+      {error ? <p className={styles.searchMessage}>{error}</p> : null}
     </>
   );
 }

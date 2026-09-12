@@ -1,8 +1,11 @@
-import { useMemo, useRef, useState } from "react";
-import { checkoutFor } from "../../lib/commerce";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import { assets, googleDesigns, variants } from "../homepage/content";
+import { ETSY_SHOP_URL, checkoutFor, formatPrice, linePricingFor } from "../../lib/commerce";
 import { externalLinkProps } from "../../lib/publicLinks";
 import { homepageEvent } from "../../lib/homepageEvents";
 import { PRIMARY_ACTION_OPTIONS, STOREFRONT_LOGO_MAX_BYTES, STOREFRONT_LOGO_TYPES } from "../../lib/storefront";
+import BundleSelector from "./BundleSelector";
 import GoogleBusinessSearch from "./GoogleBusinessSearch";
 import styles from "./Storefront.module.css";
 
@@ -12,23 +15,34 @@ function FieldError({ error }) {
   return error ? <p className={styles.fieldError}>{error}</p> : null;
 }
 
-export default function ProductConfigurator({ product, onCartChanged, onOpenCart }) {
+export default function ProductConfigurator({ product, designId = "current", onDesignChange, onCartChanged, onOpenCart, onSelectionChange }) {
   const formRef = useRef(null);
   const fixedAction = product.id === "custom" ? "" : product.id;
   const [primaryAction, setPrimaryAction] = useState(fixedAction);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [manualGoogle, setManualGoogle] = useState(false);
   const [additionalLinks, setAdditionalLinks] = useState([]);
+  const [quantity, setQuantity] = useState(1);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [logoName, setLogoName] = useState("");
-  const fallbackUrl = checkoutFor(product.id);
+  const fallbackUrl = checkoutFor(product.id, designId === "classic" ? "classic" : "new");
+  const pricing = linePricingFor(product.id, quantity);
   const isGoogleAction = primaryAction === "google";
+  const unavailableDesign = product.id === "google" && designId === "classic";
   const primaryLabel = useMemo(
     () => PRIMARY_ACTION_OPTIONS.find((option) => option.value === primaryAction)?.label || "primary action",
     [primaryAction]
   );
+
+  useEffect(() => {
+    onSelectionChange?.({
+      label: product.id === "google" && designId === "classic" ? "Google Review · Classic" : product.name,
+      pricePence: pricing?.totalPence || product.pricePence,
+      quantity,
+    });
+  }, [designId, onSelectionChange, pricing?.totalPence, product.id, product.name, product.pricePence, quantity]);
 
   function selectPlace(place) {
     setSelectedPlace(place);
@@ -51,6 +65,10 @@ export default function ProductConfigurator({ product, onCartChanged, onOpenCart
 
   async function submit(event) {
     event.preventDefault();
+    if (unavailableDesign) {
+      setMessage("The Classic design is currently unavailable. Choose Current design to order.");
+      return;
+    }
     const form = event.currentTarget;
     const formData = new FormData(form);
     const logo = formData.get("logo");
@@ -63,6 +81,7 @@ export default function ProductConfigurator({ product, onCartChanged, onOpenCart
       primaryAction,
       primaryUrl: isGoogleAction && selectedPlace ? "" : formData.get("primaryUrl"),
       placeId: isGoogleAction ? selectedPlace?.placeId || "" : "",
+      designId: product.id === "google" ? designId : null,
       additionalLinks: links,
       privacyAccepted: formData.get("privacyAccepted") === "on",
     };
@@ -75,7 +94,7 @@ export default function ProductConfigurator({ product, onCartChanged, onOpenCart
 
     const payload = new FormData();
     payload.set("productId", product.id);
-    payload.set("quantity", formData.get("quantity"));
+    payload.set("quantity", String(quantity));
     payload.set("configuration", JSON.stringify(configuration));
     if (product.id === "custom" && logo instanceof File && logo.size > 0) payload.set("logo", logo);
 
@@ -102,14 +121,42 @@ export default function ProductConfigurator({ product, onCartChanged, onOpenCart
 
   return (
     <form className={styles.configurator} id="configure" ref={formRef} onSubmit={submit} noValidate>
-      <div className={styles.configuratorHeading}>
-        <span>Configure your TapRank</span>
-        <strong>We’ll set it up before dispatch.</strong>
-      </div>
+      <fieldset className={styles.productChoices}>
+        <legend>Choose your TapRank</legend>
+        <div>
+          {variants.map((variant) => (
+            <a className={variant.id === product.id ? styles.productChoiceSelected : ""} href={variant.route} aria-current={variant.id === product.id ? "page" : undefined} onClick={() => homepageEvent("variant_selected", { variant: variant.id })} key={variant.id}>
+              <span><Image src={variant.image} alt="" fill sizes="72px" /></span>
+              <strong>{variant.id === "custom" ? "Custom" : variant.name}</strong>
+              <small>£{variant.price}</small>
+            </a>
+          ))}
+        </div>
+      </fieldset>
+
+      {product.id === "google" ? (
+        <fieldset className={styles.designChoices}>
+          <legend>Choose your design</legend>
+          <div>
+            {googleDesigns.map((design) => {
+              const value = design.id === "new" ? "current" : design.id;
+              return (
+                <label className={designId === value ? styles.designSelected : ""} key={design.id}>
+                  <input type="radio" name="designId" value={value} checked={designId === value} onChange={() => { onDesignChange?.(value); setMessage(""); }} />
+                  <span><Image src={design.image} alt={`${design.name} Google Review TapRank`} fill sizes="120px" /></span>
+                  <strong>{design.name}</strong>
+                  <small>{design.soldOut ? "View design · unavailable" : "Available now"}</small>
+                </label>
+              );
+            })}
+          </div>
+          {unavailableDesign ? <p className={styles.classicMessage}>You may recognise this from an earlier ad. It is currently unavailable; choose Current design to order.</p> : null}
+        </fieldset>
+      ) : null}
 
       {product.id === "custom" ? (
         <fieldset className={styles.actionChoices}>
-          <legend>1. Choose the primary customer action</legend>
+          <legend>Choose the primary customer action</legend>
           {PRIMARY_ACTION_OPTIONS.map((option) => (
             <label key={option.value}>
               <input type="radio" name="primaryAction" value={option.value} checked={primaryAction === option.value} onChange={() => { setPrimaryAction(option.value); setSelectedPlace(null); }} />
@@ -120,35 +167,47 @@ export default function ProductConfigurator({ product, onCartChanged, onOpenCart
         </fieldset>
       ) : null}
 
-      <div className={styles.formField}>
-        <label htmlFor={`${product.id}-business-name`}>{product.id === "custom" ? "2." : "1."} Business name</label>
-        <input id={`${product.id}-business-name`} name="businessName" maxLength="160" autoComplete="organization" placeholder="Your business name" required />
-        <FieldError error={errors.businessName} />
-      </div>
-
       {isGoogleAction ? (
-        <div className={styles.formField}>
-          <label>Search for your business on Google</label>
-          <small>Choose the correct listing so we can configure your main review action.</small>
+        <section className={styles.businessSearch} aria-labelledby={`${product.id}-search-title`}>
+          <div className={styles.searchHeading}>
+            <span><Image src={assets.platforms.google} alt="Google" fill sizes="38px" /></span>
+            <div><strong id={`${product.id}-search-title`}>Search for your business</strong><small>Find your Google Business Profile so we can configure your review link before your TapRank arrives.</small></div>
+          </div>
           <GoogleBusinessSearch onSelect={selectPlace} />
-          {selectedPlace ? <div className={styles.selectedBusiness}><span>Selected</span><strong>{selectedPlace.businessName}</strong><small>{selectedPlace.businessAddress}</small><button type="button" onClick={() => setSelectedPlace(null)}>Change</button></div> : null}
+          {selectedPlace ? <div className={styles.selectedBusiness}><span>Selected business</span><strong>{selectedPlace.businessName}</strong><small>{selectedPlace.businessAddress}</small><button type="button" onClick={() => setSelectedPlace(null)}>Change</button></div> : null}
           <button className={styles.textButton} type="button" onClick={() => { setManualGoogle((value) => !value); setSelectedPlace(null); }}>
             Can’t find your business? {manualGoogle ? "Hide manual entry" : "Enter the link manually"}
           </button>
-        </div>
+          <FieldError error={errors.primaryUrl} />
+        </section>
       ) : null}
+
+      <div className={styles.formField}>
+        <label htmlFor={`${product.id}-business-name`}>Business name</label>
+        <input id={`${product.id}-business-name`} name="businessName" maxLength="160" autoComplete="organization" placeholder="Your business name" required />
+        <FieldError error={errors.businessName} />
+      </div>
 
       {(!isGoogleAction || manualGoogle) ? (
         <div className={styles.formField}>
           <label htmlFor={`${product.id}-primary-url`}>{primaryLabel} link</label>
           <input id={`${product.id}-primary-url`} name="primaryUrl" type="url" maxLength="1000" placeholder="https://…" required />
-          <FieldError error={errors.primaryUrl} />
+          {!isGoogleAction ? <FieldError error={errors.primaryUrl} /> : null}
         </div>
       ) : <input type="hidden" name="primaryUrl" value="" />}
-      {isGoogleAction && !manualGoogle ? <FieldError error={errors.primaryUrl} /> : null}
+
+      {product.id === "custom" ? (
+        <div className={styles.formField}>
+          <label htmlFor="custom-logo">Business logo <span>Required</span></label>
+          <small>JPG, PNG or WebP · maximum 3 MB</small>
+          <label className={styles.filePicker} htmlFor="custom-logo"><span>{logoName || "Choose your logo"}</span><strong>Browse</strong></label>
+          <input className={styles.hiddenFile} id="custom-logo" name="logo" type="file" accept={STOREFRONT_LOGO_TYPES.join(",")} required onChange={(event) => setLogoName(event.target.files?.[0]?.name || "")} />
+          <FieldError error={errors.logo} />
+        </div>
+      ) : null}
 
       <details className={styles.optionalDetails}>
-        <summary>Add optional business details and links</summary>
+        <summary><span>Customise your TapRank page</span><small>Add optional links, location and opening times</small></summary>
         <div className={styles.optionalContent}>
           <div className={styles.formField}>
             <label htmlFor={`${product.id}-location`}>Business location <span>Optional</span></label>
@@ -175,21 +234,7 @@ export default function ProductConfigurator({ product, onCartChanged, onOpenCart
         </div>
       </details>
 
-      {product.id === "custom" ? (
-        <div className={styles.formField}>
-          <label htmlFor="custom-logo">Business logo</label>
-          <small>Required for Custom · JPG, PNG or WebP · maximum 3 MB</small>
-          <label className={styles.filePicker} htmlFor="custom-logo"><span>{logoName || "Choose your logo"}</span><strong>Browse</strong></label>
-          <input className={styles.hiddenFile} id="custom-logo" name="logo" type="file" accept={STOREFRONT_LOGO_TYPES.join(",")} required onChange={(event) => setLogoName(event.target.files?.[0]?.name || "")} />
-          <FieldError error={errors.logo} />
-        </div>
-      ) : null}
-
-      <div className={styles.quantityRow}>
-        <label htmlFor={`${product.id}-quantity`}>Quantity</label>
-        <input id={`${product.id}-quantity`} name="quantity" type="number" min="1" max="20" defaultValue="1" inputMode="numeric" />
-        <span>Each quantity uses this same configuration.</span>
-      </div>
+      <BundleSelector productId={product.id} quantity={quantity} onChange={setQuantity} />
       <FieldError error={errors.quantity} />
 
       <label className={styles.privacyCheck}>
@@ -199,13 +244,14 @@ export default function ProductConfigurator({ product, onCartChanged, onOpenCart
       <FieldError error={errors.privacyAccepted} />
 
       {message ? <p className={styles.formMessage} role="alert">{message}</p> : null}
-      <button className={styles.addToCart} type="submit" disabled={submitting || (product.id === "custom" && !primaryAction)}>
-        {submitting ? "Adding securely…" : `Add to cart · £${product.price}`}
+      <button className={styles.addToCart} type="submit" disabled={submitting || unavailableDesign || (product.id === "custom" && !primaryAction)}>
+        {submitting ? "Adding securely…" : unavailableDesign ? "Choose Current design to order" : `Add to cart — ${formatPrice(pricing?.totalPence || product.pricePence)}`}
       </button>
       <ul className={styles.purchaseReassurance}>
-        <li>Free UK delivery</li><li>No subscription</li><li>1-year replacement warranty</li>
+        <li>Secure checkout</li><li>Free UK delivery</li><li>Dispatch within 48 hours</li><li>Ready to use</li><li>1-year replacement warranty</li>
       </ul>
-      {fallbackUrl ? <details className={styles.fallback}><summary>Having trouble with the configurator?</summary><p>You can still use TapRank’s existing Square checkout and send your setup details afterwards.</p><a href={fallbackUrl} {...externalLinkProps(fallbackUrl)} onClick={() => homepageEvent("square_checkout_click", { variant: product.id, location: "configurator_fallback" })}>Use existing Square checkout</a></details> : null}
+      <a className={styles.etsyLink} href={ETSY_SHOP_URL} {...externalLinkProps(ETSY_SHOP_URL)}>Prefer Etsy? Shop TapRank on Etsy →</a>
+      {fallbackUrl ? <details className={styles.fallback}><summary>Having trouble with the configurator?</summary><p>Use TapRank’s existing Square checkout and send your setup details afterwards.</p><a href={fallbackUrl} {...externalLinkProps(fallbackUrl)} onClick={() => homepageEvent("square_checkout_click", { variant: product.id, location: "configurator_fallback" })}>Use existing Square checkout</a></details> : null}
     </form>
   );
 }

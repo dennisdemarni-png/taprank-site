@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { cartTokenFromRequest, findCart, makeOrderReference } from "../../lib/cartServer";
 import { getSupabaseAdmin } from "../../lib/supabaseAdmin";
 import { createSquarePaymentLink } from "../../lib/squareServer";
+import { linePricingFor } from "../../lib/commerce";
 import { validateProductConfiguration } from "../../lib/storefront";
 
 function sendError(response, status, message) {
@@ -72,14 +73,20 @@ export default async function checkoutHandler(request, response) {
       }
     }
 
-    const totalPence = items.reduce((total, item) => total + item.unit_price_pence * item.quantity, 0);
+    const pricedItems = items.map((item) => ({ ...item, pricing: linePricingFor(item.product_id, item.quantity) }));
+    if (pricedItems.some((item) => !item.pricing)) {
+      sendError(response, 400, "A cart bundle is no longer available. Remove it and choose a current bundle.");
+      return;
+    }
+    const totalPence = pricedItems.reduce((total, item) => total + item.pricing.totalPence, 0);
     const orderId = randomUUID();
     const orderReference = makeOrderReference();
-    const snapshot = items.map((item) => ({
+    const snapshot = pricedItems.map((item) => ({
       productId: item.product_id,
       productName: item.product_name,
       unitPricePence: item.unit_price_pence,
       quantity: item.quantity,
+      pricing: item.pricing,
       configuration: item.configuration,
       logoPath: item.logo_path,
     }));
@@ -100,7 +107,7 @@ export default async function checkoutHandler(request, response) {
       squareCheckout = await createSquarePaymentLink({
         idempotencyKey: orderId,
         reference: orderReference,
-        items,
+        items: pricedItems,
         redirectUrl: `${siteUrl}/order-confirmation?reference=${encodeURIComponent(orderReference)}`,
       });
     } catch (error) {

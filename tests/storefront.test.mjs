@@ -7,6 +7,7 @@ const storefront = readFileSync(new URL('../lib/storefront.js', import.meta.url)
   .replace('import { linePricingFor, productFor } from "./commerce";', '');
 const moduleSource = `${commerce}\n${storefront}`;
 const { googleReviewUrl, linePricingFor, sanitiseCartForBrowser, validateProductConfiguration } = await import(`data:text/javascript;base64,${Buffer.from(moduleSource).toString('base64')}`);
+const { checkoutSiteUrl } = await import('../lib/checkoutOrigin.js');
 
 const validGoogle = {
   productId: 'google',
@@ -14,7 +15,6 @@ const validGoogle = {
   businessName: 'TapRank Test Business',
   placeId: 'ChIJ_TEST_123',
   additionalLinks: [],
-  privacyAccepted: true,
 };
 
 test('Google place selection produces the required review action without trusting a browser price', () => {
@@ -43,13 +43,18 @@ test('custom configuration requires a supported primary action and keeps its tru
   assert.equal(valid.values.unitPricePence, 8499);
 });
 
-test('unsafe links, excessive quantities and missing privacy confirmation fail validation', () => {
+test('unsafe links and unsupported quantities fail validation without a purchase checkbox', () => {
   const result = validateProductConfiguration({ ...validGoogle, quantity: 21, placeId: '', primaryUrl: 'http://example.com', privacyAccepted: false, additionalLinks: [{ label: 'Menu', url: 'javascript:alert(1)' }] });
   assert.equal(result.isValid, false);
   assert.ok(result.errors.quantity);
   assert.ok(result.errors.primaryUrl);
-  assert.ok(result.errors.privacyAccepted);
+  assert.equal(result.errors.privacyAccepted, undefined);
   assert.ok(result.errors['additionalLinks.0.url']);
+});
+
+test('new custom products are disabled at the cart boundary while legacy validation remains intact', () => {
+  const cartSource = readFileSync(new URL('../pages/api/cart.js', import.meta.url), 'utf8');
+  assert.match(cartSource, /Custom TapRank stands are not currently available/);
 });
 
 test('only five additional links are retained', () => {
@@ -95,6 +100,13 @@ test('cart totals are rebuilt from server-authoritative bundle pricing', () => {
   assert.equal(cart.regularTotalPence, 19497);
   assert.equal(cart.items[0].discountPercent, 40);
   assert.equal(cart.items[0].lineTotalPence, 11698);
+});
+
+test('preview checkout returns to the current trusted deployment origin', () => {
+  const request = { headers: { 'x-forwarded-host': 'taprank-preview-123.vercel.app' } };
+  assert.equal(checkoutSiteUrl(request, { VERCEL_ENV: 'preview' }), 'https://taprank-preview-123.vercel.app');
+  assert.equal(checkoutSiteUrl({ headers: { host: 'localhost:3000' } }, { NODE_ENV: 'development' }), 'http://localhost:3000');
+  assert.equal(checkoutSiteUrl({ headers: { host: 'attacker.example' } }, { VERCEL_ENV: 'preview', NEXT_PUBLIC_SITE_URL: 'https://taprank.co.uk/' }), 'https://taprank.co.uk');
 });
 
 test('Square webhook endpoint requires raw body verification and never contains a hardcoded secret', () => {

@@ -19,15 +19,20 @@ import styles from "./ProductLanding.module.css";
 const origin = "https://www.taprank.co.uk";
 
 const comparisonRows = [
-  { feature: "NFC tap", basic: "Included", basicState: "yes", taprank: "Included + configured" },
-  { feature: "QR code", basic: "Included", basicState: "yes", taprank: "Included + configured" },
-  { feature: "Hosted business page", basic: "Not typical", basicState: "no", taprank: "Included" },
-  { feature: "Reviews, socials, bookings + menu", basic: "Not typical", basicState: "no", taprank: "Included where relevant" },
-  { feature: "Configured for your business", basic: "Varies", basicState: "varies", taprank: "TapRank handles setup" },
-  { feature: "No app required", basic: "Commonly", basicState: "yes", taprank: "Yes" },
-  { feature: "No subscription required", basic: "Depends on provider", basicState: "varies", taprank: "Yes" },
-  { feature: "Replacement warranty", basic: "Depends on provider", basicState: "varies", taprank: "1 year" },
+  { feature: "NFC tap", basicState: "yes" },
+  { feature: "QR code", basicState: "yes" },
+  { feature: "Hosted TapRank business page", basicState: "no" },
+  { feature: "Reviews, socials, bookings + menu", basicState: "no" },
+  { feature: "Configured for your business", basicState: "no" },
+  { feature: "Managed link updates without replacing the stand", basicState: "no" },
+  { feature: "1-year replacement warranty", basicState: "no" },
+  { feature: "No app required", basicState: "yes" },
+  { feature: "No subscription required", basicState: "yes" },
 ];
+
+function CartIcon() {
+  return <svg className={styles.cartIcon} viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.5h2.2l1.5 9.1h10.5l1.8-6.2H6.2" /><circle cx="9" cy="18.5" r="1.3" /><circle cx="17" cy="18.5" r="1.3" /></svg>;
+}
 
 function PurchaseLink({ product, location, className = styles.primaryButton, children }) {
   return (
@@ -52,11 +57,10 @@ function Header({ product, cart, onOpenCart }) {
           <nav aria-label="Product page navigation">
             <a href="#how-it-works">How it works</a>
             <a href="#products">Products</a>
-            <a href="/custom-taprank">Custom</a>
             <a href="#faq">FAQ</a>
           </nav>
-          <details className={styles.mobileMenu}><summary aria-label="Open navigation"><span></span><span></span><span></span></summary><nav aria-label="Mobile product navigation"><a href="#how-it-works">How it works</a><a href="#products">Products</a><a href="/custom-taprank">Custom</a><a href="#faq">FAQ</a></nav></details>
-          <button className={styles.cartButton} type="button" onClick={onOpenCart} aria-label={`Open cart with ${cart?.itemCount || 0} items`}>Cart <span>{cart?.itemCount || 0}</span></button>
+          <details className={styles.mobileMenu}><summary aria-label="Open navigation"><span></span><span></span><span></span></summary><nav aria-label="Mobile product navigation"><a href="#how-it-works">How it works</a><a href="#products">Products</a><a href="#faq">FAQ</a></nav></details>
+          <button className={styles.cartButton} type="button" onClick={onOpenCart} aria-label={`Open cart with ${cart?.itemCount || 0} items`}><CartIcon /><span>{cart?.itemCount || 0}</span></button>
           <PurchaseLink product={product} location="header" className={styles.headerButton}>Configure</PurchaseLink>
         </div>
       </header>
@@ -143,15 +147,14 @@ function Proof({ product }) {
 function Comparison({ product }) {
   return (
     <section className={`${styles.wrap} ${styles.section}`} id="compare" aria-labelledby="compare-title">
-      <div className={styles.sectionHeading}>
-        <p className={styles.eyebrow}>The TapRank difference</p>
-        <h2 id="compare-title">More than a basic NFC review stand.</h2>
-        <p>A simple stand can point to one place. TapRank connects the physical product to a hosted business page that stays useful beyond the first action.</p>
+      <div className={`${styles.sectionHeading} ${styles.comparisonHeading}`}>
+        <div><strong>5</strong><span>extra advantages</span></div>
+        <div><p className={styles.eyebrow}>The TapRank difference</p><h2 id="compare-title">Five ways TapRank goes beyond a basic stand.</h2><p>A basic stand can point customers to one place. TapRank keeps the whole customer journey connected.</p></div>
       </div>
       <div className={styles.comparison} role="table" aria-label="Basic review stand compared with TapRank">
         <div className={styles.comparisonHead} role="row"><span role="columnheader">Feature</span><span role="columnheader">Basic NFC/QR review stand</span><strong role="columnheader">TapRank</strong></div>
-        {comparisonRows.map(({ feature, basic, basicState, taprank }) => (
-          <div role="row" key={feature}><strong role="rowheader">{feature}</strong><span role="cell" data-state={basicState}><i aria-hidden="true">{basicState === "yes" ? "✓" : basicState === "no" ? "×" : "—"}</i>{basic}</span><span role="cell"><i aria-hidden="true">✓</i>{taprank}</span></div>
+        {comparisonRows.map(({ feature, basicState }) => (
+          <div role="row" key={feature}><strong role="rowheader">{feature}</strong><span role="cell" data-state={basicState}><i aria-hidden="true">{basicState === "yes" ? "✓" : "×"}</i><span className={styles.srOnly}>{basicState === "yes" ? "Included" : "Not included"}</span></span><span role="cell"><i aria-hidden="true">✓</i><span className={styles.srOnly}>Included</span></span></div>
         ))}
       </div>
       <div className={styles.inlineCta}><p><strong>Stand, hosted page and setup—all included.</strong><span>Choose what you want customers to notice first.</span></p><PurchaseLink product={product} location="after_comparison" className={styles.secondaryButton}>Get {product.shortName} · £{product.price}</PurchaseLink></div>
@@ -177,7 +180,7 @@ function Included({ product }) {
         </div>
         <div className={styles.hostedCard}>
           <div className={styles.phoneImage}><Image src={assets.restaurantPage} alt="TapRank hosted restaurant page showing customer actions" fill sizes="280px" /></div>
-          <div><p className={styles.eyebrow}>Your hosted TapRank page</p><h3>The first action is only the beginning.</h3><p>Where relevant, your page can also include Instagram, bookings or enquiries, menu and website links, phone actions, directions and opening hours.</p><a href="/r/restaurant-demo" onClick={() => homepageEvent("demo_viewed", { variant: product.id })}>Explore a demo page <Arrow /></a></div>
+          <div><p className={styles.eyebrow}>Your hosted TapRank page</p><h3>The first action is only the beginning.</h3><p>Where relevant, your page can also include Instagram, bookings or enquiries, menu and website links, phone actions, directions and opening hours.</p><a href="/r/restaurant-demo" target="_blank" rel="noopener noreferrer" onClick={() => homepageEvent("demo_viewed", { variant: product.id })}>Explore a demo page <Arrow /></a></div>
         </div>
       </div>
     </section>
@@ -236,7 +239,7 @@ function Footer() {
     <footer className={styles.footer}>
       <div className={`${styles.wrap} ${styles.footerGrid}`}>
         <div><a href="/" aria-label="TapRank home"><Logo /></a><p>Connect customers to what matters.</p></div>
-        <nav aria-label="Products"><strong>Products</strong>{Object.values(productLandingContent).map(item => <a href={item.route} key={item.id}>{item.shortName}</a>)}</nav>
+        <nav aria-label="Products"><strong>Products</strong>{Object.values(productLandingContent).filter(item => item.id !== "custom").map(item => <a href={item.route} key={item.id}>{item.shortName}</a>)}</nav>
         <nav aria-label="Customer information"><strong>Customer information</strong><a href={`mailto:${TAPRANK_CONTACT.email}`}>Contact</a><a href="#setup-title">Delivery &amp; setup</a><a href="#faq">Warranty</a><a href="/privacy">Privacy</a>{/* TODO: Add Returns / Refunds and Terms links only after TapRank supplies and approves the policy wording. */}</nav>
       </div>
       <div className={`${styles.wrap} ${styles.footerBottom}`}><span>© {new Date().getFullYear()} TapRank</span><span>{TAPRANK_CONTACT.email}</span></div>

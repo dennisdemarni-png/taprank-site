@@ -182,6 +182,7 @@ export default function HostedTapRankPage({ page }) {
       </Head>
 
       <main className="businessLinkPage" data-slug={business.slug}>
+        {business.isDemo && <div className={demoStyles.shopBar}><span>TapRank demo preview</span><a href="/google-review-stand">Get your TapRank — £64.99</a></div>}
         <section className="businessLinkShell" aria-label={`${business.businessName} TapRank page`}>
           <header className="businessIntro">
             {business.businessImage && (
@@ -256,7 +257,7 @@ export default function HostedTapRankPage({ page }) {
             </section>
           )}
 
-          {business.isDemo && <p className={demoStyles.disclosure} id="demo-disclosure">TapRank demonstration business — actions are interactive previews and do not open external services.</p>}
+          {business.isDemo && <><p className={demoStyles.disclosure} id="demo-disclosure">TapRank demonstration business — actions are interactive previews and do not open external services.</p><a className={demoStyles.bottomCta} href="/google-review-stand#configure">Create your TapRank</a></>}
           <footer className="businessPoweredBy">
             <span>Powered by</span>
             <img src="/taprank-logo-transparent.png" alt="TapRank" width="1280" height="331" />

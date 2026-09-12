@@ -1,4 +1,5 @@
 const root = "/Assets/redesign";
+const galleryRoot = `${root}/New Product images`;
 export const assets = {
   logo: `${root}/Brand/Taprank logo Transparent.png`,
   whiteLogo: `${root}/Brand/White Taprank logo Transparent Background.png`,
@@ -12,6 +13,26 @@ export const assets = {
   // The supplied Restaurant file also depicts Space Jump; do not mislabel it.
   videoPoster: `${root}/Video/taprank-demo-poster.jpg`,
   video: `${root}/Video/taprank-demo-web.mp4`,
+  productGalleries: {
+    google: [
+      `${galleryRoot}/Google review stand header.png`,
+      `${galleryRoot}/One tap opens a world of next steps (order 2).png`,
+      `${galleryRoot}/Why choose taprank(order 3).png`,
+      `${galleryRoot}/Google product guide (order 4).png`,
+    ],
+    instagram: [
+      `${galleryRoot}/Instagram stand header.png`,
+      `${galleryRoot}/One tap opens a world of next steps (order 2).png`,
+      `${galleryRoot}/Why choose taprank(order 3).png`,
+      `${galleryRoot}/Instagram produt guide (order 4).png`,
+    ],
+    tripadvisor: [
+      `${galleryRoot}/Tripadvisor stand header.png`,
+      `${galleryRoot}/One tap opens a world of next steps (order 2).png`,
+      `${galleryRoot}/Why choose taprank(order 3).png`,
+      `${galleryRoot}/Tripadvisor product guide (order 4).png`,
+    ],
+  },
   platforms: { google: `${root}/Platform logos/Google.PNG`, instagram: `${root}/Platform logos/Instagram.PNG`, tripadvisor: `${root}/Platform logos/Tripadvisor.PNG` },
 };
 export const googleDesigns = [
@@ -22,7 +43,6 @@ export const variants = [
   { id: "google", name: "Google Review", price: "64.99", accent: "#1654ed", image: assets.google, route: "/google-review-stand", description: "Prioritise getting more Google reviews. Make leaving a review the obvious first step, with your other useful business links on the same TapRank page.", caption: "A little prompt. A lasting impression." },
   { id: "instagram", name: "Instagram", price: "64.99", accent: "#af2875", image: assets.instagram, route: "/instagram-stand", description: "Prioritise growing your Instagram following. Put Instagram front and centre, with reviews, bookings and more on your TapRank page.", caption: "From in-person moments to online connections." },
   { id: "tripadvisor", name: "Tripadvisor", price: "64.99", accent: "#087f63", image: assets.tripadvisor, route: "/tripadvisor-stand", description: "Prioritise Tripadvisor reviews. Give guests a simple first step, alongside your menu, directions and other useful links.", caption: "Great experiences deserve to be shared." },
-  { id: "custom", name: "Custom Logo + Branding", price: "84.99", accent: "#19315a", image: assets.custom, route: "/custom-taprank", description: "Put your business logo and branding first. Your tailored stand opens a custom-branded TapRank page with the links that matter to your business.", caption: "Your brand, on both sides of the tap." },
 ];
 
 export const productLandingContent = Object.freeze({
@@ -34,7 +54,7 @@ export const productLandingContent = Object.freeze({
     price: "64.99",
     pricePence: 6499,
     accent: "#1755ef",
-    image: assets.google,
+    image: assets.productGalleries.google[0],
     imageAlt: "Current design Google Review TapRank NFC and QR acrylic stand",
     eyebrow: "Google Review TapRank · Current design",
     headline: "Turn happy customers into Google reviews.",
@@ -52,7 +72,7 @@ export const productLandingContent = Object.freeze({
     price: "64.99",
     pricePence: 6499,
     accent: "#af2875",
-    image: assets.instagram,
+    image: assets.productGalleries.instagram[0],
     imageAlt: "Instagram TapRank NFC and QR acrylic stand",
     eyebrow: "Instagram TapRank",
     headline: "Turn customers into Instagram followers.",
@@ -70,7 +90,7 @@ export const productLandingContent = Object.freeze({
     price: "64.99",
     pricePence: 6499,
     accent: "#087f63",
-    image: assets.tripadvisor,
+    image: assets.productGalleries.tripadvisor[0],
     imageAlt: "Tripadvisor TapRank NFC and QR acrylic stand",
     eyebrow: "Tripadvisor TapRank",
     headline: "Turn great visits into Tripadvisor reviews.",
@@ -127,10 +147,10 @@ export const faqs = [
   ["Do customers need an app?", "No TapRank app or download is needed. Your page opens in their phone’s browser. Some destinations may ask customers to sign in, for example to leave a review."],
   ["Does it work with iPhone and Android?", "NFC works with most modern iPhone and Android phones with NFC enabled. The QR code provides an alternative using the phone’s camera. An internet connection is needed to open your page."],
   ["What happens after I order?", "On a product page, configure your main action and optional business links before checkout. TapRank reviews the supplied destinations, prepares your hosted page, generates and configures the QR code, and configures the NFC before dispatch. Your A7 acrylic stand arrives ready to use."],
-  ["What’s the difference between Standard and Custom?", "Standard is £64.99: choose Google Review, Instagram or Tripadvisor, with the standard TapRank-hosted page design. Custom Logo + Branding is £84.99 and includes your logo, colours and tailored stand design, plus a custom-branded hosted page."],
+  ["Which TapRank face should I choose?", "Choose Google Review to prioritise Google reviews, Instagram to prioritise followers, or Tripadvisor to prioritise Tripadvisor reviews. Each face still connects to a TapRank-hosted page containing the other relevant business links you provide."],
   ["Can I change the links later?", "Yes. Contact TapRank to arrange a link update. Your stand points to a permanent TapRank page, so changing destinations does not require reprinting the QR code or reprogramming the NFC. Updates are managed by TapRank."],
   ["Is there a monthly subscription?", "No monthly subscription is required. Your one-off purchase includes the stand, setup and TapRank-hosted business page."],
   ["How quickly is it dispatched?", "We dispatch within 48 hours of receiving your business details, with free UK delivery. Dispatch is when your order leaves us; it is not a promise of delivery within 48 hours."],
   ["What warranty is included?", "Every TapRank includes a 1-year replacement warranty. Contact TapRank with your order details if you need help with a replacement."],
-  ["Can I order multiple stands?", "Yes. Standard TapRank product pages offer bundles of 2, 3 or 5 stands using the same configuration, with the displayed bundle saving applied at checkout. Custom stands can also be ordered in multiple quantities, but the Standard bundle discounts do not apply."],
+  ["Can I order multiple stands?", "Yes. TapRank product pages offer bundles of 2, 3 or 5 stands using the same configuration, with the displayed bundle saving applied at checkout."],
 ];

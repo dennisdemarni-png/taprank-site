@@ -4,6 +4,7 @@ import { getSupabaseAdmin } from "../../lib/supabaseAdmin";
 import { createSquarePaymentLink } from "../../lib/squareServer";
 import { linePricingFor } from "../../lib/commerce";
 import { validateProductConfiguration } from "../../lib/storefront";
+import { checkoutSiteUrl } from "../../lib/checkoutOrigin";
 
 function sendError(response, status, message) {
   response.status(status).json({ ok: false, message });
@@ -61,7 +62,6 @@ export default async function checkoutHandler(request, response) {
         quantity: item.quantity,
         ...item.configuration,
         primaryUrl: item.configuration.primaryUrl,
-        privacyAccepted: true,
       });
       if (!validation.isValid || validation.values.unitPricePence !== item.unit_price_pence) {
         sendError(response, 400, "A cart item is no longer valid. Remove it and configure the product again.");
@@ -101,7 +101,7 @@ export default async function checkoutHandler(request, response) {
     });
     if (insertError) throw insertError;
 
-    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://taprank.co.uk").replace(/\/$/, "");
+    const siteUrl = checkoutSiteUrl(request);
     let squareCheckout;
     try {
       squareCheckout = await createSquarePaymentLink({

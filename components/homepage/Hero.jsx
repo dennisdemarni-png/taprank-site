@@ -15,8 +15,8 @@ export default function Hero() {
       </div>
       <div className={s.heroVisual}>
         <div className={s.heroDisc} aria-hidden="true" />
-        <div className={s.heroClassicStand}><Stand priority src={assets.googleClassic} alt="Google Review Classic design TapRank stand" /><span>Classic design <small>Sold out</small></span></div>
-        <div className={s.heroCurrentStand}><Stand priority src={assets.google} alt="Google Review Current design TapRank stand" /><span>Current design <small>Available now</small></span></div>
+        <div className={s.heroClassicStand}><Stand priority src={assets.googleClassic} alt="Google Review Classic design TapRank stand" /><span>Classic design <small className={s.stockLabel}><i aria-hidden="true" />In stock</small></span></div>
+        <div className={s.heroCurrentStand}><Stand priority src={assets.google} alt="Google Review Current design TapRank stand" /><span>Current design <small className={s.stockLabel}><i aria-hidden="true" />In stock</small></span></div>
         <div className={s.heroPhone}><Phone priority /><span>Your TapRank page</span></div>
         <div className={s.tapConnector} aria-hidden="true"><span>One tap opens it all</span><svg viewBox="0 0 160 80"><path d="M5 60 Q70 90 145 12 M125 12 L145 12 L144 32" /></svg></div>
         <span className={s.productFootnote}>A7 acrylic · NFC + QR · Ready to use</span>

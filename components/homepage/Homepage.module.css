@@ -564,6 +564,8 @@
 
 /* Conversion refinement: reveal the product early and keep buying within reach. */
 .heroCurrentStand small { display: block; color: #1755ef; font-size: 10px; margin-top: 3px; }
+.stockLabel { display: inline-flex !important; align-items: center; gap: 5px; color: #147652 !important; font-weight: 650; }
+.stockLabel i { width: 6px; height: 6px; border-radius: 50%; background: #12a66f; box-shadow: 0 0 0 3px rgba(18, 166, 111, .12); }
 .home .setupNote { background: #edf2fb; border-left: 2px solid var(--blue); padding: 12px 15px; font-size: 13px; line-height: 1.65; margin-top: 16px; }
 .setupNote strong { display: block; }
 .videoRow { scroll-margin-top: 100px; }

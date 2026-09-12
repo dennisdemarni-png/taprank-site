@@ -81,6 +81,11 @@ async function handlePost(request, response) {
     return;
   }
 
+  if (String(first(parsed.fields.productId) || "").toLowerCase() === "custom") {
+    sendError(response, 404, "Custom TapRank stands are not currently available.");
+    return;
+  }
+
   const validation = validateProductConfiguration({
     ...configuration,
     productId: first(parsed.fields.productId),
@@ -147,7 +152,7 @@ async function handlePost(request, response) {
     product_name: values.productName,
     unit_price_pence: values.unitPricePence,
     quantity: values.quantity,
-    configuration: { ...values.configuration, privacyAcknowledgedAt: new Date().toISOString() },
+    configuration: values.configuration,
     logo_path: logoPath,
   });
 

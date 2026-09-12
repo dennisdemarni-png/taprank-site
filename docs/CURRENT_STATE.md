@@ -6,16 +6,16 @@
 > prices, pending checkout links, verification and production safeguards.
 > The older homepage descriptions below record the pre-redesign baseline.
 
-> **CRO implementation, 12 September 2026:** Four static product landing pages,
+> **CRO implementation, 12 September 2026:** Three active static product landing pages,
 > reusable outbound-link handling and non-navigating demo controls are now present
 > on the working branch. See [CRO pass](CRO_PASS.md). The detailed snapshot below
 > remains the earlier audit baseline unless explicitly superseded by that document.
 
 > **Product merchandising update, 12 September 2026:** The working branch adds a
 > gallery-led purchase layout, both Google stand designs, progressively disclosed
-> configuration and server-validated Standard bundle pricing. The promotion
-> countdown framework is present but intentionally disabled pending a genuine
-> campaign deadline. Production remains unchanged.
+> configuration and server-validated Standard bundle pricing. The genuine five-day
+> promotion is configured to end on 17 September 2026 without resetting. Custom
+> ordering is temporarily disabled. Production remains unchanged.
 
 Implementation snapshot: **28 July 2026**
 
@@ -38,7 +38,9 @@ This file records evidence from the repository. Proposed systems are documented 
 ```text
 components/HostedTapRankPage.jsx  Reusable public hosted-page UI
 components/OrderPageShell.jsx      Shared setup/privacy layout
+components/product/               Shared product gallery, configurator and cart UI
 lib/commerce.js                   Public product, price and Square checkout configuration
+lib/promotion.js                  Fixed-deadline promotion configuration
 lib/storefront.js                 Shared cart configuration validation and safe browser shapes
 lib/cartServer.js                 HttpOnly cart identity and private cart lookup
 lib/squareServer.js               Server-only dynamic Square Checkout client
@@ -48,6 +50,8 @@ lib/supabaseAdmin.js              Server-only Supabase client
 lib/taprankPages.js               Static demo business-page records
 pages/_app.jsx                    Global CSS and favicon metadata
 pages/index.jsx                   Marketing homepage and its interactions
+pages/*-stand.jsx                 Three active shared product-page routes
+pages/custom-taprank.jsx          Temporary 404 for paused Custom ordering
 pages/order-details.jsx           Post-checkout setup form
 pages/privacy.jsx                 Setup privacy notice
 pages/api/order-details.js        Trusted setup-submission endpoint
@@ -69,7 +73,11 @@ The homepage and global stylesheet remain large, coupled files. Much of the home
 
 | Route | Rendering | Current behaviour |
 | --- | --- | --- |
-| `/` | Static page | Marketing homepage with direct Square checkout for the Standard Stand, enquiry-led Custom Stand and bulk journeys, demos, pricing and FAQs. |
+| `/` | Static page | Marketing homepage for the Google Review, Instagram and Tripadvisor TapRank faces, demos, pricing and FAQs. |
+| `/google-review-stand` | Static page | Conversion-focused product gallery, Google business selection, Current/Classic face choice, bundles and cart. |
+| `/instagram-stand` | Static page | Instagram product gallery, configuration, bundles and cart. |
+| `/tripadvisor-stand` | Static page | Tripadvisor product gallery, configuration, bundles and cart. |
+| `/custom-taprank` | 404 | Custom ordering is temporarily unavailable. |
 | `/order-details` | Static page | `noindex` post-checkout form for business, link and branding details. |
 | `/order-confirmation` | Static page | `noindex` Square return page that shows only verified payment status. |
 | `/privacy` | Static page | `noindex` setup-form privacy notice. |
@@ -102,7 +110,7 @@ Current hosted-page limitations:
 - Public destinations receive build-time protocol validation, but there is no remote ownership or availability check during the build.
 - Each demo has an explicit business record, matching location/hours data, business-specific review preview and safe demonstrative action destinations.
 - Demo telephone numbers use Ofcom's reserved fictional `01632 960xxx` range; example web and email destinations use the reserved `example.com` domain.
-- Demo review actions open a Google search preview rather than claiming to submit a review for a real business.
+- Demo business actions remain in-page and show a polished preview message; sales-page demo links open a separate tab.
 - All hosted pages, including the source-managed customer page, use `noindex, follow` by default.
 
 ## Styling and user interface
@@ -120,7 +128,7 @@ The stylesheet contains selectors for several historical homepage and hosted-pag
 - Customer accounts: none.
 - Persistent application storage: private Supabase records and optional private logo files after configuration.
 - Analytics or event tracking: none found.
-- Checkout: existing approved outbound Square links remain available as fallback. Dedicated product pages contain a gated dynamic Square-hosted checkout. Cart creation, Custom-logo storage and Square Sandbox payment-link creation have been verified, but it is not production-ready until the signed webhook is configured on a stable deployment and a complete Sandbox payment is verified. TapRank does not host card fields.
+- Checkout: existing approved outbound Square links remain available as fallback. Dedicated product pages contain a gated dynamic Square-hosted checkout. Standard cart creation, live Google Places suggestions/selection and Square Sandbox payment-link creation have been verified locally. It is not production-ready until the signed webhook is configured on a stable deployment, a complete Sandbox payment is verified and Production Square credentials replace Sandbox values. TapRank does not host card fields.
 - Subscription billing: none.
 
 ## Environment variables and secrets
@@ -137,13 +145,14 @@ Confirmed from code or configuration:
 
 - Vercel-compatible deployment configuration.
 - GitHub remote for `dennisdemarni-png/taprank-site`.
-- Square-hosted Standard TapRank Stand checkout.
+- Square-hosted Standard TapRank Stand checkout and server-side payment-link creation.
+- Google Maps JavaScript Places Autocomplete Data for business selection.
 - Google Reviews/Search and Maps destinations.
 - Instagram destinations.
 - Browser-native email, telephone, and SMS links.
 - Unsplash source URLs stored as attribution/source fields in demo data; those fields are not rendered by the current component.
 
-No authenticated third-party API integration was found.
+Server-authenticated Supabase and Square integrations are present. Privileged values remain server-only.
 
 ## Deployment setup
 
@@ -197,10 +206,10 @@ Those facts must be confirmed in Vercel rather than guessed.
 4. **Build-time slug list.** Unknown customer slugs return 404 and every new slug needs a full deployment.
 5. **Demonstrative demo destinations.** Demo actions intentionally use fictional phone numbers, `example.com`, Google search previews and broad map areas rather than real merchant accounts.
 6. **Manual payment matching.** `/order-details` captures setup information, but Square payment still needs manual confirmation before production.
-7. **No automated quality gates.** Lint, type-check, tests, accessibility tests, and end-to-end route checks are absent.
+7. **Partial automated quality gates.** Node tests and production builds are available; lint and browser end-to-end automation are not configured as scripts.
 8. **Large, coupled files.** The homepage and global stylesheet increase regression risk and make unused-code decisions difficult.
 9. **Potential unused assets/selectors.** Several public images and historical selectors appear unreferenced. They were not removed because deletion needs separate evidence and approval.
-10. **Image performance.** The current pages use plain image elements rather than Next.js image optimisation.
+10. **Image weight.** Product media uses Next.js image optimisation, but the supplied gallery source files are still large and should be replaced with final compressed exports when approved.
 11. **No operational telemetry.** There is no application monitoring, error tracking, or analytics.
 12. **No explicit security headers.** No repository-level CSP or related response-header policy was found.
 13. **Deployment ownership is undocumented.** A recovery or rollback could depend on knowledge held outside the repository.

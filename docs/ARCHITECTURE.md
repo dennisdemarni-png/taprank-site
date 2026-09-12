@@ -19,7 +19,7 @@ Vercel / Next.js
   |-- /google-review-stand    static product landing page
   |-- /instagram-stand        static product landing page
   |-- /tripadvisor-stand      static product landing page
-  |-- /custom-taprank         static product landing page
+  |-- /custom-taprank         temporary 404 while Custom ordering is paused
   |-- /order-details          static post-checkout setup form
   |-- /order-confirmation     Square return and payment-status view
   |-- /privacy                setup privacy notice
@@ -45,7 +45,7 @@ Supabase stores private post-checkout setup submissions, private carts, configur
 ## Folder and component organisation
 
 - `pages/index.jsx` owns the marketing homepage, its section data, and most interactive homepage components.
-- The four root product routes are thin wrappers around `components/product/ProductLanding.jsx`, with shared catalogue and landing content in `components/homepage/content.js`.
+- The three active root product routes are thin wrappers around `components/product/ProductLanding.jsx`, with shared catalogue and landing content in `components/homepage/content.js`. The Custom route deliberately returns 404.
 - `lib/publicLinks.js` applies safe new-tab attributes to genuine external web destinations while leaving internal, telephone and email links unchanged.
 - `pages/_app.jsx` loads the global stylesheet and favicon metadata.
 - `pages/order-details.jsx` renders the `noindex` post-checkout form.
@@ -130,7 +130,7 @@ The order-details endpoint is the current trusted server boundary. Its Supabase 
 - GitHub is the source remote.
 - Square hosts card entry for approved fallback links and the gated dynamic checkout. Credentials remain server-only. Payment-link creation is verified in Sandbox; the integration is not production-ready until the signed webhook and completed-payment checks in `docs/STOREFRONT_CHECKOUT.md` pass on a stable HTTPS deployment.
 - Public page actions can link to Google, Maps, Instagram, telephone, SMS, email, and other configured URLs.
-- No third-party service is called with authenticated API credentials.
+- Google Places powers browser-side business suggestions through a referrer-restricted public key.
 
 ## Environment configuration
 
@@ -138,7 +138,7 @@ The post-checkout and storefront endpoints use the environment variables documen
 
 ## Build and deployment
 
-`vercel.json` runs a frozen pnpm installation and `pnpm run build`. The build executes `next build` and produces the static homepage, four product landing pages and supported hosted-page slugs.
+`vercel.json` runs a frozen pnpm installation and `pnpm run build`. The build executes `next build` and produces the static homepage, three active product landing pages, the intentional Custom 404 and supported hosted-page slugs.
 
 The production Git branch, Vercel project, custom domain assignment, and automatic deployment settings are outside the repository and remain unconfirmed.
 
@@ -149,14 +149,15 @@ Available:
 - `pnpm run build`
 - `pnpm run dev`
 - `pnpm run start`
+- `pnpm test`
 
 Unavailable:
 
 - lint script/configuration;
 - type-check script/configuration;
-- unit/integration/end-to-end tests.
+- lint and browser end-to-end test scripts.
 
-Changes need a production build plus checks of `/`, all four product routes, `/r/demo`, and every configured `/r/{slug}` route. The focused storefront tests verify pricing, assets, checkout gates, product-route configuration, support contact and external-link rules.
+Changes need a production build plus checks of `/`, all three active product routes, the Custom 404, `/r/demo`, and every configured `/r/{slug}` route. The focused storefront tests verify pricing, assets, checkout gates, product-route configuration, support contact and external-link rules.
 
 ## Proposed Future Architecture
 

@@ -1,9 +1,8 @@
 # TapRank
 
-> **Homepage launch approved:** The conversion homepage and all four Square
-> destinations are approved for production. See
-> [homepage redesign notes](docs/HOMEPAGE_REDESIGN.md) for implementation and checks.
-> The older homepage descriptions below record the pre-redesign baseline.
+> **Current storefront candidate:** The conversion homepage and three Standard
+> product faces are active in this branch. Custom stands are temporarily unavailable.
+> See [storefront notes](docs/STOREFRONT_CHECKOUT.md) for the remaining production gate.
 
 TapRank is a UK NFC and QR product business for local businesses. Its acrylic countertop stands send customers to permanent, mobile-first TapRank pages for reviews, menus, rewards, social media, booking, contact details, offers, and other approved links.
 
@@ -21,7 +20,7 @@ This repository contains the public marketing website, a secure post-checkout se
 - pnpm lockfile and Vercel build configuration
 - Node.js 20.9 or newer
 
-There is no authentication, CMS, admin dashboard or custom card form. The product pages now contain a gated product configurator, private cart, dynamic Square-hosted checkout API and signed payment webhook. The current Supabase migration, cart, private Custom-logo upload and Square Sandbox payment-link creation have been verified. The new flow must not be treated as live until its signed-webhook and completed-payment checks pass on a stable HTTPS deployment. Existing approved Square Payment Links remain available as a fallback. `/order-details` remains available for earlier/manual orders.
+There is no authentication, CMS, admin dashboard or custom card form. The product pages contain a gated product configurator, private cart, dynamic Square-hosted checkout API and signed payment webhook. The current Supabase migration, Standard cart and Square Sandbox payment-link creation have been verified. Custom ordering is temporarily disabled. The new flow must not be treated as live until its signed-webhook and completed-payment checks pass on a stable HTTPS deployment. Existing approved Square Payment Links remain available as a fallback. `/order-details` remains available for earlier/manual orders.
 
 ## Local setup
 
@@ -66,7 +65,7 @@ Apply the migration in `supabase/migrations/` before enabling production submiss
 | Production server | `pnpm run start` | Configured; run after a build |
 | Lint | Not configured | No lint script or config exists |
 | Type-check | Not configured | JavaScript project; no type-check script exists |
-| Tests | Not configured | No test script or test suite exists |
+| Tests | `pnpm test` | Node test suite is configured |
 
 ## Public routes
 
@@ -76,7 +75,7 @@ Apply the migration in `supabase/migrations/` before enabling production submiss
 | `/google-review-stand` | Direct-response Google Review TapRank product page |
 | `/instagram-stand` | Instagram TapRank product page |
 | `/tripadvisor-stand` | Tripadvisor TapRank product page |
-| `/custom-taprank` | Custom Branding + Logo TapRank product page |
+| `/custom-taprank` | Temporarily unavailable; returns 404 |
 | `/order-details` | Static, `noindex` post-checkout business setup form |
 | `/order-confirmation` | `noindex` Square return/status page; never treats the redirect as payment proof |
 | `/privacy` | Setup-form privacy notice |

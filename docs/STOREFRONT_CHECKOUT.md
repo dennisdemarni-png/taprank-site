@@ -4,9 +4,9 @@
 
 The repository contains the first implementation of an ecommerce-style product
 configuration and cart flow. The storefront Supabase migration was applied to the
-TapRank project on 12 September 2026. A standard cart, a private Custom-logo
-upload, a £64.99 Square Sandbox payment link and the order-status lookup were then
-verified successfully. The flow remains gated until the Square Sandbox webhook is
+TapRank project on 12 September 2026. A Standard cart, Google Places selection,
+£64.99 Square Sandbox payment-link creation and order-status lookup were verified.
+Custom ordering is temporarily disabled. The flow remains gated until the Square Sandbox webhook is
 configured on a stable HTTPS deployment and an end-to-end Sandbox payment passes.
 
 The existing approved static Square Payment Links remain available from the
@@ -19,7 +19,6 @@ in production.
 Product page
   -> business and primary action configuration
   -> up to five optional links, opening hours and location
-  -> private custom-logo upload when applicable
   -> HttpOnly-cookie cart
   -> server price and configuration validation
   -> Square-hosted checkout
@@ -27,15 +26,15 @@ Product page
   -> paid private order record
 ```
 
-The Custom product requires a logo and lets the customer choose Google Review,
-Instagram or Tripadvisor as the primary action. A quantity greater than one uses
-one shared configuration. Differently configured stands must be added as separate
-cart items.
+Custom catalogue and validation support are retained for continuity, but the public
+route returns 404 and the cart rejects new Custom items until TapRank re-enables it.
+A quantity greater than one uses one shared configuration. Differently configured
+stands must be added as separate cart items.
 
 Standard Google Review, Instagram and Tripadvisor products use fixed bundle
 quantities and server-controlled discounts: 1 stand at list price, 2 at 30% off,
 3 at 40% off and 5 at 50% off. Totals are rounded once to the nearest penny and
-sent to Square as one exact bundle line. Custom quantities remain undiscounted.
+sent to Square as one exact bundle line.
 Both Current and Classic Google designs are accepted by the same cart and checkout.
 
 ## Apply the database migration
@@ -59,6 +58,8 @@ key and records event IDs so repeated notifications are safe.
 
 A customer redirect is not payment evidence. Only a validated webhook carrying a
 `COMPLETED` payment for the matching Square order changes the local order to paid.
+Preview and local checkouts return to their own trusted host; production uses the
+configured `NEXT_PUBLIC_SITE_URL`.
 
 ## Required environment
 
@@ -77,22 +78,21 @@ SQUARE_WEBHOOK_NOTIFICATION_URL
 ```
 
 `GOOGLE_PLACES_API_KEY` is reserved for a future server-side Places REST request
-and is not required by the current browser widget.
+and is not required by the current browser search.
 
 ## Production gate
 
 - [x] Apply and review the Supabase migration.
 - [x] Verify standard cart storage and server-controlled product and bundle pricing.
-- [x] Verify private Custom-logo upload and server-controlled £84.99 pricing.
 - [x] Create a Square Sandbox payment link and read its unpaid order status.
+- [x] Add the required Preview environment variables in Vercel.
+- [x] Verify browser Google Places suggestions and selection locally.
 - Confirm anonymous Supabase reads and writes fail.
-- Add Preview environment variables in Vercel without exposing server secrets.
 - Use a stable HTTPS preview notification URL for the Sandbox webhook.
 - Complete a successful Sandbox order and confirm the local status becomes paid.
 - Confirm duplicate and invalidly signed webhook events do not change an order.
 - Confirm failed/abandoned payment remains unconfirmed.
-- Test all four products, both Google designs, custom logo upload, five optional links and supported bundle quantities.
-- Review the existing privacy notice for the new pre-checkout cart collection flow.
+- Test all three active products, both Google designs, five optional links and supported bundle quantities.
 - Replace Sandbox credentials with separately configured Production credentials.
 - Complete one low-value real-card transaction and refund verification before launch.
 

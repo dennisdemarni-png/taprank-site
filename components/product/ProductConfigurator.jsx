@@ -78,7 +78,6 @@ export default function ProductConfigurator({ product, designId = "current", onD
       placeId: isGoogleAction ? selectedPlace?.placeId || "" : "",
       designId: product.id === "google" ? designId : null,
       additionalLinks: links,
-      privacyAccepted: formData.get("privacyAccepted") === "on",
     };
 
     if (product.id === "custom" && logo instanceof File && logo.size > 0 && (!STOREFRONT_LOGO_TYPES.includes(logo.type) || logo.size > STOREFRONT_LOGO_MAX_BYTES)) {
@@ -118,7 +117,7 @@ export default function ProductConfigurator({ product, designId = "current", onD
     <form className={styles.configurator} id="configure" ref={formRef} onSubmit={submit} noValidate>
       <span id="products" className={styles.sectionAnchor} aria-hidden="true" />
       <fieldset className={styles.productChoices}>
-        <legend>Choose your TapRank</legend>
+        <legend>Choose your TapRank face</legend>
         <div>
           {variants.map((variant) => (
             <a className={variant.id === product.id ? styles.productChoiceSelected : ""} href={variant.route} aria-current={variant.id === product.id ? "page" : undefined} onClick={() => homepageEvent("variant_selected", { variant: variant.id })} key={variant.id}>
@@ -141,7 +140,7 @@ export default function ProductConfigurator({ product, designId = "current", onD
                   <input type="radio" name="designId" value={value} checked={designId === value} onChange={() => { onDesignChange?.(value); setMessage(""); homepageEvent("variant_selected", { variant: "google", design: design.id }); }} />
                   <span><Image src={design.image} alt={`${design.name} Google Review TapRank`} width={140} height={140} loading="eager" /></span>
                   <strong>{design.name}</strong>
-                  <small>Available now</small>
+                  <small className={styles.inStock}><i aria-hidden="true" />In stock</small>
                 </label>
               );
             })}
@@ -232,12 +231,6 @@ export default function ProductConfigurator({ product, designId = "current", onD
 
       <BundleSelector productId={product.id} quantity={quantity} onChange={setQuantity} />
       <FieldError error={errors.quantity} />
-
-      <label className={styles.privacyCheck}>
-        <input type="checkbox" name="privacyAccepted" />
-        <span>I’ve checked these details and read the <a href="/privacy">privacy notice</a>.</span>
-      </label>
-      <FieldError error={errors.privacyAccepted} />
 
       {message ? <p className={styles.formMessage} role="alert">{message}</p> : null}
       <button className={styles.addToCart} type="submit" disabled={submitting || (product.id === "custom" && !primaryAction)}>

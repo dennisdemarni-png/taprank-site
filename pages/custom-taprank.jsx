@@ -1,2 +1,7 @@
-import ProductLanding from "../components/product/ProductLanding";
-export default function CustomTapRankPage() { return <ProductLanding productId="custom" />; }
+export async function getStaticProps() {
+  return { notFound: true };
+}
+
+export default function CustomTapRankPage() {
+  return null;
+}

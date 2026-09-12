@@ -3,7 +3,7 @@ import Homepage from "../components/homepage/Homepage";
 import { variants, assets } from "../components/homepage/content";
 const origin = "https://www.taprank.co.uk";
 const title = "TapRank | NFC & QR Review Stands for Your Business";
-const description = "Turn happy customers into action with TapRank. Google review stands, Instagram NFC stands, Tripadvisor and custom branding. From £64.99. Free UK delivery. No subscription.";
+const description = "Turn happy customers into action with TapRank. Choose a Google Review, Instagram or Tripadvisor NFC + QR stand for £64.99 with free UK delivery and no subscription.";
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -12,7 +12,7 @@ const structuredData = {
     ...variants.map(variant => ({
       "@type": "Product", "@id": `${origin}/#${variant.id}-stand`, name: `TapRank ${variant.name} NFC + QR Stand`, description: variant.description,
       image: `${origin}${encodeURI(variant.image)}`, brand: { "@id": `${origin}/#organization` },
-      category: variant.id === "custom" ? "Custom business NFC stand" : "NFC and QR code review and social stand",
+      category: "NFC and QR code review and social stand",
       offers: { "@type": "Offer", priceCurrency: "GBP", price: variant.price, url: `${origin}/#options`, shippingDetails: { "@type": "OfferShippingDetails", shippingDestination: { "@type": "DefinedRegion", addressCountry: "GB" }, shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "GBP" } } },
     })),
   ],

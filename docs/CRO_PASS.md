@@ -12,12 +12,15 @@ platform, payment flow or analytics provider.
 - `/google-review-stand`
 - `/instagram-stand`
 - `/tripadvisor-stand`
-- `/custom-taprank`
 
-All four routes render the shared `components/product/ProductLanding.jsx`
+The three active routes render the shared `components/product/ProductLanding.jsx`
 implementation. Product-specific messaging, current imagery, route metadata and
 prices come from `components/homepage/content.js`; Square destinations remain in
 `lib/commerce.js`.
+
+`/custom-taprank` currently returns 404 and the cart API rejects new Custom items.
+The catalogue and legacy order fields remain intact so previously submitted work
+is not damaged and Custom can be restored deliberately later.
 
 The Google Review route is the primary direct-response page. Its Current design
 remains the default, while Classic is also available for visitors arriving from
@@ -29,21 +32,20 @@ Square checkout; Classic does not require a separate static Square Payment Link.
 The shared product page now uses a gallery-first ecommerce layout with a compact
 benefit-led purchase panel, visual product and Google-design selectors, stronger
 Google Business search treatment, progressively disclosed optional page fields,
-and an explicit bundle selector. The gallery is data-driven and currently uses
-approved existing assets plus feature cards; its slots are intended to receive
-the final product photography, sizing, lifestyle and bundle assets when supplied.
+and an explicit bundle selector. Each active product gallery uses the four supplied
+product images in their approved order followed by the optimised eight-second video.
+The Google Business search uses Google Places Autocomplete Data with a native,
+accessible result list and retains the manual secure-link fallback.
 
 Standard products support authoritative bundle tiers of 1, 2, 3 and 5 stands.
 The 2, 3 and 5 tiers receive 30%, 40% and 50% discounts respectively. The shared
-configuration applies to every stand in the selected bundle. Custom stands retain
-their £84.99 unit price and do not receive Standard bundle discounts. Cart and
+configuration applies to every stand in the selected bundle. Cart and
 Square totals are derived again from the server catalogue and tier rules.
 
-`lib/promotion.js` is the central promotion configuration. It deliberately ships
-disabled because no genuine campaign deadline or higher regular price has been
-approved. When enabled with a future ISO deadline, it counts down to that fixed
-instant and expires without resetting. Crossed-out pricing appears only when a
-higher genuine `regularPricePence` is configured.
+`lib/promotion.js` is the central promotion configuration. The approved five-day
+campaign runs to `2026-09-17T14:30:00+01:00`, presents the genuine £79.99 reference
+price against £64.99, and expires without resetting. The banner then falls back to
+the standard price, delivery and no-subscription message.
 
 ## Conversion journey
 
@@ -69,7 +71,8 @@ same browsing context.
 
 Demo hosted pages render business actions as accessible buttons. They never open
 Google, Instagram, WhatsApp, booking, maps, phone, menu or website destinations;
-instead they show a small in-page status message. The real `/r/laser-expert-pro`
+instead they show a small in-page status message and a product CTA. Sales-page links
+to demos open in a new tab. The real `/r/laser-expert-pro`
 page continues to render genuine external links.
 
 The existing Meta integration is retained. Allowlisted product-page views, video
@@ -93,11 +96,12 @@ testimonial, exact customer result or product capability was invented.
 
 - Run `pnpm run test:homepage`.
 - Run `pnpm run build`.
-- Check all four product routes at desktop and phone widths.
+- Check all three active product routes at desktop and phone widths; confirm the
+  Custom route returns 404.
 - Check that every Square/Etsy/Trustpilot link opens safely in a new tab.
 - Check that demo actions stay on the demo route and show the preview message.
 - Check that real customer actions remain anchors with their approved destinations.
 - Check the Current Google design remains primary and Classic can be selected,
   added to cart and purchased through the same dynamic checkout.
 - Confirm Standard bundle totals: 1 £64.99, 2 £90.99, 3 £116.98 and 5 £162.48.
-- Keep the promotion disabled until a genuine campaign end timestamp is approved.
+- Confirm the promotion expires at the fixed configured deadline without resetting.

@@ -134,10 +134,7 @@ export default function PrivacyPage() {
           </article>
 
           <div className="privacyActions">
-            <a className="button" href="/order-details">
-              Return to setup form
-            </a>
-            <a className="button buttonSecondary" href="/">
+            <a className="button" href="/">
               TapRank home
             </a>
           </div>

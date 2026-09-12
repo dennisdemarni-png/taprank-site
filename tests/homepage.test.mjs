@@ -20,8 +20,8 @@ test('approved variants map to their exact Square destinations; unknown products
   assert.equal(EXISTING_STANDARD_CHECKOUT_URL, expected.google);
   assert.equal(ETSY_URL, 'https://taprank.etsy.com/uk/listing/4569990571/google-review-nfc-stand-qr-code-review');
 });
-test('Google defaults and all four offers use the approved current GBP prices', () => {
-  assert.deepEqual(variants.map(({id, price}) => [id, price]), [['google','64.99'],['instagram','64.99'],['tripadvisor','64.99'],['custom','84.99']]);
+test('Google defaults and the three active offers use the approved current GBP prices', () => {
+  assert.deepEqual(variants.map(({id, price}) => [id, price]), [['google','64.99'],['instagram','64.99'],['tripadvisor','64.99']]);
   assert.ok(!/39\.99|69\.99/.test(JSON.stringify({variants, faqs})));
 });
 test('server checkout catalogue preserves exact prices and fails closed for unknown products', () => {
@@ -31,7 +31,7 @@ test('server checkout catalogue preserves exact prices and fails closed for unkn
   assert.equal(productFor('__proto__'), null);
 });
 test('all referenced approved assets exist with exact case and filename', () => {
-  const paths = [assets.logo, assets.whiteLogo, assets.googleClassic, assets.restaurantPage, assets.spacePage, assets.video, assets.videoPoster, ...Object.values(assets.platforms), ...variants.map(v => v.image), ...actions.flatMap(a => [a.image, a.extraImage].filter(Boolean))];
+  const paths = [assets.logo, assets.whiteLogo, assets.googleClassic, assets.restaurantPage, assets.spacePage, assets.video, assets.videoPoster, ...Object.values(assets.platforms), ...Object.values(assets.productGalleries).flat(), ...variants.map(v => v.image), ...actions.flatMap(a => [a.image, a.extraImage].filter(Boolean))];
   for (const path of paths) assert.ok(existsSync(new URL(`../public${path}`, import.meta.url)), path);
 });
 
@@ -47,18 +47,18 @@ test('Google Current design defaults and Classic uses dynamic in-site checkout',
   assert.equal(CHECKOUTS.google.classic.soldOut, false);
 });
 
-test('dedicated product routes reuse the approved catalogue and prices', () => {
+test('active dedicated product routes reuse the approved catalogue and prices', () => {
   const expected = {
     google: ['/google-review-stand', '64.99'],
     instagram: ['/instagram-stand', '64.99'],
     tripadvisor: ['/tripadvisor-stand', '64.99'],
-    custom: ['/custom-taprank', '84.99'],
   };
-  assert.deepEqual(Object.fromEntries(Object.entries(productLandingContent).map(([id, product]) => [id, [product.route, product.price]])), expected);
+  assert.deepEqual(Object.fromEntries(variants.map(({ id }) => [id, [productLandingContent[id].route, productLandingContent[id].price]])), expected);
   for (const [id, [route]] of Object.entries(expected)) {
     assert.ok(existsSync(new URL(`../pages${route}.jsx`, import.meta.url)), `${id} route`);
-    assert.equal(productLandingContent[id].image, variants.find(variant => variant.id === id).image);
+    assert.equal(productLandingContent[id].image, assets.productGalleries[id][0]);
   }
+  assert.match(readFileSync(new URL('../pages/custom-taprank.jsx', import.meta.url), 'utf8'), /notFound:\s*true/);
 });
 
 test('public support email and external-link rules are centralised', async () => {
@@ -76,6 +76,7 @@ test('demo pages are explicitly flagged and their shared UI uses in-page control
   const dataSource = readFileSync(new URL('../lib/taprankPages.js', import.meta.url), 'utf8');
   assert.match(pageSource, /if \(isDemo\).*?<button/s);
   assert.match(pageSource, /Demo preview — this action would open the business’s live link\./);
+  assert.match(pageSource, /Get your TapRank — £64\.99/);
   assert.equal((dataSource.match(/isDemo: true/g) || []).length, 3);
 });
 

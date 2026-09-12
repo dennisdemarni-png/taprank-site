@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -47,7 +47,7 @@ function PurchaseLink({ product, location, className = styles.primaryButton, chi
   );
 }
 
-function Header({ product, cart, onOpenCart }) {
+function Header({ product, cart, cartLoading, onOpenCart }) {
   return (
     <>
       <PromotionBar />
@@ -60,7 +60,7 @@ function Header({ product, cart, onOpenCart }) {
             <a href="#faq">FAQ</a>
           </nav>
           <details className={styles.mobileMenu}><summary aria-label="Open navigation"><span></span><span></span><span></span></summary><nav aria-label="Mobile product navigation"><a href="#how-it-works">How it works</a><a href="#products">Products</a><a href="#faq">FAQ</a></nav></details>
-          <button className={styles.cartButton} type="button" onClick={onOpenCart} aria-label={`Open cart with ${cart?.itemCount || 0} items`}><CartIcon /><span>{cart?.itemCount || 0}</span></button>
+          <button className={styles.cartButton} type="button" onClick={onOpenCart} aria-label={cartLoading ? "Open cart, loading saved items" : `Open cart with ${cart?.itemCount || 0} items`}><CartIcon /><span>{cartLoading ? "…" : cart?.itemCount || 0}</span></button>
           <PurchaseLink product={product} location="header" className={styles.headerButton}>Configure</PurchaseLink>
         </div>
       </header>
@@ -250,7 +250,9 @@ function Footer() {
 export default function ProductLanding({ productId }) {
   const router = useRouter();
   const product = productLandingContent[productId];
-  const [cart, setCart] = useState({ items: [], itemCount: 0, totalPence: 0, status: "active" });
+  const [cart, setCart] = useState(null);
+  const [cartHydrated, setCartHydrated] = useState(false);
+  const cartRevision = useRef(0);
   const [cartOpen, setCartOpen] = useState(false);
   const [designId, setDesignId] = useState("current");
   const [purchaseSelection, setPurchaseSelection] = useState({ label: product.name, pricePence: product.pricePence, quantity: 1 });
@@ -258,12 +260,24 @@ export default function ProductLanding({ productId }) {
     if (router.isReady && product.id === "google" && router.query.design === "classic") setDesignId("classic");
   }, [product.id, router.isReady, router.query.design]);
   useEffect(() => { homepageEvent("product_page_view", { variant: product.id }); }, [product.id]);
+  const updateCart = useCallback((nextCart) => {
+    cartRevision.current += 1;
+    setCart(nextCart);
+    setCartHydrated(true);
+  }, []);
   useEffect(() => {
     let active = true;
+    const requestedAtRevision = cartRevision.current;
     fetch("/api/cart")
       .then((response) => response.json())
-      .then((result) => { if (active && result?.ok) setCart(result.cart); })
-      .catch(() => {});
+      .then((result) => {
+        if (!active || requestedAtRevision !== cartRevision.current) return;
+        setCart(result?.ok ? result.cart : null);
+        setCartHydrated(true);
+      })
+      .catch(() => {
+        if (active && requestedAtRevision === cartRevision.current) setCartHydrated(true);
+      });
     return () => { active = false; };
   }, []);
   const canonical = `${origin}${product.route}`;
@@ -272,9 +286,9 @@ export default function ProductLanding({ productId }) {
     <div className={styles.page} id="top" style={{ "--product-accent": product.accent }}>
       <Head><title>{product.seoTitle}</title><meta name="description" content={product.seoDescription} /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="theme-color" content="#101d38" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:title" content={product.seoTitle} /><meta property="og:description" content={product.seoDescription} /><meta property="og:url" content={canonical} /><meta property="og:image" content={`${origin}${encodeURI(product.image)}`} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></Head>
       <a className={styles.skipLink} href="#main">Skip to content</a>
-      <Header product={product} cart={cart} onOpenCart={() => setCartOpen(true)} />
+      <Header product={product} cart={cart} cartLoading={!cartHydrated} onOpenCart={() => setCartOpen(true)} />
       <main id="main">
-        <Hero product={product} designId={designId} onDesignChange={setDesignId} onCartChanged={setCart} onOpenCart={() => setCartOpen(true)} onSelectionChange={setPurchaseSelection} />
+        <Hero product={product} designId={designId} onDesignChange={setDesignId} onCartChanged={updateCart} onOpenCart={() => setCartOpen(true)} onSelectionChange={setPurchaseSelection} />
         <div className={`${styles.wrap} ${styles.videoWrap}`}><ProductDemoVideo onPlay={() => homepageEvent("demo_video_play", { variant: product.id })} headingId={`${product.id}-video-title`} /></div>
         <HowItWorks product={product} />
         <Proof product={product} />
@@ -286,7 +300,7 @@ export default function ProductLanding({ productId }) {
       </main>
       <Footer />
       <MobilePurchase product={product} selection={purchaseSelection} cart={cart} onOpenCart={() => setCartOpen(true)} />
-      <CartDrawer cart={cart} open={cartOpen} onClose={() => setCartOpen(false)} onCartChanged={setCart} />
+      <CartDrawer cart={cart} cartLoading={!cartHydrated} open={cartOpen} onClose={() => setCartOpen(false)} onCartChanged={updateCart} />
     </div>
   );
 }

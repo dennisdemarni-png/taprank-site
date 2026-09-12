@@ -203,9 +203,10 @@
   .heroGallery { width: calc(100% + 32px); margin-left: -16px; }
   .galleryTrack { display: flex; overflow-x: auto; border-inline: 0; border-radius: 0; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .galleryTrack::-webkit-scrollbar { display: none; }
-  .gallerySlide, .gallerySlideActive { display: grid; width: 100%; flex: 0 0 100%; aspect-ratio: 1 / .91; scroll-snap-align: start; }
+  .gallerySlide, .gallerySlideActive { display: grid; width: 100%; flex: 0 0 100%; aspect-ratio: 1; scroll-snap-align: start; }
   .galleryLabel { top: 13px; left: 14px; }
-  .galleryImage { width: 92%; height: 90%; }
+  .galleryImage { width: 100%; height: 100%; }
+  .galleryImage img { object-fit: cover; filter: none; }
   .galleryVideo { width: min(45%, 230px); }
   .galleryCard { width: calc(100% - 42px); min-height: 66%; padding: 28px; }
   .galleryCard strong { font-size: 32px; }

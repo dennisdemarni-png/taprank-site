@@ -148,3 +148,14 @@ This log records confirmed product and architectural decisions. It does not inve
 - **Alternatives considered:** Deleting Custom infrastructure; leaving Custom visible but unpurchasable; using a rolling timer.
 - **Consequences:** `/custom-taprank` returns 404 and new Custom cart requests fail closed. The campaign automatically drops its sale state after the fixed deadline. Re-enabling Custom requires a deliberate public-route and cart-boundary change.
 - **Related files:** `lib/promotion.js`, `components/homepage/content.js`, `components/product/PromotionBar.jsx`, `pages/custom-taprank.jsx`, `pages/api/cart.js`.
+
+### 2026-09-12 — Keep carts editable until verified payment
+
+- **Date:** 2026-09-12
+- **Decision:** Opening a Square checkout does not lock or replace a shopper cart. The cart converts only after a signature-verified completed-payment webhook. Cart mutations invalidate earlier open Square payment links, and checkout reuses a link only for an exact server-side cart snapshot.
+- **Status:** Implemented and verified in Square Sandbox.
+- **Context:** Treating checkout creation as a cart state transition caused later products to enter a second cart and hid Remove controls before payment.
+- **Reason:** Checkout abandonment is normal ecommerce behaviour; only completed payment is a safe terminal boundary.
+- **Alternatives considered:** Permanently locking the cart on first checkout; silently leaving stale Square links active; trusting client-side cart state.
+- **Consequences:** Unpaid carts remain editable and retain all product lines. Changing a cart may invalidate a Square tab already open for its previous contents, requiring the shopper to open the fresh checkout.
+- **Related files:** `lib/cartLifecycle.js`, `lib/cartCheckouts.js`, `lib/cartServer.js`, `pages/api/cart.js`, `pages/api/checkout.js`, `pages/api/square/webhook.js`, `components/product/CartDrawer.jsx`.

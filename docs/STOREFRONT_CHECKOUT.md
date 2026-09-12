@@ -37,6 +37,25 @@ quantities and server-controlled discounts: 1 stand at list price, 2 at 30% off,
 sent to Square as one exact bundle line.
 Both Current and Classic Google designs are accepted by the same cart and checkout.
 
+## Unpaid cart lifecycle
+
+An anonymous cart remains editable until a verified Square `COMPLETED` payment
+webhook converts it. Merely opening, returning from or abandoning Square checkout
+does not change the cart status, hide Remove controls or issue a new shopper cookie.
+Legacy `checkout_started` carts are also treated as editable.
+
+Each checkout request reloads every current cart item from Supabase, validates its
+configuration and rebuilds pricing before creating Square line items. An existing
+payment link is reused only when its server-side order snapshot and total exactly
+match the current cart. Adding or removing an item first deletes any earlier open
+Square payment link and marks its local order cancelled, so a stale checkout cannot
+silently charge for an outdated basket. A late, genuinely completed signed webhook
+is still recorded as paid and converts the matching cart.
+
+The product page explicitly hydrates the saved server cart before presenting an
+empty state. A cart response produced by an Add or Remove action cannot be
+overwritten by an older hydration request.
+
 ## Apply the database migration
 
 Open the Supabase SQL Editor for the TapRank project and run the complete contents
@@ -87,6 +106,8 @@ and is not required by the current browser search.
 - [x] Create a Square Sandbox payment link and read its unpaid order status.
 - [x] Add the required Preview environment variables in Vercel.
 - [x] Verify browser Google Places suggestions and selection locally.
+- [x] Verify a single cart retains Google, Instagram and Tripadvisor across checkout creation, targeted removal and a later addition.
+- [x] Verify a cart edit invalidates the prior Square Sandbox payment link and produces a fresh checkout snapshot.
 - Confirm anonymous Supabase reads and writes fail.
 - Use a stable HTTPS preview notification URL for the Sandbox webhook.
 - Complete a successful Sandbox order and confirm the local status becomes paid.

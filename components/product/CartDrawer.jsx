@@ -3,11 +3,10 @@ import { formatPrice } from "../../lib/commerce";
 import { homepageEvent } from "../../lib/homepageEvents";
 import styles from "./Storefront.module.css";
 
-export default function CartDrawer({ cart, open, onClose, onCartChanged }) {
+export default function CartDrawer({ cart, cartLoading = false, open, onClose, onCartChanged }) {
   const closeRef = useRef(null);
   const [checkingOut, setCheckingOut] = useState(false);
   const [message, setMessage] = useState("");
-  const locked = cart?.status === "checkout_started";
 
   useEffect(() => {
     if (!open) return undefined;
@@ -65,7 +64,6 @@ export default function CartDrawer({ cart, open, onClose, onCartChanged }) {
       homepageEvent("square_checkout_click", { variant: cart.items[0].productId, location: "cart" });
       if (checkoutWindow) checkoutWindow.location.replace(result.checkoutUrl);
       else window.location.assign(result.checkoutUrl);
-      onCartChanged({ ...cart, status: "checkout_started" });
     } catch (error) {
       if (checkoutWindow) checkoutWindow.close();
       setMessage(error?.message || "Secure checkout could not be started.");
@@ -79,7 +77,7 @@ export default function CartDrawer({ cart, open, onClose, onCartChanged }) {
     <div className={styles.cartLayer} role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
       <aside className={styles.cartDrawer} role="dialog" aria-modal="true" aria-labelledby="cart-title">
         <header><div><span>Your TapRank order</span><h2 id="cart-title">Cart</h2></div><button ref={closeRef} type="button" onClick={onClose} aria-label="Close cart">×</button></header>
-        {!cart?.items?.length ? <div className={styles.emptyCart}><strong>Your cart is empty.</strong><p>Configure a TapRank product to add it here.</p></div> : (
+        {cartLoading ? <div className={styles.emptyCart} aria-live="polite"><strong>Loading your cart…</strong><p>Checking for your saved TapRank products.</p></div> : !cart ? <div className={styles.emptyCart}><strong>Your cart could not be loaded.</strong><p>Close the cart and try again in a moment.</p></div> : !cart.items?.length ? <div className={styles.emptyCart}><strong>Your cart is empty.</strong><p>Configure a TapRank product to add it here.</p></div> : (
           <>
             <div className={styles.cartItems}>
               {cart.items.map((item) => <article key={item.id}>
@@ -88,13 +86,13 @@ export default function CartDrawer({ cart, open, onClose, onCartChanged }) {
                   <strong>{formatPrice(item.lineTotalPence)}</strong>
                   {item.discountPercent ? <><del>{formatPrice(item.regularLineTotalPence)}</del><mark>{item.discountPercent}% bundle saving</mark></> : null}
                   <span>Qty {item.quantity}{item.quantity > 1 ? ` · ${formatPrice(item.effectiveUnitPricePence)} each` : ""}</span>
-                  {!locked ? <button type="button" onClick={() => removeItem(item.id)}>Remove</button> : null}
+                  <button type="button" onClick={() => removeItem(item.id)}>Remove</button>
                 </div>
               </article>)}
             </div>
             <div className={styles.cartSummary}><p><span>Total</span><strong>{formatPrice(cart.totalPence)}</strong></p>{cart.regularTotalPence > cart.totalPence ? <small>You save {formatPrice(cart.regularTotalPence - cart.totalPence)} with bundle pricing</small> : null}<small>Free UK delivery · One-off payment</small></div>
             {message ? <p className={styles.formMessage} role="alert">{message}</p> : null}
-            <button className={styles.checkoutButton} type="button" onClick={checkout} disabled={checkingOut}>{checkingOut ? "Opening secure checkout…" : locked ? "Return to secure Square checkout" : "Checkout securely with Square"}</button>
+            <button className={styles.checkoutButton} type="button" onClick={checkout} disabled={checkingOut}>{checkingOut ? "Opening secure checkout…" : "Checkout securely with Square"}</button>
             <p className={styles.checkoutNote}>Square securely collects payment and your UK delivery address in a new tab. TapRank never receives your full card details.</p>
           </>
         )}

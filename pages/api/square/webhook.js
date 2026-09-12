@@ -109,7 +109,7 @@ export default async function squareWebhookHandler(request, response) {
         .from("storefront_orders")
         .update({ status: "paid", paid_at: now, updated_at: now })
         .eq("square_order_id", squareOrderId)
-        .in("status", ["checkout_created", "paid"])
+        .in("status", ["checkout_created", "cancelled", "paid"])
         .select("cart_id")
         .maybeSingle();
       if (orderError) throw orderError;

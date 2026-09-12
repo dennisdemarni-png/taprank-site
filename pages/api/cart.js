@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import formidable from "formidable";
 import { cartTokenFromRequest, cartWithItems, ensureActiveCart, findActiveCart } from "../../lib/cartServer";
 import { getSupabaseAdmin } from "../../lib/supabaseAdmin";
+import { invalidateOpenCheckoutsForCart } from "../../lib/cartCheckouts";
 import {
   STOREFRONT_LOGO_MAX_BYTES,
   STOREFRONT_LOGO_TYPES,
@@ -121,6 +122,14 @@ async function handlePost(request, response) {
     return;
   }
 
+  try {
+    await invalidateOpenCheckoutsForCart(cart.id);
+  } catch (error) {
+    console.error("Previous storefront checkout invalidation failed.", error);
+    sendError(response, 503, "Your previous checkout could not be refreshed safely. Please try again before adding this item.");
+    return;
+  }
+
   const itemId = randomUUID();
   let logoPath = null;
   if (logo) {
@@ -198,6 +207,13 @@ async function handleDelete(request, response) {
     .maybeSingle();
   if (findError) throw findError;
   if (item) {
+    try {
+      await invalidateOpenCheckoutsForCart(cart.id);
+    } catch (error) {
+      console.error("Previous storefront checkout invalidation failed.", error);
+      sendError(response, 503, "Your previous checkout could not be refreshed safely. Please try again before removing this item.");
+      return;
+    }
     const { error } = await supabase.from("storefront_cart_items").delete().eq("id", item.id).eq("cart_id", cart.id);
     if (error) throw error;
     if (item.logo_path) await supabase.storage.from("storefront-branding").remove([item.logo_path]);

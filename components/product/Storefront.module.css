@@ -25,7 +25,6 @@
 .designChoices .designSelected { border-color: #1755ef; background: linear-gradient(135deg, #f3f7ff, #eefcff); box-shadow: inset 0 0 0 1px #1755ef; }
 .designChoices .designSelected::after { content: '✓'; position: absolute; top: 8px; right: 8px; display: grid; width: 20px; height: 20px; place-items: center; border-radius: 50%; color: #fff; background: linear-gradient(135deg, #1755ef, #16bced); font-size: 11px; }
 .designChoices label:has(input:focus-visible) { outline: 3px solid #ffb849; outline-offset: 3px; }
-.classicMessage { margin-top: 9px !important; padding: 9px 11px; border-radius: 8px; color: #654d19; background: #fff8e6; font-size: 10px !important; line-height: 1.45; }
 .actionChoices { margin-top: 24px; }
 .actionChoices label { display: inline-flex; margin: 0 7px 7px 0; cursor: pointer; }
 .actionChoices input { position: absolute; opacity: 0; }

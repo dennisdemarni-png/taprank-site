@@ -83,7 +83,7 @@ function Hero({ product, designId, onDesignChange, onCartChanged, onOpenCart, on
         <ProductGallery product={product} designId={designId} />
       </div>
       <div className={styles.heroCopy}>
-        <p className={styles.eyebrow}>{product.id === "google" ? `Google Review TapRank · ${designId === "classic" ? "Classic design" : "Current design"}` : product.eyebrow}</p>
+        <p className={styles.eyebrow}>{product.id === "google" ? `Google Review TapRank · ${designId === "classic" ? "White background" : "Blue background"}` : product.eyebrow}</p>
         <h1 id="product-title">{product.headline}</h1>
         <p className={styles.lead}>{product.lead}</p>
         <div className={styles.price}>{activePromotion ? <small>{PRODUCT_PROMOTION.saleLabel}</small> : null}<strong>£{product.price}</strong>{regularPricePence ? <del>{formatPrice(regularPricePence)}</del> : null}<span>One-off payment</span></div>

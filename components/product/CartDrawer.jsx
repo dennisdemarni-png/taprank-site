@@ -81,7 +81,7 @@ export default function CartDrawer({ cart, cartLoading = false, open, onClose, o
           <>
             <div className={styles.cartItems}>
               {cart.items.map((item) => <article key={item.id}>
-                <div><strong>{item.productName}</strong><span>{item.configuration.businessName}</span><small>Primary action: {item.configuration.primaryActionLabel}</small>{item.configuration.designId ? <small>Design: {item.configuration.designId === "current" ? "Current" : "Classic"}</small> : null}{item.hasLogo ? <small>Logo attached</small> : null}</div>
+                <div><strong>{item.productName}</strong><span>{item.configuration.businessName}</span><small>Primary action: {item.configuration.primaryActionLabel}</small>{item.configuration.designId ? <small>Design: {item.configuration.designId === "current" ? "Blue background" : "White background"}</small> : null}{item.hasLogo ? <small>Logo attached</small> : null}</div>
                 <div>
                   <strong>{formatPrice(item.lineTotalPence)}</strong>
                   {item.discountPercent ? <><del>{formatPrice(item.regularLineTotalPence)}</del><mark>{item.discountPercent}% bundle saving</mark></> : null}

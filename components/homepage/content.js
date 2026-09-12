@@ -36,8 +36,8 @@ export const assets = {
   platforms: { google: `${root}/Platform logos/Google.PNG`, instagram: `${root}/Platform logos/Instagram.PNG`, tripadvisor: `${root}/Platform logos/Tripadvisor.PNG` },
 };
 export const googleDesigns = [
-  { id: "new", name: "Current design", image: assets.google, soldOut: false },
-  { id: "classic", name: "Classic design", image: assets.googleClassic, soldOut: false },
+  { id: "new", name: "Blue background", image: assets.google, soldOut: false },
+  { id: "classic", name: "White background", image: assets.googleClassic, soldOut: false },
 ];
 export const variants = [
   { id: "google", name: "Google Review", price: "64.99", accent: "#1654ed", image: assets.google, route: "/google-review-stand", description: "Prioritise getting more Google reviews. Make leaving a review the obvious first step, with your other useful business links on the same TapRank page.", caption: "A little prompt. A lasting impression." },
@@ -55,8 +55,8 @@ export const productLandingContent = Object.freeze({
     pricePence: 6499,
     accent: "#1755ef",
     image: assets.productGalleries.google[0],
-    imageAlt: "Current design Google Review TapRank NFC and QR acrylic stand",
-    eyebrow: "Google Review TapRank · Current design",
+    imageAlt: "Blue background Google Review TapRank NFC and QR acrylic stand",
+    eyebrow: "Google Review TapRank · Blue background",
     headline: "Turn happy customers into Google reviews.",
     lead: "Make leaving a Google review effortless while the experience is still fresh.",
     cta: "Get my Google Review TapRank — £64.99",

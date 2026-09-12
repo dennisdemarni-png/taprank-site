@@ -37,7 +37,7 @@ export default function ProductConfigurator({ product, designId = "current", onD
 
   useEffect(() => {
     onSelectionChange?.({
-      label: product.id === "google" && designId === "classic" ? "Google Review · Classic" : product.name,
+      label: product.id === "google" ? `Google Review · ${designId === "classic" ? "White background" : "Blue background"}` : product.name,
       pricePence: pricing?.totalPence || product.pricePence,
       quantity,
     });
@@ -145,7 +145,6 @@ export default function ProductConfigurator({ product, designId = "current", onD
               );
             })}
           </div>
-          {designId === "classic" ? <p className={styles.classicMessage}>You may recognise this design from one of our earlier ads. It now uses the same TapRank configuration and checkout as the Current design.</p> : null}
         </fieldset>
       ) : null}
 

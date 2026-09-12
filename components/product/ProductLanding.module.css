@@ -57,7 +57,6 @@
 .galleryTrack { position: relative; border: 1px solid #dde6f2; border-radius: 20px; background: radial-gradient(circle at 50% 35%, #fff 0%, #eef4fc 72%, #e9f1fb 100%); box-shadow: 0 22px 60px rgba(16, 43, 91, .10); overflow: hidden; }
 .gallerySlide { position: relative; display: none; width: 100%; aspect-ratio: 1 / .93; place-items: center; overflow: hidden; }
 .gallerySlideActive { display: grid; }
-.galleryLabel { position: absolute; top: 17px; left: 17px; z-index: 3; padding: 6px 10px; border: 1px solid rgba(178, 198, 228, .8); border-radius: 999px; color: #234265; background: rgba(255, 255, 255, .9); backdrop-filter: blur(8px); font-size: 8px; font-weight: 800; letter-spacing: .065em; text-transform: uppercase; }
 .galleryImage { position: relative; width: 90%; height: 90%; }
 .galleryImage img { object-fit: contain; filter: drop-shadow(0 27px 25px rgba(12, 32, 70, .14)); }
 .galleryVideo { display: block; width: min(48%, 310px); max-height: 88%; border-radius: 16px; background: #071020; box-shadow: 0 25px 45px rgba(5, 16, 40, .25); }
@@ -203,9 +202,9 @@
   .heroGallery { width: calc(100% + 32px); margin-left: -16px; }
   .galleryTrack { display: flex; overflow-x: auto; border-inline: 0; border-radius: 0; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .galleryTrack::-webkit-scrollbar { display: none; }
-  .gallerySlide, .gallerySlideActive { display: grid; width: 100%; flex: 0 0 100%; aspect-ratio: 1 / .91; scroll-snap-align: start; }
-  .galleryLabel { top: 13px; left: 14px; }
-  .galleryImage { width: 92%; height: 90%; }
+  .gallerySlide, .gallerySlideActive { display: grid; width: 100%; flex: 0 0 100%; aspect-ratio: 1; scroll-snap-align: start; }
+  .galleryImage { width: 100%; height: 100%; }
+  .galleryImage img { object-fit: cover; filter: none; }
   .galleryVideo { width: min(45%, 230px); }
   .galleryCard { width: calc(100% - 42px); min-height: 66%; padding: 28px; }
   .galleryCard strong { font-size: 32px; }

@@ -12,9 +12,9 @@ function mediaFor(product, designId) {
     type: "image",
     src: product.id === "google" && designId === "classic" && index === 0 ? assets.googleClassic : src,
     alt: product.id === "google" && designId === "classic" && index === 0
-      ? "Classic Google Review TapRank acrylic stand"
+      ? "White background Google Review TapRank acrylic stand"
       : `${product.name} — ${galleryLabels[index] || `gallery image ${index + 1}`}`,
-    label: product.id === "google" && designId === "classic" && index === 0 ? "Classic design" : galleryLabels[index],
+    label: product.id === "google" && designId === "classic" && index === 0 ? "White background" : galleryLabels[index],
     priority: index === 0,
   }));
   return [...imageItems, { id: "video", type: "video", src: assets.video, poster: assets.videoPoster, label: "8-second demo" }];
@@ -46,7 +46,6 @@ export default function ProductGallery({ product, designId }) {
       <div className={styles.galleryTrack} ref={trackRef} onScroll={trackScroll}>
         {media.map((item, index) => (
           <figure className={`${styles.gallerySlide} ${active === index ? styles.gallerySlideActive : ""}`} key={item.id}>
-            <span className={styles.galleryLabel}>{item.label}</span>
             {item.type === "image" ? (
               <div className={styles.galleryImage}><Image src={item.src} alt={item.alt} fill priority={item.priority} loading={item.priority ? "eager" : "lazy"} sizes="(max-width: 760px) 100vw, 52vw" /></div>
             ) : (

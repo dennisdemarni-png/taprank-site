@@ -5,6 +5,8 @@ import { createSquarePaymentLink } from "../../lib/squareServer";
 import { linePricingFor } from "../../lib/commerce";
 import { validateProductConfiguration } from "../../lib/storefront";
 import { checkoutSiteUrl } from "../../lib/checkoutOrigin";
+import { checkoutMatchesCart, checkoutSnapshot } from "../../lib/cartLifecycle";
+import { invalidateOpenCheckoutsForCart, openCheckoutsForCart } from "../../lib/cartCheckouts";
 
 function sendError(response, status, message) {
   response.status(status).json({ ok: false, message });
@@ -28,20 +30,6 @@ export default async function checkoutHandler(request, response) {
     const cart = await findCart(cartTokenFromRequest(request));
     if (!cart) {
       sendError(response, 400, "Your cart is empty or has expired.");
-      return;
-    }
-
-    const { data: existingOrder, error: existingError } = await supabase
-      .from("storefront_orders")
-      .select("order_reference,square_checkout_url")
-      .eq("cart_id", cart.id)
-      .eq("status", "checkout_created")
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    if (existingError) throw existingError;
-    if (existingOrder?.square_checkout_url) {
-      response.status(200).json({ ok: true, checkoutUrl: existingOrder.square_checkout_url, reference: existingOrder.order_reference });
       return;
     }
 
@@ -79,18 +67,18 @@ export default async function checkoutHandler(request, response) {
       return;
     }
     const totalPence = pricedItems.reduce((total, item) => total + item.pricing.totalPence, 0);
+    const snapshot = checkoutSnapshot(pricedItems);
+
+    const existingOrders = await openCheckoutsForCart(cart.id);
+    const reusableOrder = existingOrders.find((order) => checkoutMatchesCart(order, snapshot, totalPence));
+    if (reusableOrder) {
+      response.status(200).json({ ok: true, checkoutUrl: reusableOrder.square_checkout_url, reference: reusableOrder.order_reference });
+      return;
+    }
+    await invalidateOpenCheckoutsForCart(cart.id, existingOrders);
+
     const orderId = randomUUID();
     const orderReference = makeOrderReference();
-    const snapshot = pricedItems.map((item) => ({
-      productId: item.product_id,
-      productName: item.product_name,
-      unitPricePence: item.unit_price_pence,
-      quantity: item.quantity,
-      pricing: item.pricing,
-      configuration: item.configuration,
-      logoPath: item.logo_path,
-    }));
-
     const { error: insertError } = await supabase.from("storefront_orders").insert({
       id: orderId,
       order_reference: orderReference,
@@ -127,7 +115,6 @@ export default async function checkoutHandler(request, response) {
       .eq("id", orderId);
     if (updateError) throw updateError;
 
-    await supabase.from("storefront_carts").update({ status: "checkout_started", updated_at: new Date().toISOString() }).eq("id", cart.id);
     response.status(201).json({ ok: true, checkoutUrl: squareCheckout.checkoutUrl, reference: orderReference });
   } catch (error) {
     console.error("Square checkout creation failed.", error);

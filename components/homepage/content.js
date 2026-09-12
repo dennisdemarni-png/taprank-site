@@ -16,7 +16,7 @@ export const assets = {
 };
 export const googleDesigns = [
   { id: "new", name: "Current design", image: assets.google, soldOut: false },
-  { id: "classic", name: "Classic design", image: assets.googleClassic, soldOut: true },
+  { id: "classic", name: "Classic design", image: assets.googleClassic, soldOut: false },
 ];
 export const variants = [
   { id: "google", name: "Google Review", price: "64.99", accent: "#1654ed", image: assets.google, route: "/google-review-stand", description: "Prioritise getting more Google reviews. Make leaving a review the obvious first step, with your other useful business links on the same TapRank page.", caption: "A little prompt. A lasting impression." },
@@ -132,5 +132,5 @@ export const faqs = [
   ["Is there a monthly subscription?", "No monthly subscription is required. Your one-off purchase includes the stand, setup and TapRank-hosted business page."],
   ["How quickly is it dispatched?", "We dispatch within 48 hours of receiving your business details, with free UK delivery. Dispatch is when your order leaves us; it is not a promise of delivery within 48 hours."],
   ["What warranty is included?", "Every TapRank includes a 1-year replacement warranty. Contact TapRank with your order details if you need help with a replacement."],
-  ["Can I order multiple stands?", "Yes. Contact TapRank with your quantity, locations and branding needs for a multiple-stand enquiry."],
+  ["Can I order multiple stands?", "Yes. Standard TapRank product pages offer bundles of 2, 3 or 5 stands using the same configuration, with the displayed bundle saving applied at checkout. Custom stands can also be ordered in multiple quantities, but the Standard bundle discounts do not apply."],
 ];

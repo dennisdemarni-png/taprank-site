@@ -30,7 +30,6 @@ export default function ProductConfigurator({ product, designId = "current", onD
   const fallbackUrl = checkoutFor(product.id, designId === "classic" ? "classic" : "new");
   const pricing = linePricingFor(product.id, quantity);
   const isGoogleAction = primaryAction === "google";
-  const unavailableDesign = product.id === "google" && designId === "classic";
   const primaryLabel = useMemo(
     () => PRIMARY_ACTION_OPTIONS.find((option) => option.value === primaryAction)?.label || "primary action",
     [primaryAction]
@@ -65,10 +64,6 @@ export default function ProductConfigurator({ product, designId = "current", onD
 
   async function submit(event) {
     event.preventDefault();
-    if (unavailableDesign) {
-      setMessage("The Classic design is currently unavailable. Choose Current design to order.");
-      return;
-    }
     const form = event.currentTarget;
     const formData = new FormData(form);
     const logo = formData.get("logo");
@@ -121,12 +116,13 @@ export default function ProductConfigurator({ product, designId = "current", onD
 
   return (
     <form className={styles.configurator} id="configure" ref={formRef} onSubmit={submit} noValidate>
+      <span id="products" className={styles.sectionAnchor} aria-hidden="true" />
       <fieldset className={styles.productChoices}>
         <legend>Choose your TapRank</legend>
         <div>
           {variants.map((variant) => (
             <a className={variant.id === product.id ? styles.productChoiceSelected : ""} href={variant.route} aria-current={variant.id === product.id ? "page" : undefined} onClick={() => homepageEvent("variant_selected", { variant: variant.id })} key={variant.id}>
-              <span><Image src={variant.image} alt="" fill sizes="72px" /></span>
+              <span><Image src={variant.image} alt="" width={120} height={120} loading="eager" /></span>
               <strong>{variant.id === "custom" ? "Custom" : variant.name}</strong>
               <small>£{variant.price}</small>
             </a>
@@ -142,15 +138,15 @@ export default function ProductConfigurator({ product, designId = "current", onD
               const value = design.id === "new" ? "current" : design.id;
               return (
                 <label className={designId === value ? styles.designSelected : ""} key={design.id}>
-                  <input type="radio" name="designId" value={value} checked={designId === value} onChange={() => { onDesignChange?.(value); setMessage(""); }} />
-                  <span><Image src={design.image} alt={`${design.name} Google Review TapRank`} fill sizes="120px" /></span>
+                  <input type="radio" name="designId" value={value} checked={designId === value} onChange={() => { onDesignChange?.(value); setMessage(""); homepageEvent("variant_selected", { variant: "google", design: design.id }); }} />
+                  <span><Image src={design.image} alt={`${design.name} Google Review TapRank`} width={140} height={140} loading="eager" /></span>
                   <strong>{design.name}</strong>
-                  <small>{design.soldOut ? "View design · unavailable" : "Available now"}</small>
+                  <small>Available now</small>
                 </label>
               );
             })}
           </div>
-          {unavailableDesign ? <p className={styles.classicMessage}>You may recognise this from an earlier ad. It is currently unavailable; choose Current design to order.</p> : null}
+          {designId === "classic" ? <p className={styles.classicMessage}>You may recognise this design from one of our earlier ads. It now uses the same TapRank configuration and checkout as the Current design.</p> : null}
         </fieldset>
       ) : null}
 
@@ -244,8 +240,8 @@ export default function ProductConfigurator({ product, designId = "current", onD
       <FieldError error={errors.privacyAccepted} />
 
       {message ? <p className={styles.formMessage} role="alert">{message}</p> : null}
-      <button className={styles.addToCart} type="submit" disabled={submitting || unavailableDesign || (product.id === "custom" && !primaryAction)}>
-        {submitting ? "Adding securely…" : unavailableDesign ? "Choose Current design to order" : `Add to cart — ${formatPrice(pricing?.totalPence || product.pricePence)}`}
+      <button className={styles.addToCart} type="submit" disabled={submitting || (product.id === "custom" && !primaryAction)}>
+        {submitting ? "Adding securely…" : `Add to cart — ${formatPrice(pricing?.totalPence || product.pricePence)}`}
       </button>
       <ul className={styles.purchaseReassurance}>
         <li>Secure checkout</li><li>Free UK delivery</li><li>Dispatch within 48 hours</li><li>Ready to use</li><li>1-year replacement warranty</li>

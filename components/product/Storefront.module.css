@@ -1,4 +1,5 @@
 .configurator { scroll-margin-top: 126px; margin-top: 26px; padding-top: 26px; border-top: 1px solid #dfe7f3; }
+.sectionAnchor { display: block; position: relative; top: -120px; visibility: hidden; }
 .configurator fieldset { min-width: 0; }
 .productChoices, .designChoices, .actionChoices, .bundleSelector { padding: 0; margin: 0; border: 0; }
 .productChoices legend, .designChoices legend, .actionChoices legend, .bundleSelector legend { width: 100%; margin-bottom: 11px; color: #0d1d3a; font-size: 12px; font-weight: 800; letter-spacing: .025em; text-transform: uppercase; }
@@ -6,7 +7,7 @@
 .productChoices a { position: relative; display: grid; min-width: 0; padding: 8px; border: 1px solid #d9e2f0; border-radius: 12px; background: #fff; text-align: center; transition: border-color .18s, box-shadow .18s, transform .18s; }
 .productChoices a:hover { border-color: #83a6f8; transform: translateY(-1px); }
 .productChoices a > span { position: relative; display: block; aspect-ratio: 1; margin-bottom: 6px; border-radius: 8px; background: #f4f7fc; overflow: hidden; }
-.productChoices img { object-fit: contain; padding: 4px; }
+.productChoices img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 4px; }
 .productChoices strong { overflow: hidden; color: #12203d; font-size: 10px; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
 .productChoices small { margin-top: 2px; color: #65738b; font-size: 9px; }
 .productChoices .productChoiceSelected { border-color: #1755ef; background: #f5f8ff; box-shadow: inset 0 0 0 1px #1755ef, 0 8px 22px rgba(23, 85, 239, .09); }
@@ -16,7 +17,7 @@
 .designChoices label { position: relative; display: grid; grid-template-columns: 72px 1fr; min-height: 94px; align-items: center; column-gap: 13px; padding: 10px 14px 10px 10px; border: 1px solid #d9e2f0; border-radius: 13px; background: #fff; cursor: pointer; }
 .designChoices input { position: absolute; opacity: 0; pointer-events: none; }
 .designChoices label > span { position: relative; grid-row: 1 / 3; width: 72px; height: 72px; border-radius: 9px; background: #f2f6fc; overflow: hidden; }
-.designChoices img { object-fit: contain; padding: 3px; }
+.designChoices img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 3px; }
 .designChoices strong { align-self: end; color: #0d1d3a; font-size: 12px; }
 .designChoices small { align-self: start; color: #64728a; font-size: 9px; }
 .designChoices .designSelected { border-color: #1755ef; background: linear-gradient(135deg, #f3f7ff, #eefcff); box-shadow: inset 0 0 0 1px #1755ef; }

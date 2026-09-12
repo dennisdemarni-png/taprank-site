@@ -1,4 +1,5 @@
 import { STANDARD_BUNDLE_TIERS, formatPrice, linePricingFor } from "../../lib/commerce";
+import { homepageEvent } from "../../lib/homepageEvents";
 import styles from "./Storefront.module.css";
 
 export default function BundleSelector({ productId, quantity, onChange }) {
@@ -25,7 +26,7 @@ export default function BundleSelector({ productId, quantity, onChange }) {
           const selected = quantity === tier.quantity;
           return (
             <label className={`${styles.bundleCard} ${selected ? styles.bundleSelected : ""}`} key={tier.quantity}>
-              <input type="radio" name="quantity" value={tier.quantity} checked={selected} onChange={() => onChange(tier.quantity)} />
+              <input type="radio" name="quantity" value={tier.quantity} checked={selected} onChange={() => { onChange(tier.quantity); homepageEvent("bundle_selected", { variant: productId, quantity: tier.quantity }); }} />
               {tier.quantity === 3 ? <em>Most popular</em> : tier.quantity === 5 ? <em>Best value</em> : null}
               <span className={styles.bundleChoice}><b>{tier.quantity}</b><small>{tier.quantity === 1 ? "Stand" : "Stands"}</small></span>
               <span className={styles.bundlePrice}>

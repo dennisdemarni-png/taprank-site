@@ -51,7 +51,7 @@ export default function ProductGallery({ product, designId }) {
     <div className={styles.galleryShell}>
       <div className={styles.galleryTrack} ref={trackRef} onScroll={trackScroll}>
         {media.map((item, index) => (
-          <figure className={`${styles.gallerySlide} ${active === index ? styles.gallerySlideActive : ""}`} key={item.id} aria-hidden={active !== index}>
+          <figure className={`${styles.gallerySlide} ${active === index ? styles.gallerySlideActive : ""}`} key={item.id}>
             <span className={styles.galleryLabel}>{item.label}</span>
             {item.type === "image" ? (
               <div className={styles.galleryImage}><Image src={item.src} alt={item.alt} fill priority={item.priority} loading={item.priority ? "eager" : "lazy"} sizes="(max-width: 760px) 100vw, 52vw" /></div>

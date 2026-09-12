@@ -83,11 +83,16 @@ export default function CartDrawer({ cart, open, onClose, onCartChanged }) {
           <>
             <div className={styles.cartItems}>
               {cart.items.map((item) => <article key={item.id}>
-                <div><strong>{item.productName}</strong><span>{item.configuration.businessName}</span><small>Primary action: {item.configuration.primaryActionLabel}</small>{item.hasLogo ? <small>Logo attached</small> : null}</div>
-                <div><strong>{formatPrice(item.unitPricePence * item.quantity)}</strong><span>Qty {item.quantity}</span>{!locked ? <button type="button" onClick={() => removeItem(item.id)}>Remove</button> : null}</div>
+                <div><strong>{item.productName}</strong><span>{item.configuration.businessName}</span><small>Primary action: {item.configuration.primaryActionLabel}</small>{item.configuration.designId ? <small>Design: {item.configuration.designId === "current" ? "Current" : "Classic"}</small> : null}{item.hasLogo ? <small>Logo attached</small> : null}</div>
+                <div>
+                  <strong>{formatPrice(item.lineTotalPence)}</strong>
+                  {item.discountPercent ? <><del>{formatPrice(item.regularLineTotalPence)}</del><mark>{item.discountPercent}% bundle saving</mark></> : null}
+                  <span>Qty {item.quantity}{item.quantity > 1 ? ` · ${formatPrice(item.effectiveUnitPricePence)} each` : ""}</span>
+                  {!locked ? <button type="button" onClick={() => removeItem(item.id)}>Remove</button> : null}
+                </div>
               </article>)}
             </div>
-            <div className={styles.cartSummary}><p><span>Total</span><strong>{formatPrice(cart.totalPence)}</strong></p><small>Free UK delivery · One-off payment</small></div>
+            <div className={styles.cartSummary}><p><span>Total</span><strong>{formatPrice(cart.totalPence)}</strong></p>{cart.regularTotalPence > cart.totalPence ? <small>You save {formatPrice(cart.regularTotalPence - cart.totalPence)} with bundle pricing</small> : null}<small>Free UK delivery · One-off payment</small></div>
             {message ? <p className={styles.formMessage} role="alert">{message}</p> : null}
             <button className={styles.checkoutButton} type="button" onClick={checkout} disabled={checkingOut}>{checkingOut ? "Opening secure checkout…" : locked ? "Return to secure Square checkout" : "Checkout securely with Square"}</button>
             <p className={styles.checkoutNote}>Square securely collects payment and your UK delivery address in a new tab. TapRank never receives your full card details.</p>

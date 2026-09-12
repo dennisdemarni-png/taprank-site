@@ -35,15 +35,16 @@ test('all referenced approved assets exist with exact case and filename', () => 
   for (const path of paths) assert.ok(existsSync(new URL(`../public${path}`, import.meta.url)), path);
 });
 
-test('Google New Design defaults while Classic and unknown designs cannot reach checkout', () => {
+test('Google Current design defaults and Classic uses dynamic in-site checkout', () => {
   assert.equal(googleDesigns[0].id, 'new');
   assert.equal(googleDesigns[0].image, assets.google);
   assert.equal(googleDesigns[1].image, assets.googleClassic);
-  assert.equal(googleDesigns[1].soldOut, true);
+  assert.equal(googleDesigns[1].soldOut, false);
   assert.equal(checkoutFor('google', 'new'), 'https://square.link/u/kbq7PFVV');
   assert.equal(checkoutFor('google', 'classic'), null);
   assert.equal(checkoutFor('google', 'unknown'), null);
   assert.equal(CHECKOUTS.google.classic.url, null);
+  assert.equal(CHECKOUTS.google.classic.soldOut, false);
 });
 
 test('dedicated product routes reuse the approved catalogue and prices', () => {

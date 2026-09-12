@@ -11,6 +11,12 @@
 > on the working branch. See [CRO pass](CRO_PASS.md). The detailed snapshot below
 > remains the earlier audit baseline unless explicitly superseded by that document.
 
+> **Product merchandising update, 12 September 2026:** The working branch adds a
+> gallery-led purchase layout, both Google stand designs, progressively disclosed
+> configuration and server-validated Standard bundle pricing. The promotion
+> countdown framework is present but intentionally disabled pending a genuine
+> campaign deadline. Production remains unchanged.
+
 Implementation snapshot: **28 July 2026**
 
 PR 2 base commit: `dd33e34` (`improve website conversion and demo accuracy (#18)`)
@@ -169,7 +175,7 @@ Those facts must be confirmed in Vercel rather than guessed.
 | Production server | `pnpm run start` | Configured |
 | Lint | None | No script/config found |
 | Type-check | None | No script/config found |
-| Test | None | No script/suite found |
+| Test | `pnpm test` | Node test suite covers public configuration, tracking, storefront validation, bundle pricing, cart totals, promotion expiry and webhook safeguards. |
 
 ## Production-ready parts
 

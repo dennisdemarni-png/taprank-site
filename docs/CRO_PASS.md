@@ -20,8 +20,30 @@ prices come from `components/homepage/content.js`; Square destinations remain in
 `lib/commerce.js`.
 
 The Google Review route is the primary direct-response page. Its Current design
-is available and visually dominant. The sold-out Classic design remains available
-through a small secondary disclosure for visitors arriving from older adverts.
+remains the default, while Classic is also available for visitors arriving from
+older adverts. Both designs use the same in-site configuration, cart and dynamic
+Square checkout; Classic does not require a separate static Square Payment Link.
+
+## Product merchandising redesign
+
+The shared product page now uses a gallery-first ecommerce layout with a compact
+benefit-led purchase panel, visual product and Google-design selectors, stronger
+Google Business search treatment, progressively disclosed optional page fields,
+and an explicit bundle selector. The gallery is data-driven and currently uses
+approved existing assets plus feature cards; its slots are intended to receive
+the final product photography, sizing, lifestyle and bundle assets when supplied.
+
+Standard products support authoritative bundle tiers of 1, 2, 3 and 5 stands.
+The 2, 3 and 5 tiers receive 30%, 40% and 50% discounts respectively. The shared
+configuration applies to every stand in the selected bundle. Custom stands retain
+their £84.99 unit price and do not receive Standard bundle discounts. Cart and
+Square totals are derived again from the server catalogue and tier rules.
+
+`lib/promotion.js` is the central promotion configuration. It deliberately ships
+disabled because no genuine campaign deadline or higher regular price has been
+approved. When enabled with a future ISO deadline, it counts down to that fixed
+instant and expires without resetting. Crossed-out pricing appears only when a
+higher genuine `regularPricePence` is configured.
 
 ## Conversion journey
 
@@ -51,7 +73,8 @@ instead they show a small in-page status message. The real `/r/laser-expert-pro`
 page continues to render genuine external links.
 
 The existing Meta integration is retained. Allowlisted product-page views, video
-plays, demo visits and Square checkout starts use fixed product identifiers only.
+plays, demo visits, product/design choices, bundle choices and Square checkout
+starts use fixed product identifiers only.
 No order, contact or arbitrary customer data is sent, and checkout clicks are not
 reported as purchases.
 
@@ -74,5 +97,7 @@ testimonial, exact customer result or product capability was invented.
 - Check that every Square/Etsy/Trustpilot link opens safely in a new tab.
 - Check that demo actions stay on the demo route and show the preview message.
 - Check that real customer actions remain anchors with their approved destinations.
-- Check the Current Google design remains primary and the Classic disclosure is
-  discoverable but secondary.
+- Check the Current Google design remains primary and Classic can be selected,
+  added to cart and purchased through the same dynamic checkout.
+- Confirm Standard bundle totals: 1 £64.99, 2 £90.99, 3 £116.98 and 5 £162.48.
+- Keep the promotion disabled until a genuine campaign end timestamp is approved.

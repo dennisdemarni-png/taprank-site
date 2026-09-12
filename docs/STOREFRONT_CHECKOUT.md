@@ -32,6 +32,12 @@ Instagram or Tripadvisor as the primary action. A quantity greater than one uses
 one shared configuration. Differently configured stands must be added as separate
 cart items.
 
+Standard Google Review, Instagram and Tripadvisor products use fixed bundle
+quantities and server-controlled discounts: 1 stand at list price, 2 at 30% off,
+3 at 40% off and 5 at 50% off. Totals are rounded once to the nearest penny and
+sent to Square as one exact bundle line. Custom quantities remain undiscounted.
+Both Current and Classic Google designs are accepted by the same cart and checkout.
+
 ## Apply the database migration
 
 Open the Supabase SQL Editor for the TapRank project and run the complete contents
@@ -76,7 +82,7 @@ and is not required by the current browser widget.
 ## Production gate
 
 - [x] Apply and review the Supabase migration.
-- [x] Verify standard cart storage and server-controlled £64.99 pricing.
+- [x] Verify standard cart storage and server-controlled product and bundle pricing.
 - [x] Verify private Custom-logo upload and server-controlled £84.99 pricing.
 - [x] Create a Square Sandbox payment link and read its unpaid order status.
 - Confirm anonymous Supabase reads and writes fail.
@@ -85,7 +91,7 @@ and is not required by the current browser widget.
 - Complete a successful Sandbox order and confirm the local status becomes paid.
 - Confirm duplicate and invalidly signed webhook events do not change an order.
 - Confirm failed/abandoned payment remains unconfirmed.
-- Test all four products, custom logo upload, five optional links and multiple quantities.
+- Test all four products, both Google designs, custom logo upload, five optional links and supported bundle quantities.
 - Review the existing privacy notice for the new pre-checkout cart collection flow.
 - Replace Sandbox credentials with separately configured Production credentials.
 - Complete one low-value real-card transaction and refund verification before launch.

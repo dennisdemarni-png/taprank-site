@@ -7,10 +7,8 @@ import VariantSelector from "./VariantSelector";
 import { CustomShowcase, FAQ, FinalCTA, Ordering, TrustStrip } from "./ClosingSections";
 import { variants, googleDesigns } from "./content";
 import { Arrow, Logo } from "./Visuals";
-import { checkoutFor } from "../../lib/commerce";
 import { homepageEvent } from "../../lib/homepageEvents";
 import { TAPRANK_CONTACT } from "../../lib/contact";
-import { externalLinkProps } from "../../lib/publicLinks";
 import s from "./Homepage.module.css";
 function MobilePurchase({ selected, googleDesign }) {
   const [visible, setVisible] = useState(false);
@@ -34,8 +32,8 @@ function MobilePurchase({ selected, googleDesign }) {
     if (finalCta) observer.observe(finalCta);
     return () => observer.disconnect();
   }, [googleDesign.soldOut, selected.id]);
-  const url = checkoutFor(selected.id, googleDesign.id);
-  return visible ? <div className={s.mobileSticky}><span><strong>{selected.name}{selected.id === "google" ? ` · ${googleDesign.name}` : ""}</strong><small>{selected.id === "google" && googleDesign.soldOut ? "Sold out" : `£${selected.price} · Free UK delivery`}</small></span><a className={s.button} href={url || "#options"} {...(url ? externalLinkProps(url) : {})} onClick={() => url && homepageEvent("square_checkout_click", { variant: selected.id, ...(selected.id === "google" ? { design: googleDesign.id } : {}) })}>{url ? "Buy now" : "See options"} <Arrow /></a></div> : null;
+  const url = `${selected.route}${selected.id === "google" && googleDesign.id === "classic" ? "?design=classic" : ""}#configure`;
+  return visible ? <div className={s.mobileSticky}><span><strong>{selected.name}{selected.id === "google" ? ` · ${googleDesign.name}` : ""}</strong><small>£{selected.price} · Free UK delivery</small></span><a className={s.button} href={url} onClick={() => homepageEvent("product_cta_click", { variant: selected.id, ...(selected.id === "google" ? { design: googleDesign.id } : {}) })}>Configure <Arrow /></a></div> : null;
 }
 export default function Homepage() {
   const [selected, setSelected] = useState(variants[0]);

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import ProductDemoVideo from "../ProductDemoVideo";
 import { Arrow, Logo } from "../homepage/Visuals";
 import { assets, customerProof, faqs, productLandingContent } from "../homepage/content";
@@ -50,7 +51,8 @@ function Header({ product, cart, onOpenCart }) {
           <a href="/" aria-label="TapRank home"><Logo /></a>
           <nav aria-label="Product page navigation">
             <a href="#how-it-works">How it works</a>
-            <a href="#compare">Compare</a>
+            <a href="#products">Products</a>
+            <a href="/custom-taprank">Custom</a>
             <a href="#faq">FAQ</a>
           </nav>
           <details className={styles.mobileMenu}><summary aria-label="Open navigation"><span></span><span></span><span></span></summary><nav aria-label="Mobile product navigation"><a href="#how-it-works">How it works</a><a href="#products">Products</a><a href="/custom-taprank">Custom</a><a href="#faq">FAQ</a></nav></details>
@@ -65,18 +67,24 @@ function Header({ product, cart, onOpenCart }) {
 function Hero({ product, designId, onDesignChange, onCartChanged, onOpenCart, onSelectionChange }) {
   const activePromotion = promotionState().active;
   const regularPricePence = activePromotion ? validRegularPricePence(product.pricePence) : null;
+  const primaryBenefit = {
+    google: "Make leaving a Google review effortless",
+    instagram: "Make finding and following your Instagram effortless",
+    tripadvisor: "Make leaving a Tripadvisor review effortless",
+    custom: "Put your chosen customer action one tap away",
+  }[product.id];
   return (
     <section className={`${styles.wrap} ${styles.hero}`} id="product-hero" aria-labelledby="product-title">
       <div className={styles.heroGallery}>
         <ProductGallery product={product} designId={designId} />
       </div>
       <div className={styles.heroCopy}>
-        <p className={styles.eyebrow}>{product.eyebrow}</p>
+        <p className={styles.eyebrow}>{product.id === "google" ? `Google Review TapRank · ${designId === "classic" ? "Classic design" : "Current design"}` : product.eyebrow}</p>
         <h1 id="product-title">{product.headline}</h1>
         <p className={styles.lead}>{product.lead}</p>
         <div className={styles.price}>{activePromotion ? <small>{PRODUCT_PROMOTION.saleLabel}</small> : null}<strong>£{product.price}</strong>{regularPricePence ? <del>{formatPrice(regularPricePence)}</del> : null}<span>One-off payment</span></div>
         <ul className={styles.heroBenefits}>
-          <li>Make the next customer action effortless</li>
+          <li>{primaryBenefit}</li>
           <li>NFC + QR — configured and ready to use</li>
           <li>Free UK delivery · No subscription</li>
           <li>Includes your TapRank-hosted business page</li>
@@ -113,7 +121,8 @@ function Proof({ product }) {
           <strong className={styles.proofNumber}><small>{customerProof.metricPrefix}</small>{customerProof.metric}</strong>
           <h2 id="proof-title">{customerProof.timeframe}</h2>
           <p>{customerProof.summary}</p>
-          <small>{customerProof.disclaimer} Exact customer details can be added here if approved later.</small>
+          <small>{customerProof.disclaimer}</small>
+          {/* Add approved customer identity, logo and exact counts here when available. */}
         </div>
         <figure>
           <div aria-label="Five out of five stars">★★★★★</div>
@@ -195,7 +204,7 @@ function FAQ({ product }) {
   return (
     <section className={`${styles.wrap} ${styles.faq}`} id="faq" aria-labelledby="faq-title">
       <div><p className={styles.eyebrow}>Questions, answered</p><h2 id="faq-title">Everything to know before you order.</h2><p>Need help? Email <a href={`mailto:${TAPRANK_CONTACT.email}`}>{TAPRANK_CONTACT.email}</a></p></div>
-      <div>{faqs.slice(0, 9).map(([question, answer], index) => <details key={question} onToggle={event => event.currentTarget.open && homepageEvent("faq_open", { variant: product.id, question: index })}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div>
+      <div>{faqs.map(([question, answer], index) => <details key={question} onToggle={event => event.currentTarget.open && homepageEvent("faq_open", { variant: product.id, question: index })}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div>
     </section>
   );
 }
@@ -236,11 +245,15 @@ function Footer() {
 }
 
 export default function ProductLanding({ productId }) {
+  const router = useRouter();
   const product = productLandingContent[productId];
   const [cart, setCart] = useState({ items: [], itemCount: 0, totalPence: 0, status: "active" });
   const [cartOpen, setCartOpen] = useState(false);
   const [designId, setDesignId] = useState("current");
   const [purchaseSelection, setPurchaseSelection] = useState({ label: product.name, pricePence: product.pricePence, quantity: 1 });
+  useEffect(() => {
+    if (router.isReady && product.id === "google" && router.query.design === "classic") setDesignId("classic");
+  }, [product.id, router.isReady, router.query.design]);
   useEffect(() => { homepageEvent("product_page_view", { variant: product.id }); }, [product.id]);
   useEffect(() => {
     let active = true;

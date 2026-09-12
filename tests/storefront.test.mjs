@@ -4,9 +4,9 @@ import test from 'node:test';
 
 const commerce = readFileSync(new URL('../lib/commerce.js', import.meta.url), 'utf8');
 const storefront = readFileSync(new URL('../lib/storefront.js', import.meta.url), 'utf8')
-  .replace('import { productFor } from "./commerce";', '');
+  .replace('import { linePricingFor, productFor } from "./commerce";', '');
 const moduleSource = `${commerce}\n${storefront}`;
-const { googleReviewUrl, validateProductConfiguration } = await import(`data:text/javascript;base64,${Buffer.from(moduleSource).toString('base64')}`);
+const { googleReviewUrl, linePricingFor, sanitiseCartForBrowser, validateProductConfiguration } = await import(`data:text/javascript;base64,${Buffer.from(moduleSource).toString('base64')}`);
 
 const validGoogle = {
   productId: 'google',
@@ -23,6 +23,15 @@ test('Google place selection produces the required review action without trustin
   assert.equal(result.values.unitPricePence, 6499);
   assert.equal(result.values.configuration.primaryAction, 'google');
   assert.equal(result.values.configuration.primaryUrl, googleReviewUrl(validGoogle.placeId));
+});
+
+test('both Current and Classic Google designs pass server configuration validation', () => {
+  for (const designId of ['current', 'classic']) {
+    const result = validateProductConfiguration({ ...validGoogle, designId });
+    assert.equal(result.isValid, true);
+    assert.equal(result.values.configuration.designId, designId);
+  }
+  assert.ok(validateProductConfiguration({ ...validGoogle, designId: 'unknown' }).errors.designId);
 });
 
 test('custom configuration requires a supported primary action and keeps its trusted price', () => {
@@ -48,6 +57,44 @@ test('only five additional links are retained', () => {
   const result = validateProductConfiguration({ ...validGoogle, additionalLinks });
   assert.equal(result.isValid, true);
   assert.equal(result.values.configuration.additionalLinks.length, 5);
+});
+
+test('standard bundle pricing is calculated from the trusted catalogue', () => {
+  assert.deepEqual(
+    [1, 2, 3, 5].map((quantity) => {
+      const pricing = linePricingFor('google', quantity);
+      return [quantity, pricing.discountPercent, pricing.totalPence, pricing.effectiveUnitPricePence];
+    }),
+    [
+      [1, 0, 6499, 6499],
+      [2, 30, 9099, 4550],
+      [3, 40, 11698, 3899],
+      [5, 50, 16248, 3250],
+    ]
+  );
+  assert.equal(linePricingFor('google', 4), null);
+});
+
+test('custom stands do not receive standard-product bundle discounts', () => {
+  assert.deepEqual(linePricingFor('custom', 3), {
+    quantity: 3,
+    unitPricePence: 8499,
+    regularTotalPence: 25497,
+    totalPence: 25497,
+    effectiveUnitPricePence: 8499,
+    discountPercent: 0,
+    label: '3 stands',
+  });
+});
+
+test('cart totals are rebuilt from server-authoritative bundle pricing', () => {
+  const cart = sanitiseCartForBrowser({ id: 'cart-1', status: 'active' }, [{
+    id: 'item-1', product_id: 'google', product_name: 'Google Review TapRank', unit_price_pence: 1, quantity: 3, configuration: {}, logo_path: null,
+  }]);
+  assert.equal(cart.totalPence, 11698);
+  assert.equal(cart.regularTotalPence, 19497);
+  assert.equal(cart.items[0].discountPercent, 40);
+  assert.equal(cart.items[0].lineTotalPence, 11698);
 });
 
 test('Square webhook endpoint requires raw body verification and never contains a hardcoded secret', () => {

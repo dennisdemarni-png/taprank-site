@@ -126,3 +126,25 @@ This log records confirmed product and architectural decisions. It does not inve
 - **Alternatives considered:** Trusting the redirect; adding Square API/webhooks in the same release.
 - **Consequences:** TapRank operators must match each submission to Square. Automatic verification remains separate future work.
 - **Related files or pull requests:** `pages/api/order-details.js`, `docs/ORDER_DETAILS.md`, `docs/OPERATIONS_RUNBOOK.md`.
+
+### 2026-09-12 — Configure before purchase with a TapRank cart and Square-hosted payment
+
+- **Date:** 2026-09-12
+- **Decision:** Dedicated product pages collect the required primary action and business configuration before checkout. Custom buyers choose Google Review, Instagram or Tripadvisor and must upload a logo. Up to five secondary links, opening times and location are optional. Quantity duplicates one configuration; different configurations use separate cart items.
+- **Status:** Implemented behind a database and Sandbox verification gate.
+- **Context:** TapRank needs a familiar product-page buying flow that can connect each paid line item to its fulfilment configuration.
+- **Reason:** This removes duplicate setup entry while keeping card entry and payment authentication with Square.
+- **Alternatives considered:** Continuing only with static Payment Links; embedding Square card fields immediately; building customer accounts.
+- **Consequences:** TapRank stores private anonymous carts and order snapshots in Supabase. Prices are server-controlled. Only a signed Square webhook can mark an order paid. Existing approved Square links remain as rollback/fallback until verification is complete.
+- **Related files:** `components/product/`, `pages/api/cart.js`, `pages/api/checkout.js`, `pages/api/square/webhook.js`, `supabase/migrations/202609120001_create_storefront_commerce.sql`, `docs/STOREFRONT_CHECKOUT.md`.
+
+### 2026-09-12 — Pause Custom ordering and run a fixed five-day Standard promotion
+
+- **Date:** 2026-09-12
+- **Decision:** Remove Custom stands from public selection and reject new Custom cart additions while retaining the underlying catalogue and historical order support. Run the confirmed Standard promotion from the genuine £79.99 reference price to £64.99 until 17 September 2026 at 14:30 BST.
+- **Status:** Implemented on the storefront branch.
+- **Context:** TapRank asked to focus the live buying journey on Google Review, Instagram and Tripadvisor faces and confirmed both Google Current and Classic are in stock.
+- **Reason:** The smaller range reduces buying friction, while a fixed campaign deadline creates accurate urgency without an evergreen resetting timer.
+- **Alternatives considered:** Deleting Custom infrastructure; leaving Custom visible but unpurchasable; using a rolling timer.
+- **Consequences:** `/custom-taprank` returns 404 and new Custom cart requests fail closed. The campaign automatically drops its sale state after the fixed deadline. Re-enabling Custom requires a deliberate public-route and cart-boundary change.
+- **Related files:** `lib/promotion.js`, `components/homepage/content.js`, `components/product/PromotionBar.jsx`, `pages/custom-taprank.jsx`, `pages/api/cart.js`.

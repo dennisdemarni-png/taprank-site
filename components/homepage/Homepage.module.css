@@ -102,6 +102,11 @@
 .videoPanel { padding: 32px 0 0; text-align: center; }
 .videoPanel video { display: block; aspect-ratio: 9 / 16; height: auto; width: min(100%, 349px); object-fit: contain; background: #091020; margin: auto; }
 .videoPanel p { color: #c1cce0; font-size: 13px; max-width: 650px; margin: 16px auto 0; }
+.prominentVideo { margin: 0 0 65px; scroll-margin-top: 100px; }
+.sectionPurchasePrompt, .proofPurchase { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 42px; padding: 23px 27px; border: 1px solid #3b4b67; border-radius: 9px; background: #172642; }
+.sectionPurchasePrompt strong, .sectionPurchasePrompt small, .proofPurchase strong, .proofPurchase small { display: block; }
+.sectionPurchasePrompt small { margin-top: 3px; color: #b9c5d8; font-size: 11px; }
+.sectionPurchasePrompt .button { min-width: 155px; }
 .problem { padding-block: 115px; text-align: center; }
 .problem h2 { font-size: clamp(32px, 4vw, 55px); }
 .problem h2 > span { color: #7d8799; }
@@ -137,6 +142,7 @@
 .comparison > div:last-child > span { color: var(--blue); font-weight: 700; }
 .actionBranches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px solid #cdd9f7; }
 .actionBranches span { font-size: 11px; background: white; padding: 6px 13px; border-radius: 4px; }
+.differenceCta { display: flex; min-height: 49px; align-items: center; justify-content: space-between; gap: 20px; margin-top: 15px; padding: 12px 20px; border-radius: 7px; color: #fff !important; background: var(--blue); font-size: 12px; font-weight: 650; }
 .purchaseSection { background: #f7f8fa; border-block: 1px solid #e8ecf2; padding: 85px 0 95px; }
 .purchaseHeading { text-align: center; margin-bottom: 48px; }
 .purchaseHeading > p:last-child { color: var(--muted); margin-top: 18px; font-size: 15px; }
@@ -159,6 +165,7 @@
 .variantDescription { padding: 28px 0 23px; min-height: 226px; }
 .variantDescription h3 { font-size: 29px; }
 .variantDescription p { color: var(--muted); font-size: 14px; line-height: 1.75; margin-top: 13px; min-height: 74px; }
+.variantPageLink { display: inline-flex; min-height: 40px; align-items: center; gap: 13px; color: var(--variant-accent) !important; font-size: 12px; font-weight: 650; text-decoration: underline !important; text-underline-offset: 3px; }
 .price { font-size: 36px; font-weight: 650; letter-spacing: -.05em; margin-top: 12px; line-height: 1.4; }
 .price span { color: var(--muted); font-size: 11px; font-weight: 400; letter-spacing: 0; margin-left: 16px; }
 .purchaseDetails > .button { width: 100%; background: var(--variant-accent); }
@@ -476,6 +483,9 @@
 .reviewProof figcaption strong { display: block; font-size: 14px; font-weight: 650; }
 .reviewProof figcaption span { display: block; font-size: 12px; color: #596478; margin-top: 3px; }
 .reviewProof .textLink { margin-top: 15px; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+.proofPurchase { border-color: #dce2ea; background: #101d38; color: #fff; }
+.proofPurchase small { margin-top: 3px; color: #b9c5d8; font-size: 11px; }
+.proofPurchase .button { min-width: 155px; }
 @media (min-width: 761px) and (max-width: 1100px) {
   .demoVisual { min-height: 475px; }
   .demoLabels > span { font-size: 12px; max-width: 160px; padding: 9px 11px; }
@@ -483,6 +493,9 @@
   .resultProof, .reviewProof { padding: 30px; }
 }
 @media (max-width: 760px) {
+  .prominentVideo { margin-bottom: 45px; }
+  .sectionPurchasePrompt, .proofPurchase { align-items: stretch; flex-direction: column; margin-top: 28px; padding: 20px; }
+  .sectionPurchasePrompt .button, .proofPurchase .button { width: 100%; }
   .demoVisual { min-height: 425px; }
   .demoStand { top: 58px; }
   .demoPhone { top: 62px; }
@@ -551,6 +564,8 @@
 
 /* Conversion refinement: reveal the product early and keep buying within reach. */
 .heroCurrentStand small { display: block; color: #1755ef; font-size: 10px; margin-top: 3px; }
+.stockLabel { display: inline-flex !important; align-items: center; gap: 5px; color: #147652 !important; font-weight: 650; }
+.stockLabel i { width: 6px; height: 6px; border-radius: 50%; background: #12a66f; box-shadow: 0 0 0 3px rgba(18, 166, 111, .12); }
 .home .setupNote { background: #edf2fb; border-left: 2px solid var(--blue); padding: 12px 15px; font-size: 13px; line-height: 1.65; margin-top: 16px; }
 .setupNote strong { display: block; }
 .videoRow { scroll-margin-top: 100px; }

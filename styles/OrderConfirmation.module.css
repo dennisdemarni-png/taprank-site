@@ -1,0 +1,13 @@
+.page { min-height: 68vh; padding: 85px 20px; background: #f4f7fb; }
+.card { max-width: 720px; padding: 55px; border: 1px solid #dce2ea; border-radius: 14px; background: #fff; box-shadow: 0 22px 65px rgba(16, 29, 56, .07); text-align: center; }
+.statusIcon { display: grid; width: 58px; height: 58px; place-items: center; margin: 0 auto 22px; border-radius: 50%; color: #fff; background: #1755ef; font-size: 27px; font-weight: 700; }
+.eyebrow { color: #1755ef; font-size: 11px; font-weight: 750; letter-spacing: .13em; }
+.card h1 { max-width: 580px; margin: 12px auto 0; color: #101d38; font-size: clamp(38px, 6vw, 58px); line-height: 1.04; letter-spacing: -.05em; }
+.card > p:last-of-type { max-width: 570px; margin: 20px auto 0; color: #5d697e; font-size: 14px; line-height: 1.75; }
+.reference { display: inline-flex; flex-direction: column; gap: 3px; margin-top: 25px; padding: 13px 18px; border-radius: 8px; background: #f1f5fb; }
+.reference span { color: #667287; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+.reference strong { color: #101d38; font-size: 13px; }
+.actions { display: flex; justify-content: center; gap: 12px; margin-top: 28px; }
+.actions a { display: inline-flex; min-height: 46px; align-items: center; padding: 11px 18px; border: 1px solid #101d38; border-radius: 7px; color: #fff; background: #101d38; font-size: 12px; text-decoration: none; }
+.actions a:last-child { color: #101d38; background: #fff; }
+@media (max-width: 600px) { .page { padding: 45px 16px; } .card { padding: 38px 22px; } .actions { flex-direction: column; } .actions a { justify-content: center; } }

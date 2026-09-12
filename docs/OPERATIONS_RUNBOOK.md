@@ -45,6 +45,23 @@ This runbook describes the manual MVP process. Keep private order/customer recor
 9. Progress the submission status from `new` through the appropriate fulfilment states.
 10. Follow `docs/ORDER_DETAILS.md` for environment, security, verification, backup and rollback requirements.
 
+## Configured storefront order
+
+This flow applies only after the storefront migration and Square integration have
+passed the production gate in `docs/STOREFRONT_CHECKOUT.md`.
+
+1. Locate the private `storefront_orders` record using its TapRank reference.
+2. Confirm its status is `paid`; a return-page visit or `checkout_created` status is
+   not payment evidence.
+3. Match `square_order_id` to the completed Square order before production.
+4. Review every configured primary and optional destination independently.
+5. For Custom orders, retrieve the logo only from the private
+   `storefront-branding` bucket.
+6. A line-item quantity uses one configuration for every stand in that line.
+7. Follow the standard fulfilment, physical testing and dispatch steps above.
+8. If webhook status and Square Dashboard disagree, stop fulfilment and reconcile
+   the payment before changing any status manually.
+
 ## Current source-managed page procedure
 
 Until an admin system exists, a production customer page requires a source and deployment change. This is a temporary operating mode.

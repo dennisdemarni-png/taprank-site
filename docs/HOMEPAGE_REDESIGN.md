@@ -195,3 +195,18 @@ They never send Purchase. Order fields, contact details and arbitrary event cont
 are excluded. Hosted pages cannot emit these homepage interactions. Confirmed sales
 still require a separate Square payment/webhook integration and Events Manager
 receipt needs account-side verification. No Square or fulfilment configuration changed.
+
+## Dedicated product-page CRO pass — 12 September 2026
+
+Four shared-architecture product routes now support high-intent and paid-ad traffic:
+`/google-review-stand`, `/instagram-stand`, `/tripadvisor-stand` and
+`/custom-taprank`. The homepage remains the broad TapRank overview and links each
+variation to its product page. Purchase prompts now follow the demonstration,
+differentiation and customer-proof sections.
+
+The current-design eight-second video is mounted prominently near the start of the
+homepage and each product page, with muted inline autoplay where permitted and
+native controls. Dedicated pages add mobile safe-area purchase bars, setup steps,
+the approved warranty/delivery/subscription reassurance, the existing anonymous
+customer result and review, and a generic basic-stand comparison limited to current
+TapRank functionality. See `docs/CRO_PASS.md` for link, demo and policy details.

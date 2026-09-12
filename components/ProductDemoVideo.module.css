@@ -1,0 +1,19 @@
+.section { display: grid; grid-template-columns: minmax(0, .9fr) minmax(260px, .48fr); gap: clamp(32px, 7vw, 100px); align-items: center; padding: clamp(30px, 5vw, 62px); border-radius: 14px; }
+.light { color: #101d38; background: #eff4ff; }
+.dark { color: #fff; background: #172642; border: 1px solid #33415b; }
+.copy > p { margin: 0 0 15px; color: #1755ef; font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+.dark .copy > p { color: #99b8ff; }
+.copy h2 { max-width: 680px; margin: 0; font-size: clamp(30px, 4vw, 54px); line-height: 1.06; letter-spacing: -.045em; }
+.copy span { display: block; max-width: 520px; margin-top: 20px; color: #596478; font-size: 15px; line-height: 1.75; }
+.dark .copy span { color: #bac6d9; }
+.frame { width: min(100%, 310px); justify-self: center; overflow: hidden; border-radius: 18px; background: #091020; box-shadow: 0 28px 55px rgba(5, 18, 43, .25); }
+.frame video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: contain; background: #091020; }
+@media (max-width: 760px) {
+  .section { grid-template-columns: 1fr; padding: 28px 20px; gap: 25px; }
+  .copy h2 { font-size: 32px; }
+  .copy span { font-size: 13px; }
+  .frame { width: min(100%, 270px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .frame video { /* Playback remains user-controllable when reduced motion is enabled. */ }
+}

@@ -1,4 +1,7 @@
 import { Eyebrow, Arrow } from "./Visuals";
+import { externalLinkProps } from "../../lib/publicLinks";
+import { homepageEvent } from "../../lib/homepageEvents";
+import { customerProof } from "./content";
 import s from "./Homepage.module.css";
 
 // Review and result supplied by TapRank. This is an individual review, not a
@@ -10,20 +13,21 @@ export default function CustomerProof() {
     <div className={s.proofGrid}>
       <article className={s.resultProof} aria-label="One business’s review growth">
         <p className={s.proofLabel}>Real customer result</p>
-        <strong className={s.resultNumber}><span>More than</span>4×</strong>
+        <strong className={s.resultNumber}><span>{customerProof.metricPrefix}</span>{customerProof.metric}</strong>
         <h3>the reviews<br /><span>in approximately 2 months</span></h3>
-        <p>One TapRank business grew its review count by more than four times within approximately two months of using TapRank.</p>
-        <small>Individual results vary. This is not a guarantee.</small>
+        <p>{customerProof.summary}</p>
+        <small>{customerProof.disclaimer}</small>
       </article>
       <figure className={s.reviewProof}>
         <div className={s.reviewStars} aria-label="This customer rated TapRank five out of five stars">★★★★★</div>
         <blockquote>
-          <p>“The whole process was quick, easy and very professional.”</p>
-          <p>“The quality of the stand is fantastic, and everything works perfectly. I highly recommend TapRank to any business looking for an easy way to collect Google reviews and grow their online presence.”</p>
+          <p>“{customerProof.quoteLead}”</p>
+          <p>“{customerProof.quoteBody}”</p>
         </blockquote>
-        <figcaption><strong>Iryna S.</strong><span>5-star customer review on Trustpilot · July 2026</span></figcaption>
-        <a href="https://uk.trustpilot.com/reviews/6a5bcd66e47e7599cd68a220" className={s.textLink}>View review on Trustpilot <Arrow /></a>
+        <figcaption><strong>{customerProof.reviewer}</strong><span>{customerProof.sourceLabel}</span></figcaption>
+        <a href={customerProof.sourceUrl} {...externalLinkProps(customerProof.sourceUrl)} className={s.textLink}>View review on Trustpilot <Arrow /></a>
       </figure>
     </div>
+    <div className={s.proofPurchase}><span><strong>Get the same system for your business</strong><small>Google Review TapRank · £64.99</small></span><a className={s.button} href="/google-review-stand#configure" onClick={() => homepageEvent("product_cta_click", { variant: "google", design: "new" })}>Configure now <Arrow /></a></div>
   </section>;
 }

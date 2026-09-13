@@ -61,7 +61,13 @@ export default function CartDrawer({ cart, cartLoading = false, open, onClose, o
       const response = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
       const result = await response.json().catch(() => null);
       if (!response.ok || !result?.checkoutUrl) throw new Error(result?.message || "Checkout could not be started.");
-      homepageEvent("square_checkout_click", { variant: cart.items[0].productId, location: "cart" });
+      homepageEvent("square_checkout_click", {
+        variant: cart.items[0].productId,
+        productIds: cart.items.map((item) => item.productId),
+        quantity: cart.itemCount,
+        totalPence: cart.totalPence,
+        location: "cart",
+      });
       if (checkoutWindow) checkoutWindow.location.replace(result.checkoutUrl);
       else window.location.assign(result.checkoutUrl);
     } catch (error) {

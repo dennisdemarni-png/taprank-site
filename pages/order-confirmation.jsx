@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import OrderPageShell from "../components/OrderPageShell";
 import { TAPRANK_CONTACT } from "../lib/contact";
+import { trackVerifiedPurchase } from "../lib/homepageEvents";
 import styles from "../styles/OrderConfirmation.module.css";
 
 const copy = Object.freeze({
@@ -57,6 +58,24 @@ export default function OrderConfirmationPage() {
     check();
     return () => { active = false; window.clearTimeout(timer); };
   }, [router.isReady, router.query.reference]);
+
+  useEffect(() => {
+    if (order?.status !== "paid") return undefined;
+    let attempts = 0;
+    let timer;
+    const track = () => {
+      attempts += 1;
+      const tracked = trackVerifiedPurchase({
+        reference: order.reference,
+        totalPence: order.totalPence,
+        itemCount: order.commerce?.itemCount,
+        productIds: order.commerce?.productIds,
+      });
+      if (!tracked && attempts < 20) timer = window.setTimeout(track, 500);
+    };
+    track();
+    return () => window.clearTimeout(timer);
+  }, [order?.commerce?.itemCount, order?.commerce?.productIds, order?.reference, order?.status, order?.totalPence]);
 
   const statusKey = lookupFailed || ["failed", "cancelled"].includes(order?.status)
     ? "failed"

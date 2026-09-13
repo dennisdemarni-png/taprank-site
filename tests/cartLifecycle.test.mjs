@@ -66,3 +66,19 @@ test('product page hydrates the saved cart before showing an empty state', () =>
   assert.match(landingSource, /cartHydrated/);
   assert.match(drawerSource, /Loading your cart…/);
 });
+
+test('mobile CTA appears after the product introduction and does not pretend to add an unconfigured item', () => {
+  const landingSource = readFileSync(new URL('../components/product/ProductLanding.jsx', import.meta.url), 'utf8');
+  assert.match(landingSource, /id="product-sticky-trigger"/);
+  assert.match(landingSource, /getElementById\("product-sticky-trigger"\)/);
+  assert.match(landingSource, />Configure<\/PurchaseLink>/);
+});
+
+test('only a verified paid order can produce a private-data-free purchase summary', () => {
+  const confirmationSource = readFileSync(new URL('../pages/order-confirmation.jsx', import.meta.url), 'utf8');
+  const statusSource = readFileSync(new URL('../pages/api/order-status.js', import.meta.url), 'utf8');
+  assert.match(confirmationSource, /order\?\.status !== "paid"/);
+  assert.match(confirmationSource, /trackVerifiedPurchase/);
+  assert.match(statusSource, /commerce: commerceSummary\(data\.cart_snapshot\)/);
+  assert.doesNotMatch(statusSource, /configuration:\s*data\.cart_snapshot/);
+});

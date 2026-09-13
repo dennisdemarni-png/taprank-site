@@ -93,7 +93,7 @@ test('storefront tracking keeps checkout starts distinct from purchases and excl
     homepageEvent('Purchase', { variant: 'google' });
     window.location.pathname = '/r/restaurant-demo';
     homepageEvent('variant_selected', { variant: 'google' });
-    assert.equal(calls.length, 4);
+    assert.equal(calls.length, 5);
     window.location.pathname = '/';
     window.fbq = () => { throw Error('blocked'); };
     assert.doesNotThrow(() => homepageEvent('hero_buy_click'));
@@ -107,9 +107,36 @@ test('product landing events use the existing allowlisted Meta integration', asy
   try {
     homepageEvent('product_page_view', { variant: 'google' });
     homepageEvent('demo_video_play', { variant: 'google' });
-    homepageEvent('square_checkout_click', { variant: 'google' });
+    homepageEvent('square_checkout_click', { variant: 'google', productIds: ['google', 'instagram'], quantity: 3, totalPence: 11698 });
     assert.deepEqual(calls.map(call => call[0]), ['trackCustom', 'trackCustom', 'track']);
     assert.equal(calls[2][1], 'InitiateCheckout');
+    assert.equal(calls[2][2].value, 116.98);
+    assert.equal(calls[2][2].num_items, 3);
+    assert.deepEqual(calls[2][2].content_ids, ['google', 'instagram']);
     assert.ok(calls.every(call => call[2].page_type === 'product_landing'));
+  } finally { delete globalThis.window; }
+});
+
+test('verified purchase tracking uses authoritative totals, excludes order data and deduplicates refreshes', async () => {
+  const { trackVerifiedPurchase } = await load('../lib/homepageEvents.js');
+  const calls = [];
+  const storage = new Map();
+  globalThis.window = {
+    location: { pathname: '/order-confirmation' },
+    fbq: (...args) => calls.push(args),
+    localStorage: {
+      getItem: key => storage.get(key) || null,
+      setItem: (key, value) => storage.set(key, value),
+    },
+  };
+  try {
+    const purchase = { reference: 'TR-0123456789ABCDEF01234567', totalPence: 11698, itemCount: 3, productIds: ['google', 'instagram'] };
+    assert.equal(trackVerifiedPurchase(purchase), true);
+    assert.equal(trackVerifiedPurchase(purchase), true);
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0][0], 'track');
+    assert.equal(calls[0][1], 'Purchase');
+    assert.deepEqual(calls[0][2], { content_ids: ['google', 'instagram'], content_type: 'product', currency: 'GBP', value: 116.98, num_items: 3 });
+    assert.ok(!('reference' in calls[0][2]));
   } finally { delete globalThis.window; }
 });

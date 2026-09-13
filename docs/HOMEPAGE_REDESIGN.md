@@ -210,3 +210,19 @@ native controls. Dedicated pages add mobile safe-area purchase bars, setup steps
 the approved warranty/delivery/subscription reassurance, the existing anonymous
 customer result and review, and a generic basic-stand comparison limited to current
 TapRank functionality. See `docs/CRO_PASS.md` for link, demo and policy details.
+
+## Product-led homepage refresh — 13 September 2026
+
+The homepage now uses a more energetic, ecommerce-led hierarchy inspired by the
+approved Spacegoods reference without copying its text, graphics or layout. A
+TapRank blue gradient hero presents the genuine fixed-deadline Standard promotion,
+price, concise benefits and a direct Google Review product CTA. Google Review,
+Instagram and Tripadvisor product cards now appear immediately after the hero and
+link to the existing dedicated product pages.
+
+The homepage remains informational: the product demonstration, hosted-page value,
+genuine customer proof, setup process, trust details and FAQ remain available below
+the merchandising section. Mobile uses horizontally swipeable product cards and a
+compact Google Review purchase bar. The product configurator continues to own
+business search, design and quantity selection; its existing server-authoritative
+bundle tiers are now labelled more explicitly as the quantity choice.

@@ -13,7 +13,7 @@ const structuredData = {
       "@type": "Product", "@id": `${origin}/#${variant.id}-stand`, name: `TapRank ${variant.name} NFC + QR Stand`, description: variant.description,
       image: `${origin}${encodeURI(variant.image)}`, brand: { "@id": `${origin}/#organization` },
       category: "NFC and QR code review and social stand",
-      offers: { "@type": "Offer", priceCurrency: "GBP", price: variant.price, url: `${origin}/#options`, shippingDetails: { "@type": "OfferShippingDetails", shippingDestination: { "@type": "DefinedRegion", addressCountry: "GB" }, shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "GBP" } } },
+      offers: { "@type": "Offer", priceCurrency: "GBP", price: variant.price, url: `${origin}${variant.route}`, shippingDetails: { "@type": "OfferShippingDetails", shippingDestination: { "@type": "DefinedRegion", addressCountry: "GB" }, shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "GBP" } } },
     })),
   ],
 };

@@ -19,7 +19,7 @@ export default function BundleSelector({ productId, quantity, onChange }) {
 
   return (
     <fieldset className={styles.bundleSelector}>
-      <legend><span>Buy more, save more</span><small>One configuration is used for every stand in this bundle.</small></legend>
+      <legend><span><b className={styles.quantityEyebrow}>Choose quantity</b>Buy more, save more</span><small>One configuration is used for every stand in this bundle.</small></legend>
       <div className={styles.bundleGrid}>
         {STANDARD_BUNDLE_TIERS.map((tier) => {
           const pricing = linePricingFor(productId, tier.quantity);

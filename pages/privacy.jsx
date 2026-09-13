@@ -99,13 +99,13 @@ export default function PrivacyPage() {
 
           <article>
             <h2>Website measurement</h2>
-            <p>TapRank uses Meta Pixel for page views and homepage interactions,
+            <p>TapRank uses Meta Pixel for page views and storefront interactions,
               including product selections and clicks through to Square checkout.
-              These events help us understand advertising and the purchase journey.
-              A checkout click is not recorded as a completed purchase. Our homepage
-              event code does not include your order setup fields, contact details
-              or payment information. We also use Vercel Web Analytics to understand
-              website traffic.</p>
+              A purchase event is recorded only after TapRank receives verified payment
+              confirmation from Square. These events help us understand advertising and
+              the purchase journey. The events do not include your order setup fields,
+              order reference, contact details or payment information. We also use Vercel
+              Web Analytics to understand website traffic.</p>
           </article>
 
           <article>

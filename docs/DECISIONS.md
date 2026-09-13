@@ -159,3 +159,14 @@ This log records confirmed product and architectural decisions. It does not inve
 - **Alternatives considered:** Permanently locking the cart on first checkout; silently leaving stale Square links active; trusting client-side cart state.
 - **Consequences:** Unpaid carts remain editable and retain all product lines. Changing a cart may invalidate a Square tab already open for its previous contents, requiring the shopper to open the fresh checkout.
 - **Related files:** `lib/cartLifecycle.js`, `lib/cartCheckouts.js`, `lib/cartServer.js`, `pages/api/cart.js`, `pages/api/checkout.js`, `pages/api/square/webhook.js`, `components/product/CartDrawer.jsx`.
+
+### 2026-09-13 — Use verified commerce events and a live fixed-deadline campaign clock
+
+- **Date:** 2026-09-13
+- **Decision:** Send checkout-start events with the server-authoritative cart total, quantity and product identifiers. Send a Purchase event only after the order-status API reports a payment confirmed by the signed Square webhook, with browser-side refresh deduplication and no order reference or customer data. Refresh the five-day promotion clock every second from its existing fixed deadline and show the same remaining time in the banner and beside the genuine £79.99 reference price.
+- **Status:** Implemented.
+- **Context:** The post-launch product page needed more reliable advertising measurement and the minute-only campaign clock appeared static to customers.
+- **Reason:** Conversion reporting must reflect verified money received, while visible seconds make the genuine fixed campaign deadline clear without using an evergreen reset.
+- **Alternatives considered:** Firing Purchase when checkout opens; sending order or customer details to analytics; using a rolling countdown; keeping a minute-only timer.
+- **Consequences:** Purchase measurement can lag until Square confirms payment, repeat confirmation-page loads do not intentionally duplicate the event in the same browser, and all campaign UI removes itself after 17 September 2026 at 14:30 BST.
+- **Related files:** `lib/homepageEvents.js`, `pages/api/order-status.js`, `pages/order-confirmation.jsx`, `components/product/usePromotionCountdown.js`, `components/product/PromotionBar.jsx`, `components/product/ProductLanding.jsx`, `pages/privacy.jsx`.

@@ -45,6 +45,7 @@
 .googleSearchInput input::placeholder { color: #7b879a; }
 .googleSearchInput input:disabled { cursor: wait; opacity: .8; }
 .searchSpinner { position: absolute; top: 50%; right: 15px; width: 17px; height: 17px; margin-top: -9px; border: 2px solid #d9e5f5; border-top-color: #1755ef; border-radius: 50%; animation: searchSpin .7s linear infinite; }
+.searchLoading { padding: 0 13px 11px; color: #66758c; font-size: 9px; }
 .googleSuggestions { position: absolute; z-index: 20; top: calc(100% + 7px); left: 0; right: 0; max-height: 250px; margin: 0; padding: 6px; overflow-y: auto; list-style: none; border: 1px solid #cbd9ed; border-radius: 12px; background: #fff; box-shadow: 0 18px 40px rgba(13, 29, 58, .18); }
 .googleSuggestions li + li { border-top: 1px solid #e7edf6; }
 .googleSuggestions button { display: grid; gap: 3px; width: 100%; padding: 11px 10px; border: 0; border-radius: 8px; background: transparent; color: #101f3d; text-align: left; cursor: pointer; }
@@ -118,6 +119,10 @@
 .addToCart, .checkoutButton { width: 100%; min-height: 57px; margin-top: 14px; padding: 14px 18px; border: 0; border-radius: 10px; color: #fff; background: linear-gradient(105deg, #1046d7 0%, #1769f1 52%, #11bcea 100%); box-shadow: 0 13px 28px rgba(23, 85, 239, .22); font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; transition: filter .18s, transform .18s; }
 .addToCart:hover, .checkoutButton:hover { filter: brightness(.95); transform: translateY(-1px); }
 .addToCart:disabled, .checkoutButton:disabled { cursor: not-allowed; opacity: .58; transform: none; }
+.purchaseTrust { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 9px; margin-top: 11px; color: #56657b; font-size: 8px; }
+.purchaseTrust span { color: #0a9a70; letter-spacing: 2px; }
+.purchaseTrust a { text-decoration: underline; text-underline-offset: 2px; }
+.purchaseTrust strong { padding-left: 9px; border-left: 1px solid #d8e1ed; color: #263b5b; }
 .purchaseReassurance { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 13px; padding: 0; margin-top: 11px !important; list-style: none; color: #56657b; font-size: 8px; }
 .purchaseReassurance li::before { content: '✓'; margin-right: 4px; color: #0d9a70; font-weight: 900; }
 .etsyLink { display: block; min-height: 38px; padding: 12px 5px 7px; color: #50617a !important; font-size: 10px; text-align: center; text-decoration: underline !important; text-underline-offset: 3px; }

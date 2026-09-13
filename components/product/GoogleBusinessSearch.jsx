@@ -145,11 +145,13 @@ export default function GoogleBusinessSearch({ onSelect }) {
           aria-autocomplete="list"
           aria-controls="taprank-google-business-results"
           aria-expanded={suggestions.length > 0}
+          aria-busy={!ready || searching}
           disabled={!ready}
           onChange={(event) => { selectedQueryRef.current = ""; setQuery(event.target.value); }}
         />
-        {searching ? <span className={styles.searchSpinner} aria-label="Searching" /> : null}
+        {!ready && !error ? <span className={styles.searchSpinner} aria-label="Loading business search" /> : searching ? <span className={styles.searchSpinner} aria-label="Searching" /> : null}
       </div>
+      {!ready && !error ? <p className={styles.searchLoading} role="status">Loading Google business search…</p> : null}
       {suggestions.length > 0 ? (
         <ul className={styles.googleSuggestions} id="taprank-google-business-results" role="listbox">
           {suggestions.map((prediction) => (

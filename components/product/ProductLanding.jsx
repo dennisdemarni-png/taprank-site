@@ -12,8 +12,9 @@ import CartDrawer from "./CartDrawer";
 import ProductConfigurator from "./ProductConfigurator";
 import ProductGallery from "./ProductGallery";
 import PromotionBar from "./PromotionBar";
+import { usePromotionCountdown } from "./usePromotionCountdown";
 import { formatPrice } from "../../lib/commerce";
-import { PRODUCT_PROMOTION, promotionState, validRegularPricePence } from "../../lib/promotion";
+import { PRODUCT_PROMOTION, validRegularPricePence } from "../../lib/promotion";
 import styles from "./ProductLanding.module.css";
 
 const origin = "https://www.taprank.co.uk";
@@ -69,7 +70,8 @@ function Header({ product, cart, cartLoading, onOpenCart }) {
 }
 
 function Hero({ product, designId, onDesignChange, onCartChanged, onOpenCart, onSelectionChange }) {
-  const activePromotion = promotionState().active;
+  const promotion = usePromotionCountdown();
+  const activePromotion = promotion.active;
   const regularPricePence = activePromotion ? validRegularPricePence(product.pricePence) : null;
   const primaryBenefit = {
     google: "Make leaving a Google review effortless",
@@ -86,13 +88,29 @@ function Hero({ product, designId, onDesignChange, onCartChanged, onOpenCart, on
         <p className={styles.eyebrow}>{product.id === "google" ? `Google Review TapRank · ${designId === "classic" ? "White background" : "Blue background"}` : product.eyebrow}</p>
         <h1 id="product-title">{product.headline}</h1>
         <p className={styles.lead}>{product.lead}</p>
-        <div className={styles.price}>{activePromotion ? <small>{PRODUCT_PROMOTION.saleLabel}</small> : null}<strong>£{product.price}</strong>{regularPricePence ? <del>{formatPrice(regularPricePence)}</del> : null}<span>One-off payment</span></div>
+        <div className={styles.price}>
+          {activePromotion ? <small>{PRODUCT_PROMOTION.saleLabel}</small> : null}
+          <strong>£{product.price}</strong>
+          {regularPricePence ? <del>{formatPrice(regularPricePence)}</del> : null}
+          {activePromotion ? (
+            <span
+              className={styles.priceCountdown}
+              role="timer"
+              suppressHydrationWarning
+              aria-label={`Offer ends in ${promotion.days} days, ${promotion.hours} hours, ${promotion.minutes} minutes and ${promotion.seconds} seconds`}
+            >
+              <b>Ends in</b> {promotion.days}d {String(promotion.hours).padStart(2, "0")}:{String(promotion.minutes).padStart(2, "0")}:{String(promotion.seconds).padStart(2, "0")}
+            </span>
+          ) : null}
+          <span>One-off payment</span>
+        </div>
         <ul className={styles.heroBenefits}>
           <li>{primaryBenefit}</li>
           <li>NFC + QR — configured and ready to use</li>
           <li>Free UK delivery · No subscription</li>
           <li>Includes your TapRank-hosted business page</li>
         </ul>
+        <span className={styles.mobileStickyTrigger} id="product-sticky-trigger" aria-hidden="true" />
         <ProductConfigurator product={product} designId={designId} onDesignChange={onDesignChange} onCartChanged={onCartChanged} onOpenCart={onOpenCart} onSelectionChange={onSelectionChange} />
       </div>
     </section>
@@ -214,24 +232,24 @@ function FAQ({ product }) {
 
 function MobilePurchase({ product, selection, cart, onOpenCart }) {
   const [visible, setVisible] = useState(false);
-  const heroPassed = useRef(false);
+  const introPassed = useRef(false);
   const finalVisible = useRef(false);
   useEffect(() => {
-    const hero = document.getElementById("product-hero");
+    const trigger = document.getElementById("product-sticky-trigger");
     const final = document.getElementById("product-final-cta");
-    if (!hero || !window.IntersectionObserver) return;
+    if (!trigger || !window.IntersectionObserver) return;
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.target === hero) heroPassed.current = !entry.isIntersecting && entry.boundingClientRect.bottom < 0;
+        if (entry.target === trigger) introPassed.current = !entry.isIntersecting && entry.boundingClientRect.bottom < 0;
         if (entry.target === final) finalVisible.current = entry.isIntersecting;
       });
-      setVisible(heroPassed.current && !finalVisible.current);
+      setVisible(introPassed.current && !finalVisible.current);
     });
-    observer.observe(hero);
+    observer.observe(trigger);
     if (final) observer.observe(final);
     return () => observer.disconnect();
   }, []);
-  return visible ? <div className={styles.mobilePurchase}><span><strong>{selection?.label || product.name}</strong><small>{cart?.itemCount ? `${cart.itemCount} in cart` : `${formatPrice(selection?.pricePence || product.pricePence)} · ${selection?.quantity || 1} stand${(selection?.quantity || 1) > 1 ? "s" : ""}`}</small></span>{cart?.itemCount ? <button className={styles.stickyButton} type="button" onClick={onOpenCart}>View cart</button> : <PurchaseLink product={product} location="mobile_sticky" className={styles.stickyButton}>Add to cart</PurchaseLink>}</div> : null;
+  return visible ? <div className={styles.mobilePurchase}><span><strong>{selection?.label || product.name}</strong><small>{cart?.itemCount ? `${cart.itemCount} in cart` : `${formatPrice(selection?.pricePence || product.pricePence)} · ${selection?.quantity || 1} stand${(selection?.quantity || 1) > 1 ? "s" : ""}`}</small></span>{cart?.itemCount ? <button className={styles.stickyButton} type="button" onClick={onOpenCart}>View cart</button> : <PurchaseLink product={product} location="mobile_sticky" className={styles.stickyButton}>Configure</PurchaseLink>}</div> : null;
 }
 
 function Footer() {

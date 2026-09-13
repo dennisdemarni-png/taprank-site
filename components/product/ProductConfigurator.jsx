@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { assets, googleDesigns, variants } from "../homepage/content";
+import { assets, customerProof, googleDesigns, variants } from "../homepage/content";
 import { ETSY_SHOP_URL, checkoutFor, formatPrice, linePricingFor } from "../../lib/commerce";
 import { externalLinkProps } from "../../lib/publicLinks";
 import { homepageEvent } from "../../lib/homepageEvents";
@@ -235,11 +235,16 @@ export default function ProductConfigurator({ product, designId = "current", onD
       <button className={styles.addToCart} type="submit" disabled={submitting || (product.id === "custom" && !primaryAction)}>
         {submitting ? "Adding securely…" : `Add to cart — ${formatPrice(pricing?.totalPence || product.pricePence)}`}
       </button>
+      <div className={styles.purchaseTrust}>
+        <span aria-label="Five out of five stars">★★★★★</span>
+        <a href={customerProof.sourceUrl} {...externalLinkProps(customerProof.sourceUrl)}>Individual 5-star customer review</a>
+        <strong>Secure checkout by Square</strong>
+      </div>
       <ul className={styles.purchaseReassurance}>
-        <li>Secure checkout</li><li>Free UK delivery</li><li>Dispatch within 48 hours</li><li>Ready to use</li><li>1-year replacement warranty</li>
+        <li>Free UK delivery</li><li>Dispatch within 48 hours</li><li>Ready to use</li><li>1-year replacement warranty</li>
       </ul>
       <a className={styles.etsyLink} href={ETSY_SHOP_URL} {...externalLinkProps(ETSY_SHOP_URL)}>Prefer Etsy? Shop TapRank on Etsy →</a>
-      {fallbackUrl ? <details className={styles.fallback}><summary>Having trouble with the configurator?</summary><p>Use TapRank’s existing Square checkout and send your setup details afterwards.</p><a href={fallbackUrl} {...externalLinkProps(fallbackUrl)} onClick={() => homepageEvent("square_checkout_click", { variant: product.id, location: "configurator_fallback" })}>Use existing Square checkout</a></details> : null}
+      {fallbackUrl ? <details className={styles.fallback}><summary>Having trouble with the configurator?</summary><p>Use TapRank’s existing Square checkout and send your setup details afterwards.</p><a href={fallbackUrl} {...externalLinkProps(fallbackUrl)} onClick={() => homepageEvent("square_checkout_click", { variant: product.id, design: designId === "classic" ? "classic" : "new", productIds: [product.id], quantity, totalPence: pricing?.totalPence || product.pricePence, location: "configurator_fallback" })}>Use existing Square checkout</a></details> : null}
     </form>
   );
 }

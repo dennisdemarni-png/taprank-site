@@ -61,6 +61,19 @@ test('active dedicated product routes reuse the approved catalogue and prices', 
   assert.match(readFileSync(new URL('../pages/custom-taprank.jsx', import.meta.url), 'utf8'), /notFound:\s*true/);
 });
 
+test('homepage is product-led and sends shoppers to the dedicated product routes', () => {
+  const homepage = readFileSync(new URL('../components/homepage/Homepage.jsx', import.meta.url), 'utf8');
+  const hero = readFileSync(new URL('../components/homepage/Hero.jsx', import.meta.url), 'utf8');
+  const productCards = readFileSync(new URL('../components/homepage/VariantSelector.jsx', import.meta.url), 'utf8');
+  const quantity = readFileSync(new URL('../components/product/BundleSelector.jsx', import.meta.url), 'utf8');
+  assert.match(homepage, /<Hero \/><VariantSelector \/><TapDemo/);
+  assert.match(hero, /href="\/google-review-stand"/);
+  assert.match(productCards, /variants\.map/);
+  assert.match(productCards, /href=\{variant\.route\}/);
+  assert.match(productCards, /Choose what customers notice first\./);
+  assert.match(quantity, /Choose quantity/);
+});
+
 test('public support email and external-link rules are centralised', async () => {
   const { TAPRANK_CONTACT } = await load('../lib/contact.js');
   const { isExternalWebLink, externalLinkProps } = await load('../lib/publicLinks.js');

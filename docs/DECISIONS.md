@@ -170,3 +170,14 @@ This log records confirmed product and architectural decisions. It does not inve
 - **Alternatives considered:** Firing Purchase when checkout opens; sending order or customer details to analytics; using a rolling countdown; keeping a minute-only timer.
 - **Consequences:** Purchase measurement can lag until Square confirms payment, repeat confirmation-page loads do not intentionally duplicate the event in the same browser, and all campaign UI removes itself after 17 September 2026 at 14:30 BST.
 - **Related files:** `lib/homepageEvents.js`, `pages/api/order-status.js`, `pages/order-confirmation.jsx`, `components/product/usePromotionCountdown.js`, `components/product/PromotionBar.jsx`, `components/product/ProductLanding.jsx`, `pages/privacy.jsx`.
+
+### 2026-09-13 — Make the homepage a product-led route into dedicated buying pages
+
+- **Date:** 2026-09-13
+- **Decision:** Keep the homepage as the broad TapRank explanation and discovery page, but lead with product merchandising, the genuine Standard promotion and direct links to the Google Review, Instagram and Tripadvisor product pages. Use the stronger ecommerce hierarchy and visual energy of the approved Spacegoods reference while retaining TapRank branding, factual copy and existing conversion infrastructure.
+- **Status:** Implemented.
+- **Context:** The product pages had become substantially more purchase-focused, while the homepage still felt quieter and required more effort to reach a specific product.
+- **Reason:** Paid and organic visitors should understand the offer quickly, see the available faces near the top of the page and enter the appropriate configuration flow without using an in-page mock selector.
+- **Alternatives considered:** Rebuilding the homepage as another full configurator; copying the reference layout directly; keeping all product choices buried below the educational sections.
+- **Consequences:** The hero prioritises Google Review TapRank, the three live Standard faces have direct product cards, educational and proof sections remain available below, and mobile retains a compact direct purchase bar. Product-page quantity is explicitly labelled while the existing server-authoritative 1, 2, 3 and 5 stand tiers remain unchanged.
+- **Related files:** `components/homepage/Hero.jsx`, `components/homepage/VariantSelector.jsx`, `components/homepage/Homepage.jsx`, `components/homepage/Homepage.module.css`, `components/product/BundleSelector.jsx`, `pages/index.jsx`.

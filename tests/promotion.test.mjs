@@ -32,11 +32,11 @@ test('promotion stays inactive without a genuine configured deadline', () => {
   assert.equal(promotionState(new Date(), { enabled: false, endAt: '2030-01-01T00:00:00Z' }).active, false);
 });
 
-test('the approved five-day campaign has a fixed deadline and genuine reference price', () => {
+test('the approved Autumn Sale has a fixed deadline and genuine reference price', () => {
   assert.equal(PRODUCT_PROMOTION.enabled, true);
-  assert.equal(PRODUCT_PROMOTION.endAt, '2026-09-17T14:30:00+01:00');
+  assert.equal(PRODUCT_PROMOTION.endAt, '2026-11-30T23:59:59+00:00');
   assert.equal(PRODUCT_PROMOTION.regularPricePence, 7999);
-  assert.equal(PRODUCT_PROMOTION.saleLabel, '5-DAY OFFER — SAVE £15');
+  assert.equal(PRODUCT_PROMOTION.saleLabel, 'AUTUMN SALE — SAVE £15');
 });
 
 test('crossed-out pricing appears only when a higher regular price is configured', () => {

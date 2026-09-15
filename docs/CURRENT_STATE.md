@@ -13,8 +13,8 @@
 
 > **Product merchandising update, 12 September 2026:** The working branch adds a
 > gallery-led purchase layout, both Google stand designs, progressively disclosed
-> configuration and server-validated Standard bundle pricing. The genuine five-day
-> promotion is configured to end on 17 September 2026 without resetting. Custom
+> configuration and server-validated Standard bundle pricing. The Autumn Sale
+> promotion is configured to remain active through 30 November 2026 without resetting. Custom
 > ordering is temporarily disabled. Production remains unchanged.
 
 Implementation snapshot: **28 July 2026**

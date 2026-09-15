@@ -181,3 +181,13 @@ This log records confirmed product and architectural decisions. It does not inve
 - **Alternatives considered:** Rebuilding the homepage as another full configurator; copying the reference layout directly; keeping all product choices buried below the educational sections.
 - **Consequences:** The hero prioritises Google Review TapRank, the three live Standard faces have direct product cards, educational and proof sections remain available below, and mobile retains a compact direct purchase bar. Product-page quantity is explicitly labelled while the existing server-authoritative 1, 2, 3 and 5 stand tiers remain unchanged.
 - **Related files:** `components/homepage/Hero.jsx`, `components/homepage/VariantSelector.jsx`, `components/homepage/Homepage.jsx`, `components/homepage/Homepage.module.css`, `components/product/BundleSelector.jsx`, `pages/index.jsx`.
+
+### 2026-09-14 — Extend the Standard promotion as an Autumn Sale
+
+- **Date:** 2026-09-14
+- **Decision:** Replace the five-day campaign wording with an Autumn Sale that remains active through 30 November 2026, retaining the genuine £79.99 reference price and £64.99 sale price.
+- **Status:** Implemented on the storefront branch.
+- **Context:** TapRank requested a seasonal campaign and matching countdown across the website.
+- **Reason:** One fixed central deadline keeps the homepage and product-page clocks accurate and prevents a resetting urgency claim.
+- **Consequences:** All promotion clocks count down to 23:59:59 GMT on 30 November 2026, then automatically remove the sale state and crossed-out reference price.
+- **Related files:** `lib/promotion.js`, `components/product/PromotionBar.jsx`, `tests/promotion.test.mjs`.

@@ -42,8 +42,8 @@ The 2, 3 and 5 tiers receive 30%, 40% and 50% discounts respectively. The shared
 configuration applies to every stand in the selected bundle. Cart and
 Square totals are derived again from the server catalogue and tier rules.
 
-`lib/promotion.js` is the central promotion configuration. The approved five-day
-campaign runs to `2026-09-17T14:30:00+01:00`, presents the genuine £79.99 reference
+`lib/promotion.js` is the central promotion configuration. The approved Autumn Sale
+runs through 30 November 2026, presents the genuine £79.99 reference
 price against £64.99, and expires without resetting. The banner then falls back to
 the standard price, delivery and no-subscription message.
 
